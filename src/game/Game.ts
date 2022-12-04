@@ -1,4 +1,5 @@
 import type { Game } from 'boardgame.io';
+import { PlayerView } from 'boardgame.io/core';
 
 export const Hanamikoji: Game<GameState> = {
   setup: ({ random }) => {
@@ -23,11 +24,28 @@ export const Hanamikoji: Game<GameState> = {
         { charmPoints: 2, color: Color.PURPLE, favoredPlayerID: null },
       ],
       players: {
-        0: player0Hand,
-        1: player1Hand,
+        0: {
+          hand: player0Hand,
+          actions: {
+            0: { enabled: true },
+            1: { enabled: true },
+            2: { enabled: true },
+            3: { enabled: true },
+          },
+        },
+        1: {
+          hand: player1Hand,
+          actions: {
+            0: { enabled: true },
+            1: { enabled: true },
+            2: { enabled: true },
+            3: { enabled: true },
+          },
+        },
       },
     };
   },
+  playerView: PlayerView.STRIP_SECRETS,
 };
 
 const generateDeck = (): ItemCard[] => {
@@ -68,13 +86,20 @@ interface Secret {
   unusedItemCard: ItemCard;
 }
 
-interface Players {
-  0: ItemCard[];
-  1: ItemCard[];
+interface Actions {
+  0: { enabled: boolean };
+  1: { enabled: boolean };
+  2: { enabled: boolean };
+  3: { enabled: boolean };
+}
+
+interface Player {
+  hand: ItemCard[];
+  actions: Actions;
 }
 
 interface GameState {
   secret: Secret;
   geisha: GeishaCard[];
-  players: Players;
+  players: { 0: Player; 1: Player };
 }
