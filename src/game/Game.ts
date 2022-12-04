@@ -1,4 +1,4 @@
-import type { Game, Move } from 'boardgame.io';
+import type { Game } from 'boardgame.io';
 
 export const Hanamikoji: Game<GameState> = {
   setup: ({ random }) => {
@@ -11,11 +11,11 @@ export const Hanamikoji: Game<GameState> = {
         { charmPoints: 3, color: Color.BLUE, favoredPlayerID: null },
         { charmPoints: 2, color: Color.YELLOW, favoredPlayerID: null },
         { charmPoints: 2, color: Color.RED, favoredPlayerID: null },
-        { charmPoints: 2, color: Color.PINK, favoredPlayerID: null },
+        { charmPoints: 2, color: Color.PURPLE, favoredPlayerID: null },
       ],
     };
   },
-}
+};
 
 const generateDeck = (): ItemCard[] => {
   return [
@@ -25,7 +25,7 @@ const generateDeck = (): ItemCard[] => {
     ...Array(3).fill({ charmPoints: 3, color: Color.BLUE }),
     ...Array(2).fill({ charmPoints: 2, color: Color.YELLOW }),
     ...Array(2).fill({ charmPoints: 2, color: Color.RED }),
-    ...Array(2).fill({ charmPoints: 2, color: Color.PINK }),
+    ...Array(2).fill({ charmPoints: 2, color: Color.PURPLE }),
   ];
 };
 
@@ -36,7 +36,7 @@ enum Color {
   BLUE = 'blue',
   YELLOW = 'yellow',
   RED = 'red',
-  PURPLE = 'purple'
+  PURPLE = 'purple',
 }
 
 interface GeishaCard {
@@ -44,12 +44,13 @@ interface GeishaCard {
   color: Color;
   favoredPlayerID: number | null;
 }
+
 interface ItemCard {
-  charmPoints: number
+  charmPoints: number;
   color: Color;
 }
 
 interface GameState {
-  deck: ItemCard[]
-  geisha: GeishaCard[]
+  deck: ItemCard[];
+  geisha: GeishaCard[];
 }
