@@ -1,5 +1,5 @@
 import type { Game } from 'boardgame.io';
-import { INVALID_MOVE } from 'boardgame.io/core';
+import { INVALID_MOVE, Stage } from 'boardgame.io/core';
 
 export const Hanamikoji: Game<GameState> = {
   setup: ({ random }) => {
@@ -14,37 +14,38 @@ export const Hanamikoji: Game<GameState> = {
 
     return {
       secret: { deck, unusedItemCard },
-      geisha: [
-        { charmPoints: 5, color: Color.PINK, favoredPlayerID: null, player0Cards: [], player1Cards: [] },
-        { charmPoints: 4, color: Color.GREEN, favoredPlayerID: null, player0Cards: [], player1Cards: [] },
-        { charmPoints: 3, color: Color.ORANGE, favoredPlayerID: null, player0Cards: [], player1Cards: [] },
-        { charmPoints: 3, color: Color.BLUE, favoredPlayerID: null, player0Cards: [], player1Cards: [] },
-        { charmPoints: 2, color: Color.YELLOW, favoredPlayerID: null, player0Cards: [], player1Cards: [] },
-        { charmPoints: 2, color: Color.RED, favoredPlayerID: null, player0Cards: [], player1Cards: [] },
-        { charmPoints: 2, color: Color.PURPLE, favoredPlayerID: null, player0Cards: [], player1Cards: [] },
-      ],
+      geisha: {
+        [Color.PINK]: { charmPoints: 5, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
+        [Color.GREEN]: { charmPoints: 4, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
+        [Color.ORANGE]: { charmPoints: 3, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
+        [Color.BLUE]: { charmPoints: 3, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
+        [Color.YELLOW]: { charmPoints: 2, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
+        [Color.RED]: { charmPoints: 2, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
+        [Color.PURPLE]: { charmPoints: 2, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
+      },
       players: {
-        '0': {
+        0: {
           hand: player0Hand,
           actions: {
-            '0': { enabled: true, savedCard: null },
-            '1': { enabled: true, discardedCards: [] },
-            '2': { enabled: true },
-            '3': { enabled: true },
+            0: { enabled: true, savedCard: null },
+            1: { enabled: true, discardedCards: [] },
+            2: { enabled: true },
+            3: { enabled: true },
           },
         },
-        '1': {
+        1: {
           hand: player1Hand,
           actions: {
-            '0': { enabled: true, savedCard: null },
-            '1': { enabled: true, discardedCards: [] },
-            '2': { enabled: true },
-            '3': { enabled: true },
+            0: { enabled: true, savedCard: null },
+            1: { enabled: true, discardedCards: [] },
+            2: { enabled: true },
+            3: { enabled: true },
           },
         },
       },
       currentAction: null,
       presentedCards: [],
+      presentedPairs: [],
     };
   },
 
@@ -52,6 +53,7 @@ export const Hanamikoji: Game<GameState> = {
     activePlayers: { currentPlayer: 'draw' },
 
     stages: {
+      // TODO: maybe add a wait stage for players to evaluate the board position before starting/restarting a round
       draw: {
         moves: {
           draw: ({ G, ctx, events }) => {
@@ -85,7 +87,7 @@ export const Hanamikoji: Game<GameState> = {
       },
       selectCardsAsCurrentPlayer: {
         moves: {
-          selectCards: ({ G, ctx, events }, selectedCardIndexes: string[]) => {
+          selectCardsAsCurrent: ({ G, ctx, events }, selectedCardIndexes: string[]) => {
             const currentPlayer = ctx.currentPlayer;
             const currentAction = G.currentAction!;
             const playersAction = G.players[currentPlayer].actions[currentAction];
@@ -110,41 +112,82 @@ export const Hanamikoji: Game<GameState> = {
 
             switch (currentAction) {
               case '0':
-                playersAction.savedCard = selectedCards[0];
+                playersAction.savedCard = selectedCards.at(0);
+                G.currentAction = null;
                 events.endStage();
                 events.endTurn();
+                // TODO: check if the round is over. maybe use G.turn.onBegin()?
                 break;
               case '1':
                 playersAction.discardedCards = selectedCards;
+                G.currentAction = null;
+                events.endStage();
+                events.endTurn();
+                // TODO: check if the round is over. maybe use G.turn.onBegin()?
                 break;
               case '2':
                 G.presentedCards = selectedCards;
-
+                events.setActivePlayers({
+                  currentPlayer: Stage.NULL,
+                  others: 'selectCardsAsOpposingPlayer',
+                });
                 break;
               case '3':
-                G.presentedCards = selectedCards;
-
+                G.presentedPairs = [
+                  [selectedCards.at(0)!, selectedCards.at(1)!],
+                  [selectedCards.at(2)!, selectedCards.at(3)!],
+                ];
+                events.setActivePlayers({
+                  currentPlayer: Stage.NULL,
+                  others: 'selectCardsAsOpposingPlayer',
+                });
                 break;
             }
           },
         },
       },
+      selectCardsAsOpposingPlayer: {
+        moves: {
+          selectCardsAsOpposing: ({ G, ctx, events }, selectedIndex: string) => {
+            const presentingPlayer = ctx.currentPlayer;
+            const choosingPlayer = presentingPlayer === '0' ? '1' : '0';
+            const currentAction = G.currentAction!;
+
+            const isValidAction2Selection = ['0', '1', '2'].includes(selectedIndex) && currentAction === '2';
+            const isValidAction3Selection = ['0', '1'].includes(selectedIndex) && currentAction === '3';
+
+            if (isValidAction2Selection) {
+              G.presentedCards.forEach((card, i) => {
+                if (i === Number(selectedIndex)) {
+                  G.geisha[card.color].playerItemCards[choosingPlayer].push(card);
+                } else {
+                  G.geisha[card.color].playerItemCards[presentingPlayer].push(card);
+                }
+              });
+              G.presentedCards = [];
+            } else if (isValidAction3Selection) {
+              const unselectedIndex = selectedIndex === '0' ? '1' : '0';
+              G.presentedPairs.forEach((pair, i) => {
+                if (i === Number(selectedIndex)) {
+                  pair.forEach((card) => G.geisha[card.color].playerItemCards[choosingPlayer].push(card));
+                } else if (i === Number(unselectedIndex)) {
+                  pair.forEach((card) => G.geisha[card.color].playerItemCards[presentingPlayer].push(card));
+                }
+              });
+              G.presentedPairs = [];
+            } else {
+              return INVALID_MOVE;
+            }
+
+            G.currentAction = null;
+            events.setActivePlayers({ all: Stage.NULL });
+            events.endTurn();
+            // TODO: check if the round is over or move to draw stage for the player that just chose
+          },
+        },
+      },
     },
   },
-
-  // moves: {
-  //   selectAction: ({ G, ctx }, selectedAction: string ) => {
-  //     const currentPlayer = ctx.currentPlayer;
-  //     const playersActions = G.players[currentPlayer].actions;
-  //
-  //     if (!playersActions[selectedAction].enabled) {
-  //       return INVALID_MOVE;
-  //     }
-  //
-  //     G.currentAction = selectedAction;
-  //     playersActions[selectedAction].enabled = false;
-  //   },
-  // },
 
   maxPlayers: 2,
 
@@ -175,10 +218,8 @@ enum Color {
 
 interface GeishaCard {
   charmPoints: number;
-  color: Color;
   favoredPlayerID: number | null;
-  player0Cards: ItemCard[];
-  player1Cards: ItemCard[];
+  playerItemCards: Record<string, ItemCard[]>;
 }
 
 interface ItemCard {
@@ -204,8 +245,9 @@ interface Player {
 
 interface GameState {
   secret: Secret;
-  geisha: GeishaCard[];
+  geisha: Record<Color, GeishaCard>;
   players: Record<string, Player>;
   currentAction: string | null;
   presentedCards: ItemCard[];
+  presentedPairs: ItemCard[][];
 }
