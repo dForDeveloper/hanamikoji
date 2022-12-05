@@ -208,7 +208,7 @@ export const Hanamikoji: Game<GameState> = {
             moves: {
               reveal: ({ G, ctx, events }) => {
                 const { savedCard } = G.players[ctx.currentPlayer].actions[0];
-                if (!!savedCard) {
+                if (savedCard !== null && savedCard !== undefined) {
                   G.geisha[savedCard.color].playerItemCards[ctx.currentPlayer].push(savedCard);
                   G.players[ctx.currentPlayer].actions[0].savedCard = null;
                   events.endTurn();
