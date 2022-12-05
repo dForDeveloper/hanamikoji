@@ -40,6 +40,7 @@ export const Hanamikoji: Game<GameState> = {
       currentAction: null,
       presentedCards: [],
       presentedPairs: [],
+      startingPlayerID: '0',
     };
   },
 
@@ -263,6 +264,7 @@ export const Hanamikoji: Game<GameState> = {
     },
 
     restartPhase: {
+      next: 'playPhase',
       turn: {
         activePlayers: { all: 'prepareNextRound', minMoves: 1, maxMoves: 1 },
         stages: {
@@ -270,7 +272,9 @@ export const Hanamikoji: Game<GameState> = {
             moves: {
               goToNextRound: ({ G, events, random }) => {
                 setGameStateForNextRound({ G, random });
-                events.setPhase('playPhase');
+                events.endTurn({ next: G.startingPlayerID });
+                G.startingPlayerID = G.startingPlayerID === '0' ? '1' : '0';
+                events.endPhase();
               },
             },
           },
@@ -403,6 +407,7 @@ interface GameState {
   currentAction: string | null;
   presentedCards: ItemCard[];
   presentedPairs: ItemCard[][];
+  startingPlayerID: string;
 }
 
 interface Random {
