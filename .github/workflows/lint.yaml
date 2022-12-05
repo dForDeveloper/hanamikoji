@@ -35,3 +35,4 @@ jobs:
         with:
           eslint: true
           prettier: true
+          eslint_args: "--config .eslintrc.cjs"
