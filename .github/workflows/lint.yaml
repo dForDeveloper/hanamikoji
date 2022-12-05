@@ -22,8 +22,13 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7.17.1
+
       - name: Install Node.js dependencies
-        run: npm ci
+        run: pnpm i
 
       - name: Run linters
         uses: wearerequired/lint-action@v2
