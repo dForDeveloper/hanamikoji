@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev:client": "pnpm --filter client run dev",
+    "dev:server": "pnpm --filter server run dev",
     "build": "pnpm --stream -r run build"
   },
   "keywords": [],
