@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:client": "pnpm --filter client run dev",
-    "dev:server": "pnpm --filter server run dev",
+    "client": "pnpm --filter client run dev",
+    "server": "pnpm --filter server run dev",
+    "dev": "conc -k -n \"server,client\" -c \"magenta,cyan\" \"pnpm run server\" \"pnpm run client\"",
     "build": "pnpm --stream -r run build"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
 }
