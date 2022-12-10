@@ -2,9 +2,13 @@
   "name": "game-logic",
   "version": "1.0.0",
   "description": "",
-  "main": "build/index.js",
+  "main": "build/cjs/index.js",
+  "typings": "build/cjs/index.d.ts",
+  "module": "build/esm/index.js",
   "scripts": {
-    "build": "rm -rf build && tsc"
+    "build:cjs": "tsc -b",
+    "build:esm": "tsc --outDir build/esm --module esnext --target esnext",
+    "build": "rm -rf build && pnpm run build:cjs && pnpm run build:esm"
   },
   "keywords": [],
   "author": "",
