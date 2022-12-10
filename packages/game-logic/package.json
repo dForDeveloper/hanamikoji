@@ -1,17 +1,16 @@
 {
   "name": "game-logic",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "build/cjs/index.js",
-  "typings": "build/cjs/index.d.ts",
+  "types": "build/cjs/index.d.ts",
   "module": "build/esm/index.js",
   "scripts": {
     "build:cjs": "tsc -b",
     "build:esm": "tsc --outDir build/esm --module esnext --target esnext",
     "build": "rm -rf build && pnpm run build:cjs && pnpm run build:esm"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "typescript": "^4.9.3"

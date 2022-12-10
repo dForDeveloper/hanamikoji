@@ -1,7 +1,7 @@
 {
   "name": "client",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -11,6 +11,7 @@
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write ."
   },
+  "license": "ISC",
   "devDependencies": {
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
@@ -28,9 +29,10 @@
     "typescript": "^4.9.3",
     "vite": "^4.0.0"
   },
-  "type": "module",
   "dependencies": {
     "boardgame.io": "^0.50.2",
-    "game-logic": "workspace:*"
-  }
+    "game-logic": "workspace:*",
+    "nanoid": "^4.0.0"
+  },
+  "type": "module"
 }

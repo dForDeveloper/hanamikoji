@@ -1,5 +1,6 @@
 {
   "name": "hanamikoji",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,10 +8,9 @@
     "client": "pnpm --filter client run dev",
     "server": "pnpm --filter server run dev",
     "dev": "conc -k -n \"server,client\" -c \"magenta,cyan\" \"pnpm run server\" \"pnpm run client\"",
+    "build:game": "pnpm --filter game-logic run build",
     "build": "pnpm --stream -r run build"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^7.6.0"
