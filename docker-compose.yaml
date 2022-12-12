@@ -1,0 +1,10 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:15.1-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PW}
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
