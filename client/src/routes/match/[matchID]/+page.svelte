@@ -28,8 +28,9 @@
 
     const playerNames = data.match.players.filter(matchPlayer => matchPlayer.name).map(matchPlayer => matchPlayer.name);
 
-    const hasAlreadyJoined = playerNames.includes(player.name);
-    const isMatchFull = playerNames.length === 2;
+    // TODO: handle case where joining player has the same name in local storage as the existing player
+    const hasAlreadyJoined: boolean = playerNames.includes(player.name);
+    const isMatchFull: boolean = playerNames.length === 2;
     let playerID: string = '';
 
     if (!hasAlreadyJoined) {
@@ -92,9 +93,8 @@
   }
 
   function getIsButtonDisabled(playerName): boolean {
-    console.log('invoked', playerName, !playerName);
     if (!playerName) return true;
-    const foundPlayerName = data.match.players.find(matchPlayer => matchPlayer.name === playerName);
+    const foundPlayerName: string | undefined = data.match.players.find(matchPlayer => matchPlayer.name === playerName);
     return foundPlayerName !== undefined;
   }
 </script>
