@@ -4,10 +4,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=18.12.1"
+  },
   "scripts": {
     "client": "pnpm --filter client run dev",
     "server": "pnpm --filter server run dev",
     "dev": "conc -k -n \"server,client\" -c \"magenta,cyan\" \"pnpm run server\" \"pnpm run client\"",
+    "build:client": "pnpm --filter client run build",
+    "build:server": "pnpm --filter server run build",
     "build:game": "pnpm --filter game-logic run build",
     "build": "pnpm --stream -r run build"
   },
