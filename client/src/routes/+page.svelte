@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import { lobby } from '$lib/stores.ts';
-  import { getPlayerData, setPlayerData } from "$lib/utils";
+  import { getPlayerData, setPlayerData } from '$lib/utils';
   import type { Player } from '$lib/types';
 
   let player: Player = { name: '', credentials: '' };
@@ -10,7 +10,6 @@
   onMount((): void => {
     player = getPlayerData();
   });
-
 
   async function goToNewMatch(): Promise<void> {
     console.log('player in goToNewMatch', player);
@@ -30,6 +29,6 @@
 </script>
 
 <div>
-  <input type="text" placeholder="Choose a nickname" bind:value={player.name}/>
+  <input type="text" placeholder="Choose a nickname" bind:value={player.name} />
   <button on:click={goToNewMatch} disabled={!player.name}>New Match</button>
 </div>

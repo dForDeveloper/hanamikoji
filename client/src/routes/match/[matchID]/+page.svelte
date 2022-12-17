@@ -26,7 +26,9 @@
       return !success;
     }
 
-    const playerNames = data.match.players.filter(matchPlayer => matchPlayer.name).map(matchPlayer => matchPlayer.name);
+    const playerNames = data.match.players
+      .filter((matchPlayer) => matchPlayer.name)
+      .map((matchPlayer) => matchPlayer.name);
 
     // TODO: handle case where joining player has the same name in local storage as the existing player
     const hasAlreadyJoined: boolean = playerNames.includes(player.name);
@@ -66,7 +68,7 @@
   }
 
   function getPlayerIdOfExistingPlayer(): string {
-    const matchPlayer = data.match.players.find(matchPlayer => matchPlayer.name === player.name);
+    const matchPlayer = data.match.players.find((matchPlayer) => matchPlayer.name === player.name);
     if (matchPlayer) {
       return matchPlayer.id.toString();
     } else {
@@ -76,11 +78,10 @@
 
   async function joinMatch(playerID): Promise<void> {
     try {
-      const res: { playerCredentials: string } = await $lobby.joinMatch(
-        'hanamikoji',
-        data.matchID,
-        { playerName: player.name, playerID }
-      );
+      const res: { playerCredentials: string } = await $lobby.joinMatch('hanamikoji', data.matchID, {
+        playerName: player.name,
+        playerID,
+      });
       player = setPlayerData({ name: player.name, credentials: res.playerCredentials });
       invalidateAll();
     } catch (error) {
@@ -94,7 +95,9 @@
 
   function getIsButtonDisabled(playerName): boolean {
     if (!playerName) return true;
-    const foundPlayerName: string | undefined = data.match.players.find(matchPlayer => matchPlayer.name === playerName);
+    const foundPlayerName: string | undefined = data.match.players.find((matchPlayer) => {
+      return matchPlayer.name === playerName;
+    });
     return foundPlayerName !== undefined;
   }
 </script>
@@ -103,12 +106,12 @@
   {#await startClientPromise}
     <p>joining match...</p>
   {:then success}
-    {#if (success)}
+    {#if success}
       <p>match id: {client.matchID}</p>
       <p>player id: {client.playerID}</p>
       <p>player credentials: {client.credentials}</p>
     {:else}
-      <input type="text" placeholder="Choose a nickname" bind:value={player.name}/>
+      <input type="text" placeholder="Choose a nickname" bind:value={player.name} />
       <button on:click={handleClick} disabled={getIsButtonDisabled(player.name)}>Join Match</button>
     {/if}
   {/await}
