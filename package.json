@@ -1,35 +1,25 @@
 {
   "name": "hanamikoji",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18.12.1"
+  },
   "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier --plugin-search-dir . --check . && eslint .",
-    "format": "prettier --plugin-search-dir . --write ."
+    "dev": "conc -k -n \"server,client\" -c \"magenta,cyan\" \"pnpm run server\" \"pnpm run client\"",
+    "client": "pnpm --filter client run dev",
+    "server": "pnpm --filter server run dev",
+    "build": "pnpm --stream -r run build",
+    "build:client": "pnpm --filter client run build",
+    "build:server": "pnpm --filter server run build",
+    "build:game": "pnpm --filter game-logic run build",
+    "lint": "pnpm --stream -r run lint",
+    "format": "pnpm --stream -r run format"
   },
+  "license": "ISC",
   "devDependencies": {
-    "@sveltejs/adapter-auto": "next",
-    "@sveltejs/kit": "next",
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "@typescript-eslint/parser": "^5.45.0",
-    "eslint": "^8.28.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-svelte3": "^4.0.0",
-    "prettier": "^2.8.0",
-    "prettier-plugin-svelte": "^2.8.1",
-    "svelte": "^3.53.1",
-    "svelte-check": "^2.9.2",
-    "svelte-preprocess": "^4.10.7",
-    "tslib": "^2.4.1",
-    "typescript": "^4.9.3",
-    "vite": "^3.2.4"
-  },
-  "type": "module",
-  "dependencies": {
-    "boardgame.io": "^0.50.2"
+    "concurrently": "^7.6.0"
   }
 }

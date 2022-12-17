@@ -1,7 +1,8 @@
-import type { Game } from 'boardgame.io';
 import { INVALID_MOVE, Stage } from 'boardgame.io/core';
+import type { Game } from 'boardgame.io';
 
 export const Hanamikoji: Game<GameState> = {
+  name: 'hanamikoji',
   setup: ({ random }) => {
     const { deck, unusedItemCard, player0Hand, player1Hand } = getDeckAndHands(random);
     return {
