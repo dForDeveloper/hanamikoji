@@ -9,10 +9,17 @@
   "scripts": {
     "build:cjs": "tsc -b",
     "build:esm": "tsc --outDir build/esm --module esnext --target esnext",
-    "build": "rm -rf build && pnpm run build:cjs && pnpm run build:esm"
+    "build": "rm -rf build && pnpm run build:cjs && pnpm run build:esm",
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write ."
   },
   "license": "ISC",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.8.0",
     "typescript": "^4.9.3"
   },
   "dependencies": {

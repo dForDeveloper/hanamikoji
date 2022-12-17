@@ -49,20 +49,35 @@ importers:
 
   packages/game-logic:
     specifiers:
+      '@typescript-eslint/eslint-plugin': ^5.45.0
+      '@typescript-eslint/parser': ^5.45.0
       boardgame.io: ^0.50.2
+      eslint: ^8.28.0
+      eslint-config-prettier: ^8.5.0
+      prettier: ^2.8.0
       typescript: ^4.9.3
     dependencies:
       boardgame.io: 0.50.2
     devDependencies:
+      '@typescript-eslint/eslint-plugin': 5.46.0_5mle7isnkfgjmrghnnczirv6iy
+      '@typescript-eslint/parser': 5.46.0_ha6vam6werchizxrnqvarmz2zu
+      eslint: 8.29.0
+      eslint-config-prettier: 8.5.0_eslint@8.29.0
+      prettier: 2.8.1
       typescript: 4.9.4
 
   server:
     specifiers:
       '@types/node': ^18.11.12
+      '@typescript-eslint/eslint-plugin': ^5.45.0
+      '@typescript-eslint/parser': ^5.45.0
       bgio-postgres: ^1.0.15
       boardgame.io: ^0.50.2
+      eslint: ^8.28.0
+      eslint-config-prettier: ^8.5.0
       game-logic: workspace:*
       nodemon: ^2.0.20
+      prettier: ^2.8.0
       ts-node: ^10.9.1
       typescript: ^4.9.3
     dependencies:
@@ -71,7 +86,12 @@ importers:
       game-logic: link:../packages/game-logic
     devDependencies:
       '@types/node': 18.11.12
+      '@typescript-eslint/eslint-plugin': 5.46.0_5mle7isnkfgjmrghnnczirv6iy
+      '@typescript-eslint/parser': 5.46.0_ha6vam6werchizxrnqvarmz2zu
+      eslint: 8.29.0
+      eslint-config-prettier: 8.5.0_eslint@8.29.0
       nodemon: 2.0.20
+      prettier: 2.8.1
       ts-node: 10.9.1_r65g46xrm45gbuklnvp6xevc2y
       typescript: 4.9.4
 
