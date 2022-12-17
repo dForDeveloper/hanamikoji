@@ -1,17 +1,25 @@
-Install [pnpm](https://pnpm.io/installation)
+## Development Set Up
 
-Use node 18
+### Install pnpm
+https://pnpm.io/installation
 
+### Use node 18
 `pnpm env use --global 18`
 
-Install dependencies
-
+### Install dependencies
 `pnpm i`
 
-Run the Postgres database
+If you get an error like "Expected Version" is 18 but "Got" some older version, run `pnpm add -g pnpm` and try `pnpm i` again.
 
-`docker compose --env-file .env.dev up -d`
+### Create .env.local file
+`cat .env.example > .env.local`
 
-Run the app
+Add your own values for Postgres username and password to .env.local
+
+### Run the Postgres database
+
+`docker compose --env-file .env.local up -d`
+
+### Run the app
 
 `pnpm run dev`
