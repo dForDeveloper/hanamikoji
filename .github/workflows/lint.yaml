@@ -31,9 +31,4 @@ jobs:
         run: pnpm i
 
       - name: Run linters
-        uses: wearerequired/lint-action@v2
-        with:
-          eslint: true
-          eslint_args: "--config .eslintrc.cjs"
-          eslint_extensions: ts,tsx
-          prettier: true
+        run: pnpm run lint
