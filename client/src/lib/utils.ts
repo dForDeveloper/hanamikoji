@@ -7,9 +7,9 @@ export const getPlayerData = (): Player => {
     return JSON.parse(item);
   }
   return { name: '', credentials: '' };
-}
+};
 
 export const setPlayerData = (player: Player): Player => {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(player));
   return player;
-}
+};
