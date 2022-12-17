@@ -1,4 +1,5 @@
 import type { Player } from '$lib/types';
+
 const LOCAL_STORAGE_KEY = 'hanamikojiPlayerData';
 
 export const getPlayerData = (): Player => {

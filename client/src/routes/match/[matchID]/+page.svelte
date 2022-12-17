@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Client } from 'boardgame.io/client';
-  import { SocketIO } from 'boardgame.io/multiplayer';
-  import { Hanamikoji } from 'game-logic';
-  import { invalidateAll } from '$app/navigation';
   import { getPlayerData, setPlayerData } from '$lib/utils';
-  import type { Player } from '$lib/types';
+  import { Client } from 'boardgame.io/client';
+  import { Hanamikoji } from 'game-logic';
+  import { SocketIO } from 'boardgame.io/multiplayer';
+  import { invalidateAll } from '$app/navigation';
   import { lobby } from '$lib/stores';
   import type { LobbyAPI } from 'boardgame.io';
+  import type { Player } from '$lib/types';
 
   export let data: { matchID: string; match: LobbyAPI.Match };
   let player: Player = { name: '', credentials: '' };

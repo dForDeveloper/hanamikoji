@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { getPlayerData, setPlayerData } from '$lib/utils';
   import { goto } from '$app/navigation';
   import { lobby } from '$lib/stores.ts';
-  import { getPlayerData, setPlayerData } from '$lib/utils';
+  import { onMount } from 'svelte';
   import type { Player } from '$lib/types';
 
   let player: Player = { name: '', credentials: '' };
