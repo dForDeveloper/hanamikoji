@@ -33,7 +33,7 @@
     // TODO: handle case where joining player has the same name in local storage as the existing player
     const hasAlreadyJoined: boolean = playerNames.includes(player.name);
     const isMatchFull: boolean = playerNames.length === 2;
-    let playerID: string = '';
+    let playerID = '';
 
     if (!hasAlreadyJoined) {
       if (!isMatchFull) {
