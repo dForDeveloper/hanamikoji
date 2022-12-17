@@ -1,6 +1,6 @@
 import { Server, Origins } from 'boardgame.io/server';
-import { PostgresStore } from 'bgio-postgres';
 import { Hanamikoji } from 'game-logic';
+import { PostgresStore } from 'bgio-postgres';
 
 const db = new PostgresStore('postgresql://root:password@localhost:5432/postgres');
 
