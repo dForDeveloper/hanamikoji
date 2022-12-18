@@ -2,8 +2,7 @@
 node_modules
 build
 .svelte-kit
-/package
-.env
+!.svelte-kit/tsconfig.json
 .env.*
 !.env.example
 vite.config.js.timestamp-*
