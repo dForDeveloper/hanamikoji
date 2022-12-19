@@ -12,14 +12,14 @@ https://pnpm.io/installation
 If you get an error like "Expected Version" is 18 but "Got" some older version, run `pnpm add -g pnpm` and try `pnpm i` again.
 
 ### Create .env.local files
-`cat .env.example > .env.local`
 `cat client/.env.example > client/.env.local`
+`cat server/.env.example > server/.env.local`
 
-Add your own values for Postgres username and password to .env.local
+Change the values in .env.local if you want
 
 ### Run the Postgres database
 
-`docker compose --env-file .env.local up -d`
+`docker compose -f compose.dev.yaml --env-file server/.env.local up -d`
 
 ### Run the app
 

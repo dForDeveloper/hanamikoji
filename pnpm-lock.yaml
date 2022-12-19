@@ -73,6 +73,7 @@ importers:
       '@typescript-eslint/parser': ^5.45.0
       bgio-postgres: ^1.0.15
       boardgame.io: ^0.50.2
+      dotenv: ^16.0.3
       eslint: ^8.28.0
       eslint-config-prettier: ^8.5.0
       game-logic: workspace:*
@@ -83,6 +84,7 @@ importers:
     dependencies:
       bgio-postgres: 1.0.15_boardgame.io@0.50.2
       boardgame.io: 0.50.2
+      dotenv: 16.0.3
       game-logic: link:../packages/game-logic
     devDependencies:
       '@types/node': 18.11.12

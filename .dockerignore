@@ -12,7 +12,7 @@
 
 .gitignore
 .gitattributes
-compose.yaml
+compose.dev.yaml
 readme.md
 
 server/nodemon.json
