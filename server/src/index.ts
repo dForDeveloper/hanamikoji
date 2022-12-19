@@ -19,7 +19,9 @@ const db = new PostgresStore(`postgresql://${USER}:${PW}@${HOST}:${PORT}/${DB}`)
 
 const server = Server({
   games: [Hanamikoji],
-  origins: [Origins.LOCALHOST_IN_DEVELOPMENT],
+  // origins: [Origins.LOCALHOST_IN_DEVELOPMENT],
+  // TODO: change origins to [Origins.LOCALHOST_IN_DEVELOPMENT, 'production front end url']
+  origins: [Origins.LOCALHOST],
   db,
 });
 
