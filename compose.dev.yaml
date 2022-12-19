@@ -1,6 +1,6 @@
 services:
-  hanamikoji_postgres:
-    container_name: hanamikoji_postgres
+  hanamikoji_dev_db:
+    container_name: hanamikoji_dev_db
     image: postgres:15.1
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
@@ -9,12 +9,12 @@ services:
     ports:
       - ${POSTGRES_PORT}:5432
     volumes:
-      - hanamikoji_volume:/var/lib/postgresql/data
+      - dev_volume:/var/lib/postgresql/data
     networks:
-      - hanamikoji_network
+      - dev_network
     restart: always
 volumes:
-  hanamikoji_volume:
+  dev_volume:
 networks:
-  hanamikoji_network:
+  dev_network:
     driver: bridge
