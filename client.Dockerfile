@@ -19,8 +19,11 @@ RUN pnpm install
 COPY packages/game-logic/ ./packages/game-logic/
 COPY client/ ./client/
 
+# declare build arg
+ARG API_URL
+
 # set environment variables
-ENV PUBLIC_BASE_URL=0.0.0.0
+ENV PUBLIC_BASE_API_URL=${API_URL}
 
 # build
 RUN pnpm --filter game-logic run build:esm
