@@ -27,9 +27,14 @@ Change the values in .env.local if you want
 
 ## Build Docker Images for Production
 
-[//]: # API_URL will need to be the public url of the backend. it will need its own subdomain and reverse proxy config
+[//]: # (TODO: API_URL will need to be the public url of the backend. It will need its own subdomain and nginx config.)
+
 `docker build -t hanamikoji-client --build-arg "API_URL=http://localhost:8000" -f client.Dockerfile .`
+
 `docker build -t hanamikoji-server -f server.Dockerfile .`
-[//]: # (docker run -d -p 3000:3000 hanamikoji-client)
-docker run -d -p 8000:8000 --env "POSTGRES_USER=dev" --env "POSTGRES_PW=password" --env "POSTGRES_HOST=localhost" --env "POSTGRES_PORT=5432" --env "POSTGRES_DB=hanamikoji" hanamikoji-server
-docker run -p 8000:8000 --env "POSTGRES_USER=dev" --env "POSTGRES_PW=password" --env "POSTGRES_HOST=localhost" --env "POSTGRES_PORT=5432" --env "POSTGRES_DB=hanamikoji" hanamikoji-server
+
+### compose prod
+
+`docker compose -f compose.prod.yaml --env-file server/.env.prod up -d`
+
+`docker compose -f compose.prod.yaml down`
