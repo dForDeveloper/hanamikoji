@@ -9,7 +9,7 @@ WORKDIR /app
 
 # copy package.jsons, pnpm files, and tsconfigs
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY client/package.json client/tsconfig.json ./client/
+COPY client/package.json client/tsconfig.json client/.svelte-kit/tsconfig.json ./client/
 COPY packages/game-logic/package.json packages/game-logic/tsconfig.json ./packages/game-logic/
 
 # install dependencies
@@ -22,7 +22,7 @@ COPY client/ ./client/
 # declare build arg
 ARG API_URL
 
-# set environment variables
+# set environment variable
 ENV PUBLIC_BASE_API_URL=${API_URL}
 
 # build

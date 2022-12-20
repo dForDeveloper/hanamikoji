@@ -52,7 +52,7 @@ ADD --chown=node:node https://github.com/krallin/tini/releases/download/${TINI_V
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 
-# define env variables their default values
+# define env variables and their default values
 ENV NODE_ENV=production
 ENV POSTGRES_USER=dev
 ENV POSTGRES_PASSWORD=password
