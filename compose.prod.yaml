@@ -3,8 +3,11 @@ services:
     container_name: hanamikoji_prod_client
     image: hanamikoji-client
     ports:
-      - 80:3000
-      - 443:3000
+      - 3000:3000
+#      - 80:3000
+#      - 443:3000
+    networks:
+      - prod_network
     restart: unless-stopped
 
   hanamikoji_prod_server:
@@ -12,10 +15,13 @@ services:
     image: hanamikoji-server
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PW}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_HOST=hanamikoji_prod_db
-      - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - 8000:8000
+    networks:
+      - prod_network
     depends_on:
       - hanamikoji_prod_db
     restart: unless-stopped
@@ -25,7 +31,7 @@ services:
     image: postgres:15.1
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PW}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - ${POSTGRES_PORT}:5432
@@ -39,5 +45,5 @@ volumes:
   prod_volume:
 
 networks:
-  prod_volume:
+  prod_network:
     driver: bridge
