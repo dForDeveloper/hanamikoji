@@ -55,7 +55,7 @@ ENTRYPOINT ["/tini", "--"]
 # define env variables their default values
 ENV NODE_ENV=production
 ENV POSTGRES_USER=dev
-ENV POSTGRES_PW=password
+ENV POSTGRES_PASSWORD=password
 ENV POSTGRES_HOST=0.0.0.0
 ENV POSTGRES_PORT=5432
 ENV POSTGRES_DB=hanamikoji
