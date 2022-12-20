@@ -1,0 +1,20 @@
+services:
+  hanamikoji_dev_db:
+    container_name: hanamikoji_dev_db
+    image: postgres:15.1
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PW}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - dev_volume:/var/lib/postgresql/data
+    networks:
+      - dev_network
+    restart: always
+volumes:
+  dev_volume:
+networks:
+  dev_network:
+    driver: bridge
