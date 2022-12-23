@@ -24,6 +24,8 @@ Change the values in .env.local if you want
 
 ### Run the app
 
+Before running the app for the first time, you will need to run `pnpm run build` to build the shared package.
+
 `pnpm run dev`
 
 ## Build Docker Images for Production
