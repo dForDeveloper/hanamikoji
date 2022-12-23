@@ -26,9 +26,9 @@
       return !success;
     }
 
-    const playerNames = data.match.players
+    const playerNames: string[] = data.match.players
       .filter((matchPlayer) => matchPlayer.name)
-      .map((matchPlayer) => matchPlayer.name);
+      .map((matchPlayer) => matchPlayer.name!);
 
     // TODO: handle case where joining player has the same name in local storage as the existing player
     const hasAlreadyJoined: boolean = playerNames.includes(player.name);
@@ -63,7 +63,7 @@
     player = getPlayerData();
   }
 
-  function getPlayerIdOfNewPlayer(playerCount): string {
+  function getPlayerIdOfNewPlayer(playerCount: number): string {
     return playerCount === 0 ? '0' : '1';
   }
 
@@ -76,7 +76,7 @@
     }
   }
 
-  async function joinMatch(playerID): Promise<void> {
+  async function joinMatch(playerID: string): Promise<void> {
     try {
       const res: { playerCredentials: string } = await $lobby.joinMatch('hanamikoji', data.matchID, {
         playerName: player.name,
@@ -93,16 +93,16 @@
     startClientPromise = startClient();
   }
 
-  function getIsButtonDisabled(playerName): boolean {
+  function getIsButtonDisabled(playerName: string): boolean {
     if (!playerName) return true;
-    const foundPlayerName: string | undefined = data.match.players.find((matchPlayer) => {
+    const maybePlayer = data.match.players.find((matchPlayer) => {
       return matchPlayer.name === playerName;
     });
-    return foundPlayerName !== undefined;
+    return maybePlayer !== undefined;
   }
 </script>
 
-<div>
+<main class="grid h-screen">
   {#await startClientPromise}
     <p>joining match...</p>
   {:then success}
@@ -110,9 +110,10 @@
       <p>match id: {client.matchID}</p>
       <p>player id: {client.playerID}</p>
       <p>player credentials: {client.credentials}</p>
+
     {:else}
       <input type="text" placeholder="Choose a nickname" bind:value={player.name} />
       <button on:click={handleClick} disabled={getIsButtonDisabled(player.name)}>Join Match</button>
     {/if}
   {/await}
-</div>
+</main>
