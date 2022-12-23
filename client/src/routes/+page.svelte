@@ -28,7 +28,17 @@
   }
 </script>
 
-<div>
-  <input type="text" placeholder="Choose a nickname" bind:value={player.name} />
-  <button on:click={goToNewMatch} disabled={!player.name}>New Match</button>
-</div>
+<main class="grid place-items-center h-screen">
+  <form class="grid grid-rows-3 gap-2 w-64">
+    <label for="nickname">Choose a nickname</label>
+    <input
+      id="nickname"
+      type="text"
+      name="nickname"
+      placeholder="SpongeBob"
+      class="border-2 w-full"
+      bind:value={player.name}
+    />
+    <button class="border-2 w-full hover:cursor-pointer" on:click={goToNewMatch} disabled={!player.name}>New Match</button>
+  </form>
+</main>
