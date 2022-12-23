@@ -13,6 +13,7 @@ If you get an error like "Expected Version" is 18 but "Got" some older version, 
 
 ### Create .env.local files
 `cat client/.env.example > client/.env.local`
+
 `cat server/.env.example > server/.env.local`
 
 Change the values in .env.local if you want
