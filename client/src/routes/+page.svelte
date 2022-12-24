@@ -13,9 +13,9 @@
     player = getPlayerData();
   });
 
-  async function handleClick(event: CustomEvent): Promise<void> {
+  async function handleClick(name: string): Promise<void> {
     try {
-      setPlayerData({ name: event.detail.name, credentials: '' });
+      player = setPlayerData({ name: name, credentials: '' });
       const { matchID } = await $lobby.createMatch('hanamikoji', { numPlayers: 2 });
       goto(`match/${matchID}`);
     } catch (err) {
@@ -29,5 +29,5 @@
 </script>
 
 <main class="grid place-items-center h-screen">
-  <NameForm on:clickEvent={handleClick} getIsDisabled={getIsDisabled} name={player.name} />
+  <NameForm buttonText={'New Match'} getIsDisabled={getIsDisabled} handleClick={handleClick} name={player.name} />
 </main>

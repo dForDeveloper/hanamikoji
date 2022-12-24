@@ -1,14 +1,8 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-
-  export let name: string;
+  export let buttonText: string;
   export let getIsDisabled: (name: string) => boolean;
-
-  const dispatch = createEventDispatcher();
-
-  function handleClick() {
-    dispatch('clickEvent', { name });
-  }
+  export let handleClick: (name: string) => any;
+  export let name: string;
 </script>
 
 <form class="grid grid-rows-3 gap-2 w-64">
@@ -21,10 +15,10 @@
     bind:value={name}
   />
   <button
-    on:click={handleClick}
+    on:click={handleClick(name)}
     disabled={getIsDisabled(name)}
     class="border-2 w-full hover:cursor-pointer bg-sky-500 disabled:bg-slate-500" 
   >
-    New Match
+    {buttonText}
   </button>
 </form>

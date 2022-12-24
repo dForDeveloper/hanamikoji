@@ -85,8 +85,8 @@
     }
   }
 
-  async function handleNameFormSubmit(event: CustomEvent): Promise<void> {
-    player = { ...player, name: event.detail.name };
+  function handleNameFormSubmit(name: string): void {
+    player = { ...player, name };
     startClientPromise = startClient();
   }
 
@@ -112,7 +112,12 @@
     </main>
   {:else}
     <main class="grid place-items-center h-screen">
-      <NameForm on:clickEvent={handleNameFormSubmit} getIsDisabled={getIsNameFormDisabled} name={player.name} />
+      <NameForm
+        buttonText={'Join Match'}
+        getIsDisabled={getIsNameFormDisabled}
+        handleClick={handleNameFormSubmit}
+        name={player.name}
+      />
     </main>
   {/if}
 {/await}
