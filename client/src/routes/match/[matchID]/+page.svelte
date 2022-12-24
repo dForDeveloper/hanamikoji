@@ -2,7 +2,9 @@
   import { getPlayerData, setPlayerData } from '$lib/utils';
   import { Client } from 'boardgame.io/client';
   import { Hanamikoji } from 'game-logic';
+  import NameForm from '$lib/components/NameForm.svelte';
   import { SocketIO } from 'boardgame.io/multiplayer';
+  import { error } from '@sveltejs/kit';
   import { invalidateAll } from '$app/navigation';
   import { lobby } from '$lib/stores';
   import type { LobbyAPI } from 'boardgame.io';
@@ -14,16 +16,14 @@
   let startClientPromise: Promise<boolean> = startClient();
 
   async function startClient(): Promise<boolean> {
-    const success = true;
-
     const hasPlayerSelectedName = player.name.length > 0;
     if (!hasPlayerSelectedName) {
-      maybeGetPlayerDataFromLocalStorage();
-    }
+      player = getPlayerData();
 
-    const isPlayerDataInLocalStorage = player.name.length > 0;
-    if (!isPlayerDataInLocalStorage) {
-      return !success;
+      const isPlayerDataInLocalStorage = player.name.length > 0;
+      if (!isPlayerDataInLocalStorage) {
+        return false;
+      }
     }
 
     const playerNames: string[] = data.match.players
@@ -40,7 +40,7 @@
         playerID = getPlayerIdOfNewPlayer(playerNames.length);
         await joinMatch(playerID);
       } else {
-        throw new Error('Cannot join a full match');
+        throw error(403, { message: 'Cannot join a full match' });
       }
     } else {
       playerID = getPlayerIdOfExistingPlayer();
@@ -56,11 +56,7 @@
 
     client.start();
 
-    return success;
-  }
-
-  function maybeGetPlayerDataFromLocalStorage(): void {
-    player = getPlayerData();
+    return true;
   }
 
   function getPlayerIdOfNewPlayer(playerCount: number): string {
@@ -72,7 +68,7 @@
     if (matchPlayer) {
       return matchPlayer.id.toString();
     } else {
-      throw new Error('Player expected to be in match but was not');
+      throw error(500, { message: 'Player expected to be in match but was not' });
     }
   }
 
@@ -84,36 +80,39 @@
       });
       player = setPlayerData({ name: player.name, credentials: res.playerCredentials });
       invalidateAll();
-    } catch (error) {
-      throw new Error('Error joining match');
+    } catch (err) {
+      throw error(500, { message: 'Error joining match' });
     }
   }
 
-  function handleClick(): void {
+  async function handleNameFormSubmit(event: CustomEvent): Promise<void> {
+    player = { ...player, name: event.detail.name };
     startClientPromise = startClient();
   }
 
-  function getIsButtonDisabled(playerName: string): boolean {
-    if (!playerName) return true;
+  function getIsNameFormDisabled(name: string): boolean {
+    if (!name) return true;
     const maybePlayer = data.match.players.find((matchPlayer) => {
-      return matchPlayer.name === playerName;
+      return matchPlayer.name === name;
     });
     return maybePlayer !== undefined;
   }
 </script>
 
-<main class="grid h-screen">
-  {#await startClientPromise}
+{#await startClientPromise}
+  <main class="grid place-items-center h-screen">
     <p>joining match...</p>
-  {:then success}
-    {#if success}
+  </main>
+{:then success}
+  {#if success}
+    <main class="grid h-screen">
       <p>match id: {client.matchID}</p>
       <p>player id: {client.playerID}</p>
       <p>player credentials: {client.credentials}</p>
-
-    {:else}
-      <input type="text" placeholder="Choose a nickname" bind:value={player.name} />
-      <button on:click={handleClick} disabled={getIsButtonDisabled(player.name)}>Join Match</button>
-    {/if}
-  {/await}
-</main>
+    </main>
+  {:else}
+    <main class="grid place-items-center h-screen">
+      <NameForm on:clickEvent={handleNameFormSubmit} getIsDisabled={getIsNameFormDisabled} name={player.name} />
+    </main>
+  {/if}
+{/await}
