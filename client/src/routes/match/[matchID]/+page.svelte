@@ -2,7 +2,9 @@
   import { getPlayerData, setPlayerData } from '$lib/utils';
   import { Client } from 'boardgame.io/client';
   import { Hanamikoji } from 'game-logic';
+  import NameForm from '$lib/components/NameForm.svelte';
   import { SocketIO } from 'boardgame.io/multiplayer';
+  import { error } from '@sveltejs/kit';
   import { invalidateAll } from '$app/navigation';
   import { lobby } from '$lib/stores';
   import type { LobbyAPI } from 'boardgame.io';
@@ -10,25 +12,23 @@
 
   export let data: { matchID: string; match: LobbyAPI.Match };
   let player: Player = { name: '', credentials: '' };
-  let client: Client;
+  let client: any;
   let startClientPromise: Promise<boolean> = startClient();
 
   async function startClient(): Promise<boolean> {
-    const success = true;
-
     const hasPlayerSelectedName = player.name.length > 0;
     if (!hasPlayerSelectedName) {
-      maybeGetPlayerDataFromLocalStorage();
+      player = getPlayerData();
+
+      const isPlayerDataInLocalStorage = player.name.length > 0;
+      if (!isPlayerDataInLocalStorage) {
+        return false;
+      }
     }
 
-    const isPlayerDataInLocalStorage = player.name.length > 0;
-    if (!isPlayerDataInLocalStorage) {
-      return !success;
-    }
-
-    const playerNames = data.match.players
+    const playerNames: string[] = data.match.players
       .filter((matchPlayer) => matchPlayer.name)
-      .map((matchPlayer) => matchPlayer.name);
+      .map((matchPlayer) => matchPlayer.name!);
 
     // TODO: handle case where joining player has the same name in local storage as the existing player
     const hasAlreadyJoined: boolean = playerNames.includes(player.name);
@@ -40,7 +40,8 @@
         playerID = getPlayerIdOfNewPlayer(playerNames.length);
         await joinMatch(playerID);
       } else {
-        throw new Error('Cannot join a full match');
+        // TODO: test this case
+        throw error(403, { message: 'Cannot join a full match' });
       }
     } else {
       playerID = getPlayerIdOfExistingPlayer();
@@ -56,14 +57,10 @@
 
     client.start();
 
-    return success;
+    return true;
   }
 
-  function maybeGetPlayerDataFromLocalStorage(): void {
-    player = getPlayerData();
-  }
-
-  function getPlayerIdOfNewPlayer(playerCount): string {
+  function getPlayerIdOfNewPlayer(playerCount: number): string {
     return playerCount === 0 ? '0' : '1';
   }
 
@@ -72,11 +69,11 @@
     if (matchPlayer) {
       return matchPlayer.id.toString();
     } else {
-      throw new Error('Player expected to be in match but was not');
+      throw new Error('Error finding player');
     }
   }
 
-  async function joinMatch(playerID): Promise<void> {
+  async function joinMatch(playerID: string): Promise<void> {
     try {
       const res: { playerCredentials: string } = await $lobby.joinMatch('hanamikoji', data.matchID, {
         playerName: player.name,
@@ -89,30 +86,40 @@
     }
   }
 
-  function handleClick(): void {
+  function handleNameFormSubmit(name: string): void {
+    player = { ...player, name };
     startClientPromise = startClient();
   }
 
-  function getIsButtonDisabled(playerName): boolean {
-    if (!playerName) return true;
-    const foundPlayerName: string | undefined = data.match.players.find((matchPlayer) => {
-      return matchPlayer.name === playerName;
+  function getIsNameFormDisabled(name: string): boolean {
+    if (!name) return true;
+    const maybePlayer = data.match.players.find((matchPlayer) => {
+      return matchPlayer.name === name;
     });
-    return foundPlayerName !== undefined;
+    return maybePlayer !== undefined;
   }
 </script>
 
-<div>
-  {#await startClientPromise}
+{#await startClientPromise}
+  <main class="grid place-items-center h-screen">
     <p>joining match...</p>
-  {:then success}
-    {#if success}
+  </main>
+{:then success}
+  {#if success}
+    <div>
       <p>match id: {client.matchID}</p>
       <p>player id: {client.playerID}</p>
       <p>player credentials: {client.credentials}</p>
-    {:else}
-      <input type="text" placeholder="Choose a nickname" bind:value={player.name} />
-      <button on:click={handleClick} disabled={getIsButtonDisabled(player.name)}>Join Match</button>
-    {/if}
-  {/await}
-</div>
+      <!-- <Board client={client} /> -->
+    </div>
+  {:else}
+    <main class="grid place-items-center h-screen">
+      <NameForm
+        buttonText={'Join Match'}
+        getIsDisabled={getIsNameFormDisabled}
+        handleClick={handleNameFormSubmit}
+        name={player.name}
+      />
+    </main>
+  {/if}
+{/await}

@@ -13,6 +13,7 @@ If you get an error like "Expected Version" is 18 but "Got" some older version, 
 
 ### Create .env.local files
 `cat client/.env.example > client/.env.local`
+
 `cat server/.env.example > server/.env.local`
 
 Change the values in .env.local if you want
@@ -22,6 +23,8 @@ Change the values in .env.local if you want
 `docker compose -f compose.dev.yaml --env-file server/.env.local up -d`
 
 ### Run the app
+
+Before running the app for the first time, you will need to run `pnpm run build` to build the shared package.
 
 `pnpm run dev`
 

@@ -8,13 +8,48 @@ export const Hanamikoji: Game<GameState> = {
     return {
       secret: { deck, unusedItemCard },
       geisha: {
-        [Color.PINK]: { charmPoints: 5, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
-        [Color.GREEN]: { charmPoints: 4, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
-        [Color.ORANGE]: { charmPoints: 3, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
-        [Color.BLUE]: { charmPoints: 3, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
-        [Color.YELLOW]: { charmPoints: 2, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
-        [Color.RED]: { charmPoints: 2, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
-        [Color.PURPLE]: { charmPoints: 2, favoredPlayerID: null, playerItemCards: { 0: [], 1: [] } },
+        [Color.PINK]: {
+          color: Color.PINK,
+          charmPoints: 5,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.GREEN]: {
+          color: Color.GREEN,
+          charmPoints: 4,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.ORANGE]: {
+          color: Color.ORANGE,
+          charmPoints: 3,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.BLUE]: {
+          color: Color.BLUE,
+          charmPoints: 3,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.YELLOW]: {
+          color: Color.YELLOW,
+          charmPoints: 2,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.RED]: {
+          color: Color.RED,
+          charmPoints: 2,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.PURPLE]: {
+          color: Color.PURPLE,
+          charmPoints: 2,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
       },
       players: {
         0: {
@@ -363,7 +398,7 @@ function setGameStateForNextRound({ G, random }: { G: GameState; random: Random 
   G.presentedPairs = [];
 }
 
-enum Color {
+export enum Color {
   PINK = 'pink',
   GREEN = 'green',
   ORANGE = 'orange',
@@ -373,35 +408,36 @@ enum Color {
   PURPLE = 'purple',
 }
 
-interface GeishaCard {
+export interface GeishaCard {
+  color: Color;
   charmPoints: number;
   favoredPlayerID: number | null;
   playerItemCards: Record<string, ItemCard[]>;
 }
 
-interface ItemCard {
+export interface ItemCard {
   charmPoints: number;
   color: Color;
 }
 
-interface Secret {
+export interface Secret {
   deck: ItemCard[];
   unusedItemCard: ItemCard;
 }
 
-interface Action {
+export interface Action {
   enabled: boolean;
   savedCard?: ItemCard | null;
   discardedCards?: ItemCard[];
 }
 
-interface Player {
+export interface Player {
   hand: ItemCard[];
   actions: Record<string, Action>;
   score: { geishaCount: number; charmPoints: number };
 }
 
-interface GameState {
+export interface GameState {
   secret: Secret;
   geisha: Record<Color, GeishaCard>;
   players: Record<string, Player>;
