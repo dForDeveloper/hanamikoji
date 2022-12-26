@@ -39,9 +39,9 @@
 
 // TODO: remove after UI implementation is complete
 {#if test}
-  <Board client={client} />
+  <Board {client} />
 {:else}
   <main class="grid place-items-center h-screen">
-    <NameForm buttonText={'New Match'} getIsDisabled={getIsDisabled} handleClick={handleClick} name={player.name} />
+    <NameForm buttonText={'New Match'} {getIsDisabled} {handleClick} name={player.name} />
   </main>
 {/if}

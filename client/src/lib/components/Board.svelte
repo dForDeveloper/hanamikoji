@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
+  import { onDestroy } from 'svelte';
   import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
-  import type { Ctx } from "boardgame.io";
+  import type { Ctx } from 'boardgame.io';
 
   export let client: any;
   const playerID: string = client.playerID;
@@ -17,7 +17,7 @@
       console.log('ctx', ctx);
       console.log('client', client);
     } else {
-      throw new Error('Error syncing game state')
+      throw new Error('Error syncing game state');
     }
   });
 
