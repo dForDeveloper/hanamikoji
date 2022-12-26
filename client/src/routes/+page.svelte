@@ -1,7 +1,6 @@
 <script lang="ts">
   import { getPlayerData, setPlayerData } from '$lib/utils';
   import NameForm from '$lib/components/NameForm.svelte';
-  import { error } from '@sveltejs/kit';
   import { goto } from '$app/navigation';
   import { lobby } from '$lib/stores';
   import { onMount } from 'svelte';
@@ -18,8 +17,8 @@
       player = setPlayerData({ name: name, credentials: '' });
       const { matchID } = await $lobby.createMatch('hanamikoji', { numPlayers: 2 });
       goto(`match/${matchID}`);
-    } catch (err) {
-      throw error(500, { message: 'Error creating match' });
+    } catch (error) {
+      throw new Error('Error creating match');
     }
   }
 
