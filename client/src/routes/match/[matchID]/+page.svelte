@@ -12,7 +12,7 @@
 
   export let data: { matchID: string; match: LobbyAPI.Match };
   let player: Player = { name: '', credentials: '' };
-  let client: Client;
+  let client: any; // no type for this from boardgame.io
   let startClientPromise: Promise<boolean> = startClient();
 
   async function startClient(): Promise<boolean> {
@@ -40,6 +40,7 @@
         playerID = getPlayerIdOfNewPlayer(playerNames.length);
         await joinMatch(playerID);
       } else {
+        // TODO: test this case
         throw error(403, { message: 'Cannot join a full match' });
       }
     } else {
@@ -68,7 +69,7 @@
     if (matchPlayer) {
       return matchPlayer.id.toString();
     } else {
-      throw error(500, { message: 'Player expected to be in match but was not' });
+      throw new Error('Error finding player');
     }
   }
 
@@ -80,8 +81,8 @@
       });
       player = setPlayerData({ name: player.name, credentials: res.playerCredentials });
       invalidateAll();
-    } catch (err) {
-      throw error(500, { message: 'Error joining match' });
+    } catch (error) {
+      throw new Error('Error joining match');
     }
   }
 
@@ -105,11 +106,12 @@
   </main>
 {:then success}
   {#if success}
-    <main class="grid h-screen">
+    <div>
       <p>match id: {client.matchID}</p>
       <p>player id: {client.playerID}</p>
       <p>player credentials: {client.credentials}</p>
-    </main>
+      <!-- <Board client={client} /> -->
+    </div>
   {:else}
     <main class="grid place-items-center h-screen">
       <NameForm
