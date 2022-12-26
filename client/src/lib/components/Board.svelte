@@ -9,13 +9,10 @@
   let G: GameState;
   let ctx: Ctx;
 
-  const unsubscribe = client.subscribe((gameState: any) => {
+  const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
     if (gameState.G && gameState.ctx) {
       G = gameState.G;
       ctx = gameState.ctx;
-      console.log('G', G);
-      console.log('ctx', ctx);
-      console.log('client', client);
     } else {
       throw new Error('Error syncing game state');
     }

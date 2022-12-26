@@ -37,7 +37,7 @@
   }
 </script>
 
-// TODO: remove after UI implementation is complete
+<!-- TODO: remove test condition after UI implementation is complete -->
 {#if test}
   <Board {client} />
 {:else}

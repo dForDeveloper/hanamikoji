@@ -12,7 +12,7 @@
 
   export let data: { matchID: string; match: LobbyAPI.Match };
   let player: Player = { name: '', credentials: '' };
-  let client: any; // no type for this from boardgame.io
+  let client: any;
   let startClientPromise: Promise<boolean> = startClient();
 
   async function startClient(): Promise<boolean> {
