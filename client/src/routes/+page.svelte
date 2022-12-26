@@ -6,6 +6,16 @@
   import { onMount } from 'svelte';
   import type { Player } from '$lib/types';
 
+  // const test = false;
+  const test = true;
+  // test client
+  import { Client } from 'boardgame.io/client';
+  import { Hanamikoji } from 'game-logic';
+  import Board from '$lib/components/Board.svelte';
+  const client = Client({ game: Hanamikoji, playerID: '0' });
+  client.start();
+  // end test client
+
   let player: Player = { name: '', credentials: '' };
 
   onMount((): void => {
@@ -27,6 +37,11 @@
   }
 </script>
 
-<main class="grid place-items-center h-screen">
-  <NameForm buttonText={'New Match'} getIsDisabled={getIsDisabled} handleClick={handleClick} name={player.name} />
-</main>
+// TODO: remove after UI implementation is complete
+{#if test}
+  <Board client={client} />
+{:else}
+  <main class="grid place-items-center h-screen">
+    <NameForm buttonText={'New Match'} getIsDisabled={getIsDisabled} handleClick={handleClick} name={player.name} />
+  </main>
+{/if}
