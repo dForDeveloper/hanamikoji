@@ -25,10 +25,10 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 7.17.1
+          version: 7.18.2
 
       - name: Install Node.js dependencies
         run: pnpm i
 
-      - name: Run linters
+      - name: Run linter
         run: pnpm run lint
