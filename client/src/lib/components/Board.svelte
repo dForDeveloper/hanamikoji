@@ -8,16 +8,17 @@
   const opponentPlayerID = playerID === '0' ? '1' : '0';
   let G: GameState;
   let ctx: Ctx;
-  let callToAction = '';
+  let instruction = '';
   let availableMove = '';
+  let currentAction: string | null = null;
 
   const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
     if (gameState.G && gameState.ctx) {
       G = gameState.G;
       ctx = gameState.ctx;
-      callToAction = getCallToAction();
+      currentAction = G.currentAction;
+      instruction = getInstruction();
       availableMove = getAvailableMove();
-      console.log({ G, ctx, client });
     } else {
       throw new Error('Error syncing game state');
     }
@@ -42,7 +43,7 @@
     return Object.values(G.geisha);
   }
 
-  function getCallToAction(): string {
+  function getInstruction(): string {
     const errorMessage = 'ERROR: No player has any available moves to make';
     if (ctx.activePlayers) {
       const playerStage: string | undefined = ctx.activePlayers[playerID];
@@ -73,9 +74,27 @@
           case 'selectAction':
             return 'Select an action';
           case 'selectCardsAsCurrentPlayer':
-            return 'Select cards';
+            switch (currentAction) {
+              case '0':
+                return 'Choose 1 card from your hand. This card will be placed face down. Then it will be revealed and scored at the end of the round.';
+              case '1':
+                return 'Choose 2 cards from your hand. These cards will be placed face down and will not be scored this round.';
+              case '2':
+                return 'Choose 3 cards from your hand. These cards will be presented to your opponent. Your opponent will choose 1 of the cards to score for themself. You will score the remaining 2 cards.';
+              case '3':
+                return 'Choose 4 cards from your hand, and divide them into 2 pairs. These pairs will be presented to your opponent. Your opponent will choose 1 pair to score for themself. You will score the remaining pair.';
+              default:
+                return errorMessage;
+            }
           case 'selectCardsAsOpposingPlayer':
-            return 'Select cards';
+            switch (currentAction) {
+              case '2':
+                return 'Your opponent chose to present these 3 cards. Choose 1 of these cards to score for yourself. They will score the remaining 2 cards.';
+              case '3':
+                return 'Your opponent chose to present these 2 pairs of cards. Choose 1 pair to score for yourself. They will score the remaining pair.';
+              default:
+                return errorMessage;
+            }
           case 'reveal':
             return 'reveal stage';
           case 'calculate':
@@ -121,7 +140,7 @@
       {/each}
     </section>
     <section aria-label="game-interface">
-      <p>{callToAction}</p>
+      <p>{instruction}</p>
       {#if availableMove === 'draw'}
         <button
           on:click={client.moves.draw()}
