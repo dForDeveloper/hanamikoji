@@ -103,15 +103,16 @@
 </script>
 
 {#if G && ctx}
-  <main class="grid grid-cols-[3fr_7fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2">
-    <section aria-label="opponent-actions" class="grid grid-cols-4 gap-2">
+  <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2">
+    <!-- TODO: Style the action squares so that they are not fixed sizes -->
+    <section aria-label="opponent-actions" class="flex flex-row justify-center space-x-2">
       {#each getActions(opponentPlayerID) as action, i}
-        <div class="border-2 border-black aspect-square">
+        <div class="border-2 border-black aspect-square h-24">
           {`Action ${i + 1}`}
         </div>
       {/each}
     </section>
-    <section aria-label="opponent-hand" class="grid grid-cols-7 gap-2">
+    <section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
       {#each getHand(opponentPlayerID) as card}
         <div class="border-2 border-black aspect-[8/11]">
           <p>{card.color}</p>
@@ -134,31 +135,36 @@
         {/each} -->
       {/if}
     </section>
-    <section aria-label="game-board" class="grid grid-cols-7 gap-2 items-center">
-      {#each getGeishaCards() as geishaCard}
-        <div class="border-2 border-black aspect-[2/3]">
-          <p>{geishaCard.color}</p>
-          <p>{geishaCard.charmPoints}</p>
-          <p>{geishaCard.favoredPlayerID}</p>
-          <p>Opponent Cards: {geishaCard.playerItemCards[opponentPlayerID].length}</p>
-          <p>Your Cards: {geishaCard.playerItemCards[playerID].length}</p>
-        </div>
-      {/each}
+    <section aria-label="game-board" class="grid grid-rows-[11fr_10fr_11fr] gap-1">
+      <div aria-label="opponent-played-cards">opponent played cards</div>
+      <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-2 h-full">
+        {#each getGeishaCards() as geishaCard}
+          <div class="border-2 border-black aspect-[2/3]">
+            <p>{geishaCard.color}</p>
+            <p>{geishaCard.charmPoints}</p>
+            <p>{geishaCard.favoredPlayerID}</p>
+            <p>Opponent Cards: {geishaCard.playerItemCards[opponentPlayerID].length}</p>
+            <p>Your Cards: {geishaCard.playerItemCards[playerID].length}</p>
+          </div>
+        {/each}
+      </div>
+      <div aria-label="your-played-cards">your played cards</div>
     </section>
-    <section aria-label="your-actions" class="grid grid-cols-4 gap-2 items-end">
+    <!-- TODO: Style the action squares so that they are not fixed sizes -->
+    <section aria-label="your-actions" class="flex flex-row justify-center space-x-2 items-end">
       {#each getActions(playerID) as action, i}
         <button
           on:click={client.moves.selectAction(i.toString())}
-          class="border-2 border-black aspect-square hover:cursor-pointer disabled:cursor-default"
+          class="border-2 border-black aspect-square hover:cursor-pointer disabled:cursor-default aspect-square h-24"
           disabled={!action.enabled || availableMove !== 'selectAction'}
         >
           {`Action ${i + 1}`}
         </button>
       {/each}
     </section>
-    <section aria-label="your-hand" class="grid grid-cols-7 gap-2 items-end">
+    <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
       {#each G.players[playerID].hand as card}
-        <div class="border-2 border-black aspect-[8/11]">
+        <div class="border-2 border-black aspect-[8/11] h-full">
           <p>{card.color}</p>
           <p>{card.charmPoints}</p>
         </div>
