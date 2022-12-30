@@ -14,4 +14,8 @@
   };
 </script>
 
-<img src={colorToSource[color]} alt={`${color} geisha card`} />
+<img
+  src={colorToSource[color]}
+  alt={`${color} geisha card`}
+  class="block h-[20vh] object-fill object-center rounded-xl"
+/>

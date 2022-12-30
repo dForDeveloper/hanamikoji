@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Geisha from '$lib/components/Geisha.svelte';
   import { onDestroy } from 'svelte';
   import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
@@ -158,12 +159,12 @@
       <div aria-label="opponent-played-cards">opponent played cards</div>
       <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-2 h-full">
         {#each getGeishaCards() as geishaCard}
-          <div class="border-2 border-black aspect-[2/3]">
+          <div class="aspect-[2/3]">
             <p>{geishaCard.color}</p>
             <p>{geishaCard.charmPoints}</p>
             <p>{geishaCard.favoredPlayerID}</p>
             <p>Opponent Cards: {geishaCard.playerItemCards[opponentPlayerID].length}</p>
-            <p>Your Cards: {geishaCard.playerItemCards[playerID].length}</p>
+            <Geisha color={geishaCard.color} />
           </div>
         {/each}
       </div>
