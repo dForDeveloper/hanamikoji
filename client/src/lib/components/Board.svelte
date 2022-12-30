@@ -1,6 +1,5 @@
 <script lang="ts">
-  import Item from '$lib/components/Item.svelte';
-  import Geisha from '$lib/components/Geisha.svelte';
+  import Card from '$lib/components/Card.svelte';
   import { onDestroy } from 'svelte';
   import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
@@ -135,7 +134,7 @@
     <section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
       {#each getHand(opponentPlayerID) as card}
         <div class="aspect-[8/11]">
-          <Item color={card.color} /> 
+          <Card type= 'item' color={card.color} /> 
         </div>
       {/each}
     </section>
@@ -161,7 +160,7 @@
             <p>{geishaCard.charmPoints}</p>
             <p>{geishaCard.favoredPlayerID}</p>
             <p>Opponent Cards: {geishaCard.playerItemCards[opponentPlayerID].length}</p>
-            <Geisha color={geishaCard.color} />
+            <Card type='geisha' color={geishaCard.color} />
           </div>
         {/each}
       </div>
@@ -184,7 +183,7 @@
           on:click={() => addCardToSelectedCards({ ...card, index })}
           class="aspect-[8/11] h-full"
         >
-          <Item color={card.color} /> 
+          <Card type= 'item' color={card.color} /> 
         </button>
       {/each}
     </section>
