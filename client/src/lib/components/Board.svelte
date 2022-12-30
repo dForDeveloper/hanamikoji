@@ -4,6 +4,8 @@
   import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
 
+  type SelectedCards = Record<string, Array<ItemCard & { index: number }>>;
+
   export let client: any;
   const playerID: string = client.playerID;
   const opponentPlayerID = playerID === '0' ? '1' : '0';
@@ -12,6 +14,12 @@
   let instruction = '';
   let availableMove = '';
   let currentAction: string | null = null;
+  let selectedCards: SelectedCards = {
+    action1: [],
+    action2: [],
+    action3: [],
+    action4: [],
+  };
 
   const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
     if (gameState.G && gameState.ctx) {
@@ -77,7 +85,7 @@
           case 'selectCardsAsCurrentPlayer':
             switch (currentAction) {
               case '0':
-                return 'Choose 1 card from your hand. This card will be placed face down. Then it will be revealed and scored at the end of the round.';
+                return 'Choose 1 card from your hand. This card will be placed face down, and then it will be revealed and scored at the end of the round.';
               case '1':
                 return 'Choose 2 cards from your hand. These cards will be placed face down and will not be scored this round.';
               case '2':
@@ -120,6 +128,43 @@
       return '';
     }
   }
+
+  function addCardToSelectedCards(itemCardWithIndex: ItemCard & { index: number }): void {
+    if (availableMove === 'selectCardsAsCurrentPlayer') {
+      if (currentAction === '0') {
+        selectedCards = { ...selectedCards, action1: [itemCardWithIndex] };
+      } else if (currentAction === '1') {
+        const action2 = selectedCards.action2;
+        selectedCards = { ...selectedCards, action2: [...action2, itemCardWithIndex] };
+      } else if (currentAction === '2') {
+        const action3 = selectedCards.action3;
+        selectedCards = { ...selectedCards, action3: [...action3, itemCardWithIndex] };
+      } else if (currentAction === '3') {
+        const action4 = selectedCards.action4;
+        selectedCards = { ...selectedCards, action4: [...action4, itemCardWithIndex] };
+      }
+    }
+  }
+
+  function removeCardFromSelectedCards(index: number): void {
+    if (availableMove === 'selectCardsAsCurrentPlayer') {
+      const currentActionPlus1 = Number(currentAction) + 1;
+      const key = `action${currentActionPlus1}`;
+      const updatedSelectedCardsActionValue = selectedCards[key].filter((itemCard) => itemCard.index !== index);
+      selectedCards = { ...selectedCards, [key]: updatedSelectedCardsActionValue };
+    }
+  }
+
+  function getIsSelected(selectedCards: SelectedCards, index: number): boolean {
+    if (availableMove === 'selectCardsAsCurrentPlayer' && currentAction) {
+      const currentActionPlus1 = Number(currentAction) + 1;
+      const key = `action${currentActionPlus1}`;
+      const maybeSelectedCard = selectedCards[key].find((itemCard) => itemCard.index === index);
+      return maybeSelectedCard !== undefined;
+    } else {
+      return false;
+    }
+  }
 </script>
 
 {#if G && ctx}
@@ -134,7 +179,7 @@
     <section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
       {#each getHand(opponentPlayerID) as card}
         <div class="aspect-[8/11]">
-          <Card type= 'item' color={card.color} /> 
+          <Card type="back" color={card.color} isSelected={false} />
         </div>
       {/each}
     </section>
@@ -150,21 +195,32 @@
 
         {/each} -->
       {/if}
+      </div>
+      <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
+        {#if availableMove === 'selectCardsAsCurrentPlayer'}
+          {#if currentAction === '0'}
+            {#if selectedCards.action1.at(0)}
+              <div class="aspect-[8/11] h-full">
+                <Card type="item" color={selectedCards.action1.at(0).color} isSelected={false} />
+              </div>
+            {:else}
+              <div class="aspect-[8/11] h-full border-2 border-black border-dashed rounded-xl" />
+            {/if}
+          {/if}
+        {/if}
+      </div>
+      <div aria-label="confirmation-button-area">confirmation button goes here</div>
     </section>
     <section aria-label="game-board" class="grid grid-rows-[11fr_10fr_11fr]">
-      <div aria-label="opponent-played-cards"></div>
+      <div aria-label="opponent-played-cards" />
       <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-2 h-full">
         {#each getGeishaCards() as geishaCard}
           <div class="aspect-[2/3]">
-            <p>{geishaCard.color}</p>
-            <p>{geishaCard.charmPoints}</p>
-            <p>{geishaCard.favoredPlayerID}</p>
-            <p>Opponent Cards: {geishaCard.playerItemCards[opponentPlayerID].length}</p>
-            <Card type='geisha' color={geishaCard.color} />
+            <Card type="geisha" color={geishaCard.color} isSelected={false} />
           </div>
         {/each}
       </div>
-      <div aria-label="your-played-cards"></div>
+      <div aria-label="your-played-cards" />
     </section>
     <section aria-label="your-actions" class="flex flex-row justify-evenly space-x-2 items-end">
       {#each getActions(playerID) as action, i}
@@ -179,12 +235,21 @@
     </section>
     <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
       {#each G.players[playerID].hand as card, index}
-        <button
-          on:click={() => addCardToSelectedCards({ ...card, index })}
-          class="aspect-[8/11] h-full"
-        >
-          <Card type= 'item' color={card.color} /> 
+        {#if availableMove === 'selectCardsAsCurrentPlayer'}
+          {#if getIsSelected(selectedCards, index)}
+            <button on:click={() => removeCardFromSelectedCards(index)} class="aspect-[8/11] h-full">
+              <Card type="item" color={card.color} isSelected={true} />
         </button>
+          {:else}
+            <button on:click={() => addCardToSelectedCards({ ...card, index })} class="aspect-[8/11] h-full">
+              <Card type="item" color={card.color} isSelected={false} />
+            </button>
+          {/if}
+        {:else}
+          <div class="aspect-[8/11] h-full">
+            <Card type="item" color={card.color} isSelected={false} />
+          </div>
+        {/if}
       {/each}
     </section>
   </main>

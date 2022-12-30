@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { Color } from "game-logic";
+  import { Color } from 'game-logic';
 
+  export let type: 'item' | 'geisha' | 'back';
   export let color: Color;
-  export let type: 'item' | 'geisha';
+  export let isSelected: boolean;
 
   const colorToGeishaSource = {
     [Color.PINK]: '/images/pink-geisha.webp',
@@ -43,6 +44,8 @@
     [Color.RED]: 'red item card - 2 points',
     [Color.PURPLE]: 'purple item card - 2 points',
   };
+
+  const baseItemClasses = 'block h-[16.2vh] object-center rounded-xl';
 </script>
 
 {#if type === 'geisha'}
@@ -55,6 +58,8 @@
   <img
     src={colorToItemSource[color]}
     alt={colorToItemAlt[color]}
-    class="block h-[16.2vh] object-fill object-center rounded-xl"
+    class={isSelected ? `-translate-y-6 ${baseItemClasses}` : baseItemClasses}
   />
+{:else if type === 'back'}
+  <img src="/images/item-back.webp" alt="back side of an item card" class={baseItemClasses} />
 {/if}
