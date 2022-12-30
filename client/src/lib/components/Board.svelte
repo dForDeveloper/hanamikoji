@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Item from '$lib/components/Item.svelte';
   import Geisha from '$lib/components/Geisha.svelte';
   import { onDestroy } from 'svelte';
   import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
@@ -134,9 +135,8 @@
     </section>
     <section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
       {#each getHand(opponentPlayerID) as card}
-        <div class="border-2 border-black aspect-[8/11]">
-          <p>{card.color}</p>
-          <p>{card.charmPoints}</p>
+        <div class="aspect-[8/11]">
+          <Item color={card.color} /> 
         </div>
       {/each}
     </section>
@@ -183,11 +183,13 @@
       {/each}
     </section>
     <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
-      {#each G.players[playerID].hand as card}
-        <div class="border-2 border-black aspect-[8/11] h-full">
-          <p>{card.color}</p>
-          <p>{card.charmPoints}</p>
-        </div>
+      {#each G.players[playerID].hand as card, index}
+        <button
+          on:click={() => addCardToSelectedCards({ ...card, index })}
+          class="aspect-[8/11] h-full"
+        >
+          <Item color={card.color} /> 
+        </button>
       {/each}
     </section>
   </main>
