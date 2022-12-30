@@ -60,7 +60,7 @@
       if (opponentStage) {
         switch (opponentStage) {
           case 'draw':
-            return 'Waiting for opponent to draw a card'; 
+            return 'Waiting for opponent to draw a card';
           case 'selectAction':
             return 'Waiting for opponent to select an action';
           case 'selectCardsAsCurrentPlayer':
@@ -185,16 +185,12 @@
     </section>
     <section aria-label="game-interface" class="grid grid-rows-[75fr_50fr_75fr]">
       <div aria-label="instruction">
-      <p>{instruction}</p>
-      {#if availableMove === 'draw'}
+        <p>{instruction}</p>
+        {#if availableMove === 'draw'}
           <button on:click={client.moves.draw()} class="bg-sky-500 hover:bg-sky-900 hover:cursor-pointer">
-          Draw a card
-        </button>
-      <!-- {:else if getAvailableMove() === 'selectAction'}
-        {#each}
-
-        {/each} -->
-      {/if}
+            Draw a card
+          </button>
+        {/if}
       </div>
       <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
         {#if availableMove === 'selectCardsAsCurrentPlayer'}
@@ -239,7 +235,7 @@
           {#if getIsSelected(selectedCards, index)}
             <button on:click={() => removeCardFromSelectedCards(index)} class="aspect-[8/11] h-full">
               <Card type="item" color={card.color} isSelected={true} />
-        </button>
+            </button>
           {:else}
             <button on:click={() => addCardToSelectedCards({ ...card, index })} class="aspect-[8/11] h-full">
               <Card type="item" color={card.color} isSelected={false} />
