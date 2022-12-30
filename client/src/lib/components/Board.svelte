@@ -72,7 +72,7 @@
       } else if (playerStage) {
         switch (playerStage) {
           case 'draw':
-            return 'Draw a card'; 
+            return "It's the start of your turn. Draw a card.";
           case 'selectAction':
             return 'Select an action';
           case 'selectCardsAsCurrentPlayer':
@@ -125,10 +125,9 @@
 
 {#if G && ctx}
   <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2">
-    <!-- TODO: Style the action squares so that they are not fixed sizes -->
-    <section aria-label="opponent-actions" class="flex flex-row justify-center space-x-2">
+    <section aria-label="opponent-actions" class="flex flex-row justify-evenly space-x-2">
       {#each getActions(opponentPlayerID) as action, i}
-        <div class="border-2 border-black aspect-square h-24">
+        <div class="border-2 border-black aspect-square h-[33%]">
           {`Action ${i + 1}`}
         </div>
       {/each}
@@ -140,13 +139,11 @@
         </div>
       {/each}
     </section>
-    <section aria-label="game-interface">
+    <section aria-label="game-interface" class="grid grid-rows-[75fr_50fr_75fr]">
+      <div aria-label="instruction">
       <p>{instruction}</p>
       {#if availableMove === 'draw'}
-        <button
-          on:click={client.moves.draw()}
-          class="bg-sky-500 hover:bg-sky-900 hover:cursor-pointer"
-        >
+          <button on:click={client.moves.draw()} class="bg-sky-500 hover:bg-sky-900 hover:cursor-pointer">
           Draw a card
         </button>
       <!-- {:else if getAvailableMove() === 'selectAction'}
@@ -155,8 +152,8 @@
         {/each} -->
       {/if}
     </section>
-    <section aria-label="game-board" class="grid grid-rows-[11fr_10fr_11fr] gap-1">
-      <div aria-label="opponent-played-cards">opponent played cards</div>
+    <section aria-label="game-board" class="grid grid-rows-[11fr_10fr_11fr]">
+      <div aria-label="opponent-played-cards"></div>
       <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-2 h-full">
         {#each getGeishaCards() as geishaCard}
           <div class="aspect-[2/3]">
@@ -168,14 +165,13 @@
           </div>
         {/each}
       </div>
-      <div aria-label="your-played-cards">your played cards</div>
+      <div aria-label="your-played-cards"></div>
     </section>
-    <!-- TODO: Style the action squares so that they are not fixed sizes -->
-    <section aria-label="your-actions" class="flex flex-row justify-center space-x-2 items-end">
+    <section aria-label="your-actions" class="flex flex-row justify-evenly space-x-2 items-end">
       {#each getActions(playerID) as action, i}
         <button
           on:click={client.moves.selectAction(i.toString())}
-          class="border-2 border-black aspect-square hover:cursor-pointer disabled:cursor-default aspect-square h-24"
+          class="border-2 border-black aspect-square hover:cursor-pointer disabled:cursor-default aspect-square h-[33%]"
           disabled={!action.enabled || availableMove !== 'selectAction'}
         >
           {`Action ${i + 1}`}
