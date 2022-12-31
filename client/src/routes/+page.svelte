@@ -12,7 +12,7 @@
   import { Client } from 'boardgame.io/client';
   import { Hanamikoji } from 'game-logic';
   import Board from '$lib/components/Board.svelte';
-  const client = Client({ game: Hanamikoji, playerID: '0' });
+  const client = Client({ game: Hanamikoji, playerID: '0', debug: { collapseOnLoad: true } });
   client.start();
   // end test client
 
