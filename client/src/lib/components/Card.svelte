@@ -47,7 +47,7 @@
   };
 
   function getItemClass() {
-    let itemClass = 'block h-[16.2vh] object-center rounded-xl shadow-sm shadow-black';
+    let itemClass = 'block h-[16.2vh] object-center rounded-xl shadow-sm shadow-black w-full';
     if (isSelected) {
       itemClass = itemClass + ' -translate-y-6';
     }
