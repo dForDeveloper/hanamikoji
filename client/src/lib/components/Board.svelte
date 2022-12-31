@@ -204,6 +204,18 @@
                 <Card type="empty" />
               {/if}
             </div>
+          {:else if currentAction === '1'}
+            <div class="flex flex-row justify-center space-x-2">
+              {#each [0, 1] as i}
+                <div class="aspect-[8/11] h-[16.2vh]">
+                  {#if selectedCards[i]}
+                    <Card type="item" color={selectedCards[i].color} />
+                  {:else}
+                    <Card type="empty" />
+                  {/if}
+                </div>
+              {/each}
+            </div>
           {/if}
         {/if}
       </div>
