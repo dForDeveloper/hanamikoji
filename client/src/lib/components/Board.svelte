@@ -254,6 +254,14 @@
               <Card type="item" color={action.savedCard.color}/>
             </div>
           {/if}
+          {#if action.discardedCards && action.discardedCards.length === 2}
+            <div class="aspect-[8/11] absolute -z-10 -translate-x-5">
+              <Card type="item" color={action.discardedCards[0].color}/>
+            </div>
+            <div class="aspect-[8/11] absolute -z-10 translate-x-5">
+              <Card type="item" color={action.discardedCards[1].color}/>
+            </div>
+          {/if}
         </div>
       {/each}
     </section>
