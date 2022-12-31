@@ -250,7 +250,7 @@
             class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black"
             disabled={!action.enabled || availableMove !== 'selectAction'}
           >
-            <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={action.enabled}/>
+            <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={action.enabled} />
           </button>
         {:else}
           <div class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black">

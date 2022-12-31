@@ -14,7 +14,7 @@
       case 4:
         return 'pictorgram of two pairs of cards with an arrow on one pair pointing up and an arrow on the other pair pointing down';
       default:
-        return `pictogram of action ${index}`; 
+        return `pictogram of action ${index}`;
     }
   }
 
@@ -30,8 +30,4 @@
   }
 </script>
 
-<img
-  src={`/images/action${index}.webp`}
-  alt={getAlt(index)}
-  class={getClass()}
-/>
+<img src={`/images/action${index}.webp`} alt={getAlt(index)} class={getClass()} />

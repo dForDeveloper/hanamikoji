@@ -65,11 +65,7 @@
     class="block h-[20vh] object-fill object-center rounded-xl shadow-sm shadow-black"
   />
 {:else if type === 'item'}
-  <img
-    src={colorToItemSource[color]}
-    alt={colorToItemAlt[color]}
-    class={getItemClass()}
-  />
+  <img src={colorToItemSource[color]} alt={colorToItemAlt[color]} class={getItemClass()} />
 {:else if type === 'back'}
   <img src="/images/item-back.webp" alt="back side of an item card" class={getItemClass()} />
 {/if}
