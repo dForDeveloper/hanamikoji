@@ -9,7 +9,7 @@
 
 <section aria-label="opponent-actions" class="flex flex-row justify-evenly space-x-2">
   {#each actions as action, i}
-    <div class="relative aspect-[8/11] h-full grid items-start justify-center">
+    <div class="relative aspect-[8/11] h-[16.2vh] grid items-start justify-center">
       <div class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black">
         <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
       </div>
@@ -31,7 +31,7 @@
 </section>
 <section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
   {#each hand as card}
-    <div class="aspect-[8/11]">
+    <div class="aspect-[8/11] h-[16.2vh]">
       <Card type="back" />
     </div>
   {/each}

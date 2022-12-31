@@ -186,7 +186,7 @@
 {#if G && ctx}
   <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito">
     <Opponent actions={getActions(G, opponentPlayerID)} hand={getHand(G, opponentPlayerID)} />
-    <section aria-label="game-interface" class="grid grid-rows-[75fr_50fr_75fr]">
+    <section aria-label="game-interface" class="grid grid-rows-[1fr_16.2vh_1fr]">
       <div aria-label="instruction" class="place-self-center max-w-prose h-full">
         {#each getInstruction(ctx) as line}
           <p class="text-3xl my-6">{line}</p>
@@ -232,7 +232,7 @@
     </section>
     <section aria-label="your-actions" class="flex flex-row justify-evenly space-x-2 items-end">
       {#each getActions(G, playerID) as action, i}
-        <div class="relative aspect-[8/11] h-full grid items-end justify-center">
+        <div class="relative aspect-[8/11] h-[16.2vh] grid items-end justify-center">
           {#if availableMove === 'selectAction'}
             <button
               on:click={client.moves.selectAction(i.toString())}
@@ -250,15 +250,15 @@
             </button>
           {/if}
           {#if action.savedCard}
-            <div class="aspect-[8/11] absolute -z-10">
+            <div class="aspect-[8/11] h-[16.2vh] absolute -z-10">
               <Card type="item" color={action.savedCard.color}/>
             </div>
           {/if}
           {#if action.discardedCards && action.discardedCards.length === 2}
-            <div class="aspect-[8/11] absolute -z-10 -translate-x-5">
+            <div class="aspect-[8/11] h-[16.2vh] absolute -z-10 -translate-x-5">
               <Card type="item" color={action.discardedCards[0].color}/>
             </div>
-            <div class="aspect-[8/11] absolute -z-10 translate-x-5">
+            <div class="aspect-[8/11] h-[16.2vh] absolute -z-10 translate-x-5">
               <Card type="item" color={action.discardedCards[1].color}/>
             </div>
           {/if}
@@ -269,16 +269,16 @@
       {#each getHand(G, playerID) as card, index}
         {#if availableMove === 'selectCardsAsCurrentPlayer'}
           {#if getIsSelected(selectedCards, index)}
-            <button on:click={() => removeCardFromSelectedCards(index)} class="aspect-[8/11] h-full">
+            <button on:click={() => removeCardFromSelectedCards(index)} class="aspect-[8/11] h-[16.2vh]">
               <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
             </button>
           {:else}
-            <button on:click={() => addCardToSelectedCards({ ...card, index })} class="aspect-[8/11] h-full">
+            <button on:click={() => addCardToSelectedCards({ ...card, index })} class="aspect-[8/11] h-[16.2vh]">
               <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
             </button>
           {/if}
         {:else}
-          <button disabled class="aspect-[8/11] h-full">
+          <button disabled class="aspect-[8/11] h-[16.2vh]">
             <Card type="item" color={card.color} isSelected={false} isHoverable={false} />
           </button>
         {/if}
