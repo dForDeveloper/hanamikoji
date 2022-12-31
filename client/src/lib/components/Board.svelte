@@ -84,22 +84,45 @@
           case 'selectCardsAsCurrentPlayer':
             switch (currentAction) {
               case '0':
-                return ['Choose 1 card from your hand.', 'This card will be hidden from your opponent.', 'Then it will be revealed and scored at the end of the round.'];
+                return [
+                  'Choose 1 card from your hand.',
+                  'This card will be hidden from your opponent.',
+                  'At the end of the round you will reveal and score this card.',
+                ];
               case '1':
-                return ['Choose 2 cards from your hand.', 'These cards will be placed face down and will not be scored this round.'];
+                return [
+                  'Choose 2 cards from your hand.',
+                  "These cards will be hidden from your opponent and won't be scored this round.",
+                ];
               case '2':
-                return ['Choose 3 cards from your hand.', 'These cards will be presented to your opponent. Your opponent will choose 1 of the cards to score for themself. You will score the remaining 2 cards.'];
+                return [
+                  'Choose 3 cards from your hand to reveal to your opponent.',
+                  'They will choose one of the cards to score for themself.',
+                  'You will score the remaining two cards.',
+                ];
               case '3':
-                return ['Choose 4 cards from your hand, and divide them into 2 pairs.', 'These pairs will be presented to your opponent. Your opponent will choose 1 pair to score for themself. You will score the remaining pair.'];
+                return [
+                  'Choose 4 cards from your hand separated into two sets of two to reveal to your opponent.',
+                  'They will choose one set to score for themself.',
+                  'You will score the remaining set.',
+                ];
               default:
                 return errorMessage;
             }
           case 'selectCardsAsOpposingPlayer':
             switch (currentAction) {
               case '2':
-                return ['Your opponent chose to present these 3 cards. Choose 1 of these cards to score for yourself. They will score the remaining 2 cards.'];
+                return [
+                  'Your opponent revealed these cards.',
+                  'Choose one of them to score for yourself.',
+                  'They will score the remaining cards.',
+                ];
               case '3':
-                return ['Your opponent chose to present these 2 pairs of cards. Choose 1 pair to score for yourself. They will score the remaining pair.'];
+                return [
+                  'Your opponent revealed these sets of cards',
+                  'Choose one to score for yourself.',
+                  'They will score the remaining set.',
+                ];
               default:
                 return errorMessage;
             }
@@ -244,7 +267,7 @@
               <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
             </button>
           {:else}
-          <button on:click={() => addCardToSelectedCards({ ...card, index })} class="aspect-[8/11] h-full">
+            <button on:click={() => addCardToSelectedCards({ ...card, index })} class="aspect-[8/11] h-full">
               <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
             </button>
           {/if}
