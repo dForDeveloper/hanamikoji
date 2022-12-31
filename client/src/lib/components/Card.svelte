@@ -2,9 +2,9 @@
   import { Color } from 'game-logic';
 
   export let type: 'item' | 'geisha' | 'back';
-  export let color: Color;
-  export let isSelected: boolean;
-  export let isHoverable: boolean;
+  export let color: Color = Color.PINK;
+  export let isSelected: boolean = false;
+  export let isHoverable: boolean = false;
 
   const colorToGeishaSource = {
     [Color.PINK]: '/images/pink-geisha.webp',

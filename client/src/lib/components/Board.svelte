@@ -201,7 +201,7 @@
     <section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
       {#each getHand(opponentPlayerID) as card}
         <div class="aspect-[8/11]">
-          <Card type="back" color={card.color} isSelected={false} isHoverable={false} />
+          <Card type="back" />
         </div>
       {/each}
     </section>
@@ -219,9 +219,9 @@
       <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
         {#if availableMove === 'selectCardsAsCurrentPlayer'}
           {#if currentAction === '0'}
-            {#if selectedCards.action1.at(0)}
+            {#if selectedCards.action1[0]}
               <div class="aspect-[8/11] h-full">
-                <Card type="item" color={selectedCards.action1.at(0).color} isSelected={false} isHoverable={false} />
+                <Card type="item" color={selectedCards.action1[0].color} />
               </div>
             {:else}
               <div class="aspect-[8/11] h-full border-2 border-black border-dashed rounded-xl" />
@@ -236,7 +236,7 @@
       <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-2 h-full">
         {#each getGeishaCards() as geishaCard}
           <div class="aspect-[2/3]">
-            <Card type="geisha" color={geishaCard.color} isSelected={false} isHoverable={false} />
+            <Card type="geisha" color={geishaCard.color} />
           </div>
         {/each}
       </div>
