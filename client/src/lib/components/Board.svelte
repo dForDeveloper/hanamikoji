@@ -11,7 +11,6 @@
   const opponentPlayerID = playerID === '0' ? '1' : '0';
   let G: GameState;
   let ctx: Ctx;
-  let instruction = '';
   let availableMove = '';
   let currentAction: string | null = null;
   let selectedCards: SelectedCards = {
@@ -26,7 +25,6 @@
       G = gameState.G;
       ctx = gameState.ctx;
       currentAction = G.currentAction;
-      instruction = getInstruction();
       availableMove = getAvailableMove();
     } else {
       throw new Error('Error syncing game state');
@@ -52,64 +50,64 @@
     return Object.values(G.geisha);
   }
 
-  function getInstruction(): string {
-    const errorMessage = 'ERROR: No player has any available moves to make';
+  function getInstruction(ctx: Ctx): string[] {
+    const errorMessage = ['ERROR: No player has any available moves to make'];
     if (ctx.activePlayers) {
       const playerStage: string | undefined = ctx.activePlayers[playerID];
       const opponentStage: string = ctx.activePlayers[opponentPlayerID];
       if (opponentStage) {
         switch (opponentStage) {
           case 'draw':
-            return 'Waiting for opponent to draw a card';
+            return ['Waiting for opponent to draw a card'];
           case 'selectAction':
-            return 'Waiting for opponent to select an action';
+            return ['Waiting for opponent to select an action'];
           case 'selectCardsAsCurrentPlayer':
-            return 'Waiting for opponent to select cards';
+            return ['Waiting for opponent to select cards'];
           case 'selectCardsAsOpposingPlayer':
-            return 'Waiting for opponent to select cards';
+            return ['Waiting for opponent to select cards'];
           case 'reveal':
-            return 'Opponent in reveal stage';
+            return ['Opponent in reveal stage'];
           case 'calculate':
-            return 'Opponent in calculate stage';
+            return ['Opponent in calculate stage'];
           case 'prepareNextRound':
-            return 'Opponent in prepareNextRound stage';
+            return ['Opponent in prepareNextRound stage'];
           default:
             return errorMessage;
         }
       } else if (playerStage) {
         switch (playerStage) {
           case 'draw':
-            return "It's the start of your turn. Draw a card.";
+            return ["It's your turn.", 'Draw a card.'];
           case 'selectAction':
-            return 'Select an action';
+            return ['Select an action'];
           case 'selectCardsAsCurrentPlayer':
             switch (currentAction) {
               case '0':
-                return 'Choose 1 card from your hand. This card will be placed face down, and then it will be revealed and scored at the end of the round.';
+                return ['Choose 1 card from your hand.', 'This card will be hidden from your opponent.', 'Then it will be revealed and scored at the end of the round.'];
               case '1':
-                return 'Choose 2 cards from your hand. These cards will be placed face down and will not be scored this round.';
+                return ['Choose 2 cards from your hand.', 'These cards will be placed face down and will not be scored this round.'];
               case '2':
-                return 'Choose 3 cards from your hand. These cards will be presented to your opponent. Your opponent will choose 1 of the cards to score for themself. You will score the remaining 2 cards.';
+                return ['Choose 3 cards from your hand.', 'These cards will be presented to your opponent. Your opponent will choose 1 of the cards to score for themself. You will score the remaining 2 cards.'];
               case '3':
-                return 'Choose 4 cards from your hand, and divide them into 2 pairs. These pairs will be presented to your opponent. Your opponent will choose 1 pair to score for themself. You will score the remaining pair.';
+                return ['Choose 4 cards from your hand, and divide them into 2 pairs.', 'These pairs will be presented to your opponent. Your opponent will choose 1 pair to score for themself. You will score the remaining pair.'];
               default:
                 return errorMessage;
             }
           case 'selectCardsAsOpposingPlayer':
             switch (currentAction) {
               case '2':
-                return 'Your opponent chose to present these 3 cards. Choose 1 of these cards to score for yourself. They will score the remaining 2 cards.';
+                return ['Your opponent chose to present these 3 cards. Choose 1 of these cards to score for yourself. They will score the remaining 2 cards.'];
               case '3':
-                return 'Your opponent chose to present these 2 pairs of cards. Choose 1 pair to score for yourself. They will score the remaining pair.';
+                return ['Your opponent chose to present these 2 pairs of cards. Choose 1 pair to score for yourself. They will score the remaining pair.'];
               default:
                 return errorMessage;
             }
           case 'reveal':
-            return 'reveal stage';
+            return ['reveal stage'];
           case 'calculate':
-            return 'calculate stage';
+            return ['calculate stage'];
           case 'prepareNextRound':
-            return 'prepareNextRound stage';
+            return ['prepareNextRound stage'];
           default:
             return errorMessage;
         }
@@ -168,7 +166,7 @@
 </script>
 
 {#if G && ctx}
-  <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2">
+  <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito">
     <section aria-label="opponent-actions" class="flex flex-row justify-evenly space-x-2">
       {#each getActions(opponentPlayerID) as action, i}
         <div class="border-2 border-black aspect-square h-[33%]">
@@ -184,8 +182,10 @@
       {/each}
     </section>
     <section aria-label="game-interface" class="grid grid-rows-[75fr_50fr_75fr]">
-      <div aria-label="instruction">
-        <p>{instruction}</p>
+      <div aria-label="instruction" class="place-self-center max-w-prose h-full">
+        {#each getInstruction(ctx) as line}
+          <p class="text-3xl my-6">{line}</p>
+        {/each}
         {#if availableMove === 'draw'}
           <button on:click={client.moves.draw()} class="bg-sky-500 hover:bg-sky-900 hover:cursor-pointer">
             Draw a card
