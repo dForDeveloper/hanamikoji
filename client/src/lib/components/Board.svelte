@@ -2,6 +2,7 @@
   import ActionMarker from '$lib/components/ActionMarker.svelte';
   import Card from '$lib/components/Card.svelte';
   import Deck from '$lib/components/Deck.svelte';
+  import Opponent from '$lib/components/Opponent.svelte';
   import { onDestroy } from 'svelte';
   import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
@@ -184,20 +185,7 @@
 
 {#if G && ctx}
   <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito">
-    <section aria-label="opponent-actions" class="flex flex-row justify-evenly space-x-2">
-      {#each getActions(G, opponentPlayerID) as action, i}
-        <div class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black">
-          <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
-        </div>
-      {/each}
-    </section>
-    <section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
-      {#each getHand(G, opponentPlayerID) as card}
-        <div class="aspect-[8/11]">
-          <Card type="back" />
-        </div>
-      {/each}
-    </section>
+    <Opponent actions={getActions(G, opponentPlayerID)} hand={getHand(G, opponentPlayerID)} />
     <section aria-label="game-interface" class="grid grid-rows-[75fr_50fr_75fr]">
       <div aria-label="instruction" class="place-self-center max-w-prose h-full">
         {#each getInstruction(ctx) as line}
