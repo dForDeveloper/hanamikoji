@@ -4,6 +4,7 @@
   export let type: 'item' | 'geisha' | 'back';
   export let color: Color;
   export let isSelected: boolean;
+  export let isHoverable: boolean;
 
   const colorToGeishaSource = {
     [Color.PINK]: '/images/pink-geisha.webp',
@@ -45,21 +46,30 @@
     [Color.PURPLE]: 'purple item card - 2 points',
   };
 
-  const baseItemClasses = 'block h-[16.2vh] object-center rounded-xl';
+  function getItemClass() {
+    let itemClass = 'block h-[16.2vh] object-center rounded-xl shadow-sm shadow-black';
+    if (isSelected) {
+      itemClass = itemClass + ' -translate-y-6';
+    }
+    if (isHoverable) {
+      itemClass = itemClass + ' hover:shadow hover:shadow-black';
+    }
+    return itemClass;
+  }
 </script>
 
 {#if type === 'geisha'}
   <img
     src={colorToGeishaSource[color]}
     alt={colorToGeishaAlt[color]}
-    class="block h-[20vh] object-fill object-center rounded-xl"
+    class="block h-[20vh] object-fill object-center rounded-xl shadow-sm shadow-black"
   />
 {:else if type === 'item'}
   <img
     src={colorToItemSource[color]}
     alt={colorToItemAlt[color]}
-    class={isSelected ? `-translate-y-6 ${baseItemClasses}` : baseItemClasses}
+    class={getItemClass()}
   />
 {:else if type === 'back'}
-  <img src="/images/item-back.webp" alt="back side of an item card" class={baseItemClasses} />
+  <img src="/images/item-back.webp" alt="back side of an item card" class={getItemClass()} />
 {/if}

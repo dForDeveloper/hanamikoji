@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ActionMarker from '$lib/components/ActionMarker.svelte';
   import Card from '$lib/components/Card.svelte';
   import { onDestroy } from 'svelte';
   import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
@@ -79,7 +80,7 @@
           case 'draw':
             return ["It's your turn.", 'Draw a card.'];
           case 'selectAction':
-            return ['Select an action'];
+            return ['Select an action.'];
           case 'selectCardsAsCurrentPlayer':
             switch (currentAction) {
               case '0':
@@ -169,15 +170,15 @@
   <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito">
     <section aria-label="opponent-actions" class="flex flex-row justify-evenly space-x-2">
       {#each getActions(opponentPlayerID) as action, i}
-        <div class="border-2 border-black aspect-square h-[33%]">
-          {`Action ${i + 1}`}
+        <div class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black">
+          <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
         </div>
       {/each}
     </section>
     <section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
       {#each getHand(opponentPlayerID) as card}
         <div class="aspect-[8/11]">
-          <Card type="back" color={card.color} isSelected={false} />
+          <Card type="back" color={card.color} isSelected={false} isHoverable={false} />
         </div>
       {/each}
     </section>
@@ -197,7 +198,7 @@
           {#if currentAction === '0'}
             {#if selectedCards.action1.at(0)}
               <div class="aspect-[8/11] h-full">
-                <Card type="item" color={selectedCards.action1.at(0).color} isSelected={false} />
+                <Card type="item" color={selectedCards.action1.at(0).color} isSelected={false} isHoverable={false} />
               </div>
             {:else}
               <div class="aspect-[8/11] h-full border-2 border-black border-dashed rounded-xl" />
@@ -212,7 +213,7 @@
       <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-2 h-full">
         {#each getGeishaCards() as geishaCard}
           <div class="aspect-[2/3]">
-            <Card type="geisha" color={geishaCard.color} isSelected={false} />
+            <Card type="geisha" color={geishaCard.color} isSelected={false} isHoverable={false} />
           </div>
         {/each}
       </div>
@@ -220,13 +221,19 @@
     </section>
     <section aria-label="your-actions" class="flex flex-row justify-evenly space-x-2 items-end">
       {#each getActions(playerID) as action, i}
-        <button
-          on:click={client.moves.selectAction(i.toString())}
-          class="border-2 border-black aspect-square hover:cursor-pointer disabled:cursor-default aspect-square h-[33%]"
-          disabled={!action.enabled || availableMove !== 'selectAction'}
-        >
-          {`Action ${i + 1}`}
-        </button>
+        {#if availableMove === 'selectAction'}
+          <button
+            on:click={client.moves.selectAction(i.toString())}
+            class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black"
+            disabled={!action.enabled || availableMove !== 'selectAction'}
+          >
+            <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={action.enabled}/>
+          </button>
+        {:else}
+          <div class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black">
+            <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
+          </div>
+        {/if}
       {/each}
     </section>
     <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
@@ -234,16 +241,16 @@
         {#if availableMove === 'selectCardsAsCurrentPlayer'}
           {#if getIsSelected(selectedCards, index)}
             <button on:click={() => removeCardFromSelectedCards(index)} class="aspect-[8/11] h-full">
-              <Card type="item" color={card.color} isSelected={true} />
+              <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
             </button>
           {:else}
-            <button on:click={() => addCardToSelectedCards({ ...card, index })} class="aspect-[8/11] h-full">
-              <Card type="item" color={card.color} isSelected={false} />
+          <button on:click={() => addCardToSelectedCards({ ...card, index })} class="aspect-[8/11] h-full">
+              <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
             </button>
           {/if}
         {:else}
           <div class="aspect-[8/11] h-full">
-            <Card type="item" color={card.color} isSelected={false} />
+            <Card type="item" color={card.color} isSelected={false} isHoverable={false} />
           </div>
         {/if}
       {/each}
