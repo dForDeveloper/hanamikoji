@@ -9,8 +9,15 @@
 
 <section aria-label="opponent-actions" class="flex flex-row justify-evenly space-x-2">
   {#each actions as action, i}
-    <div class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black">
-      <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
+    <div class="relative aspect-[8/11] h-full grid items-end justify-center">
+      <div class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black">
+        <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
+      </div>
+      {#if action.savedCard}
+        <div class="aspect-[8/11] absolute -z-10">
+          <Card type="back" />
+        </div>
+      {/if}
     </div>
   {/each}
 </section>

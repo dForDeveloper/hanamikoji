@@ -232,22 +232,29 @@
     </section>
     <section aria-label="your-actions" class="flex flex-row justify-evenly space-x-2 items-end">
       {#each getActions(G, playerID) as action, i}
-        {#if availableMove === 'selectAction'}
-          <button
-            on:click={client.moves.selectAction(i.toString())}
-            class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black"
-            disabled={!action.enabled}
-          >
-            <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={action.enabled} />
-          </button>
-        {:else}
-          <button
-            class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black"
-            disabled
-          >
-            <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
-          </button>
-        {/if}
+        <div class="relative aspect-[8/11] h-full grid items-end justify-center">
+          {#if availableMove === 'selectAction'}
+            <button
+              on:click={client.moves.selectAction(i.toString())}
+              class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black"
+              disabled={!action.enabled}
+            >
+              <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={action.enabled} />
+            </button>
+          {:else}
+            <button
+              class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black"
+              disabled
+            >
+              <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
+            </button>
+          {/if}
+          {#if action.savedCard}
+            <div class="aspect-[8/11] absolute -z-10">
+              <Card type="item" color={action.savedCard.color}/>
+            </div>
+          {/if}
+        </div>
       {/each}
     </section>
     <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
