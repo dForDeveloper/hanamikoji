@@ -197,13 +197,13 @@
           <Deck handleClick={() => client.moves.draw()} />
         {:else if availableMove === 'selectCardsAsCurrentPlayer'}
           {#if currentAction === '0'}
-            {#if selectedCards[0]}
-              <div class="aspect-[8/11]">
+            <div class="aspect-[8/11]">
+              {#if selectedCards[0]}
                 <Card type="item" color={selectedCards[0].color} />
-              </div>
-            {:else}
-              <div class="aspect-[8/11] h-[16.2vh] border-2 border-black border-dashed rounded-xl" />
-            {/if}
+              {:else}
+                <Card type="empty" />
+              {/if}
+            </div>
           {/if}
         {/if}
       </div>

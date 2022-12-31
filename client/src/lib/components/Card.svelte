@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Color } from 'game-logic';
 
-  export let type: 'item' | 'geisha' | 'back';
+  export let type: 'item' | 'geisha' | 'back' | 'empty';
   export let color: Color = Color.PINK;
   export let isSelected: boolean = false;
   export let isHoverable: boolean = false;
@@ -68,4 +68,6 @@
   <img src={colorToItemSource[color]} alt={colorToItemAlt[color]} class={getItemClass()} />
 {:else if type === 'back'}
   <img src="/images/item-back.webp" alt="back side of an item card" class={getItemClass()} />
+{:else if type === 'empty'}
+  <div class="aspect-[8/11] h-[16.2vh] border-2 border-black border-dashed rounded-xl" />
 {/if}
