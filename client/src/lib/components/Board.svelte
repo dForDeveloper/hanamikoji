@@ -1,6 +1,7 @@
 <script lang="ts">
   import ActionMarker from '$lib/components/ActionMarker.svelte';
   import Card from '$lib/components/Card.svelte';
+  import Deck from '$lib/components/Deck.svelte';
   import { onDestroy } from 'svelte';
   import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
@@ -210,14 +211,11 @@
         {#each getInstruction(ctx) as line}
           <p class="text-3xl my-6">{line}</p>
         {/each}
-        {#if availableMove === 'draw'}
-          <button on:click={client.moves.draw()} class="bg-sky-500 hover:bg-sky-900 hover:cursor-pointer">
-            Draw a card
-          </button>
-        {/if}
       </div>
       <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
-        {#if availableMove === 'selectCardsAsCurrentPlayer'}
+        {#if availableMove === 'draw'}
+          <Deck handleClick={() => client.moves.draw()}/>
+        {:else if availableMove === 'selectCardsAsCurrentPlayer'}
           {#if currentAction === '0'}
             {#if selectedCards.action1[0]}
               <div class="aspect-[8/11] h-full">
