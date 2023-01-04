@@ -69,7 +69,7 @@
     if (availableMove === 'selectCardsAsCurrentPlayer') {
       const arg = selectedCards.filter((maybeCard) => maybeCard !== null).map((itemCard) => itemCard!.index.toString());
       client.moves.selectCardsAsCurrent(arg);
-      selectedCards = [null, null, null, null];
+      setSelectedCards([null, null, null, null]);
     }
   }
 

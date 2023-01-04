@@ -8,7 +8,7 @@
   export let selectedCards: SelectedCard[];
   export let currentAction: string | null;
   export let setSelectedCards: (updatedSelectedCards: SelectedCard[]) => void;
-  
+
   function getIsSelected(selectedCards: SelectedCard[], index: number): boolean {
     const maybeSelectedCard = selectedCards.find((maybeCard) => maybeCard && maybeCard.index === index);
     return maybeSelectedCard !== undefined;
@@ -51,7 +51,10 @@
           <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
         </button>
       {:else}
-        <button on:click={() => addCardToSelectedCards({ ...card, index }, currentAction)} class="aspect-[8/11] h-[16.2vh]">
+        <button
+          on:click={() => addCardToSelectedCards({ ...card, index }, currentAction)}
+          class="aspect-[8/11] h-[16.2vh]"
+        >
           <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
         </button>
       {/if}
