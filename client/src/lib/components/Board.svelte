@@ -7,7 +7,7 @@
   import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
 
-  type SelectedCard = ItemCard & { index: number };
+  type SelectedCard = (ItemCard & { index: number }) | null;
 
   export let client: any;
   const playerID: string = client.playerID;
@@ -16,7 +16,7 @@
   let ctx: Ctx;
   let availableMove = '';
   let currentAction: string | null = null;
-  let selectedCards: SelectedCard[] = [];
+  let selectedCards: SelectedCard[] = [null, null, null, null];
 
   const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
     if (gameState.G && gameState.ctx) {
@@ -148,35 +148,56 @@
     }
   }
 
-  function addCardToSelectedCards(itemCardWithIndex: ItemCard & { index: number }): void {
+  function getSelectedCardsToDisplay(currentAction: string, selectedCards: SelectedCard[]) {
+    return selectedCards.slice(0, Number(currentAction) + 1);
+  }
+
+  function addCardToSelectedCards(selectedCard: SelectedCard): void {
     if (currentAction === '0') {
-      selectedCards = [itemCardWithIndex];
-    } else if (selectedCards.length <= Number(currentAction)) {
-      selectedCards = [...selectedCards, itemCardWithIndex];
+      selectedCards = [selectedCard, null, null, null];
+    } else {
+      const nonNullSelectedCardCount = selectedCards.filter((maybeCard) => maybeCard !== null).length;
+      const enoughCardsHaveNotBeenSelected = nonNullSelectedCardCount <= Number(currentAction);
+
+      const maybeFirstNullIndex = selectedCards.findIndex((maybeCard) => maybeCard === null);
+      const theFirstOpenSpotIsValid = maybeFirstNullIndex !== -1 && maybeFirstNullIndex <= Number(currentAction);
+
+      if (enoughCardsHaveNotBeenSelected && theFirstOpenSpotIsValid) {
+        selectedCards = selectedCards.map((maybeCard, i) => {
+          if (i === maybeFirstNullIndex) return selectedCard;
+          return maybeCard;
+        });
+      }
     }
   }
 
   function removeCardFromSelectedCards(index: number): void {
-    selectedCards = selectedCards.filter((itemCard) => itemCard.index !== index);
+    selectedCards = selectedCards.map((maybeCard) => {
+      if (maybeCard && maybeCard.index === index) return null;
+      return maybeCard;
+    });
   }
 
   function getIsSelected(selectedCards: SelectedCard[], index: number): boolean {
-    const maybeSelectedCard = selectedCards.find((itemCard) => itemCard.index === index);
+    const maybeSelectedCard = selectedCards.find((maybeCard) => maybeCard && maybeCard.index === index);
     return maybeSelectedCard !== undefined;
   }
 
   function confirmSelection(selectedCards: SelectedCard[]): void {
     if (availableMove === 'selectCardsAsCurrentPlayer') {
-      const arg = selectedCards.map((itemCard) => itemCard.index.toString());
+      const arg = selectedCards
+        .filter((maybeCard) => maybeCard !== null)
+        .map((itemCard) => itemCard!.index.toString());
       client.moves.selectCardsAsCurrent(arg);
-      selectedCards = [];
+      selectedCards = [null, null, null, null];
     }
   }
 
   function getIsConfirmationButtonDisabled(selectedCards: SelectedCard[]): boolean {
     if (availableMove === 'selectCardsAsCurrentPlayer') {
       const requiredSelectedCardCount = Number(currentAction) + 1;
-      return selectedCards.length !== requiredSelectedCardCount;
+      const nonNullSelectedCardCount = selectedCards.filter((maybeCard) => maybeCard !== null).length;
+      return nonNullSelectedCardCount !== requiredSelectedCardCount;
     } else {
       return false;
     }
@@ -204,12 +225,12 @@
                 <Card type="empty" />
               {/if}
             </div>
-          {:else if currentAction === '1'}
+          {:else if currentAction === '1' || currentAction === '2'}
             <div class="flex flex-row justify-center space-x-2">
-              {#each [0, 1] as i}
+              {#each getSelectedCardsToDisplay(currentAction, selectedCards) as selectedCard, i}
                 <div class="aspect-[8/11] h-[16.2vh]">
-                  {#if selectedCards[i]}
-                    <Card type="item" color={selectedCards[i].color} />
+                  {#if selectedCard && i <= Number(currentAction)}
+                    <Card type="item" color={selectedCard.color} />
                   {:else}
                     <Card type="empty" />
                   {/if}
