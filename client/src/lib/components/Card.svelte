@@ -3,8 +3,8 @@
 
   export let type: 'item' | 'geisha' | 'back' | 'empty';
   export let color: Color = Color.PINK;
-  export let isSelected: boolean = false;
-  export let isHoverable: boolean = false;
+  export let isSelected = false;
+  export let isHoverable = false;
 
   const colorToGeishaSource = {
     [Color.PINK]: '/images/pink-geisha.webp',
