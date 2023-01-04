@@ -56,7 +56,7 @@
       if (opponentStage) {
         switch (opponentStage) {
           case 'draw':
-            return ['Waiting for opponent to draw a card'];
+            return ["It's your opponent's turn", 'Waiting for them to draw a card...'];
           case 'selectAction':
             return ['Waiting for opponent to select an action'];
           case 'selectCardsAsCurrentPlayer':
@@ -148,7 +148,7 @@
     }
   }
 
-  function getSelectedCardsToDisplay(currentAction: string, selectedCards: SelectedCard[]) {
+  function getSelectedCardsToDisplay(currentAction: string, selectedCards: SelectedCard[]): SelectedCard[] {
     return selectedCards.slice(0, Number(currentAction) + 1);
   }
 
