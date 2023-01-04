@@ -61,30 +61,8 @@
     return selectedCards.slice(0, Number(currentAction) + 1);
   }
 
-  function addCardToSelectedCards(selectedCard: SelectedCard): void {
-    if (currentAction === '0') {
-      selectedCards = [selectedCard, null, null, null];
-    } else {
-      const nonNullSelectedCardCount = selectedCards.filter((maybeCard) => maybeCard !== null).length;
-      const enoughCardsHaveNotBeenSelected = nonNullSelectedCardCount <= Number(currentAction);
-
-      const maybeFirstNullIndex = selectedCards.findIndex((maybeCard) => maybeCard === null);
-      const theFirstOpenSpotIsValid = maybeFirstNullIndex !== -1 && maybeFirstNullIndex <= Number(currentAction);
-
-      if (enoughCardsHaveNotBeenSelected && theFirstOpenSpotIsValid) {
-        selectedCards = selectedCards.map((maybeCard, i) => {
-          if (i === maybeFirstNullIndex) return selectedCard;
-          return maybeCard;
-        });
-      }
-    }
-  }
-
-  function removeCardFromSelectedCards(index: number): void {
-    selectedCards = selectedCards.map((maybeCard) => {
-      if (maybeCard && maybeCard.index === index) return null;
-      return maybeCard;
-    });
+  function setSelectedCards(updatedSelectedCards: SelectedCard[]): void {
+    selectedCards = updatedSelectedCards;
   }
 
   function confirmSelection(selectedCards: SelectedCard[]): void {
@@ -204,8 +182,8 @@
       cardsInHand={getCardsInHand(G, playerID)}
       {availableMove}
       {selectedCards}
-      {removeCardFromSelectedCards}
-      {addCardToSelectedCards}
+      {currentAction}
+      {setSelectedCards}
     />
   </main>
 {/if}
