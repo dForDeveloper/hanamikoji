@@ -2,12 +2,12 @@
   import ActionMarker from '$lib/components/ActionMarker.svelte';
   import Card from '$lib/components/Card.svelte';
   import Deck from '$lib/components/Deck.svelte';
+  import Hand from '$lib/components/Hand.svelte';
   import Opponent from '$lib/components/Opponent.svelte';
   import { onDestroy } from 'svelte';
   import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
-
-  type SelectedCard = (ItemCard & { index: number }) | null;
+  import type { SelectedCard } from '$lib/types';
 
   export let client: any;
   const playerID: string = client.playerID;
@@ -178,11 +178,6 @@
     });
   }
 
-  function getIsSelected(selectedCards: SelectedCard[], index: number): boolean {
-    const maybeSelectedCard = selectedCards.find((maybeCard) => maybeCard && maybeCard.index === index);
-    return maybeSelectedCard !== undefined;
-  }
-
   function confirmSelection(selectedCards: SelectedCard[]): void {
     if (availableMove === 'selectCardsAsCurrentPlayer') {
       const arg = selectedCards
@@ -298,24 +293,6 @@
         </div>
       {/each}
     </section>
-    <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
-      {#each getHand(G, playerID) as card, index}
-        {#if availableMove === 'selectCardsAsCurrentPlayer'}
-          {#if getIsSelected(selectedCards, index)}
-            <button on:click={() => removeCardFromSelectedCards(index)} class="aspect-[8/11] h-[16.2vh]">
-              <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
-            </button>
-          {:else}
-            <button on:click={() => addCardToSelectedCards({ ...card, index })} class="aspect-[8/11] h-[16.2vh]">
-              <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
-            </button>
-          {/if}
-        {:else}
-          <button disabled class="aspect-[8/11] h-[16.2vh]">
-            <Card type="item" color={card.color} isSelected={false} isHoverable={false} />
-          </button>
-        {/if}
-      {/each}
-    </section>
+    <Hand {G} {playerID} {availableMove} {selectedCards} {getHand} {removeCardFromSelectedCards} {addCardToSelectedCards} />
   </main>
 {/if}
