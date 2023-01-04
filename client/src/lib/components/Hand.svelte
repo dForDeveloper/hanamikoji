@@ -1,9 +1,10 @@
 <script lang="ts">
   import Card from '$lib/components/Card.svelte';
-  import type { ItemCard } from 'game-logic';
+  import type { GameState } from 'game-logic';
   import type { SelectedCard } from '$lib/types';
 
-  export let cardsInHand: ItemCard[];
+  export let G: GameState;
+  export let playerID: string;
   export let availableMove: string;
   export let selectedCards: SelectedCard[];
   export let currentAction: string | null;
@@ -44,7 +45,7 @@
 </script>
 
 <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
-  {#each cardsInHand as card, index}
+  {#each G.players[playerID].hand as card, index}
     {#if availableMove === 'selectCardsAsCurrentPlayer'}
       {#if getIsSelected(selectedCards, index)}
         <button on:click={() => removeCardFromSelectedCards(selectedCards, index)} class="aspect-[8/11] h-[16.2vh]">
