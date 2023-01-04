@@ -4,7 +4,7 @@
   import type { Action, ItemCard } from 'game-logic';
 
   export let actions: Action[];
-  export let hand: ItemCard[];
+  export let cardsInHand: ItemCard[];
 </script>
 
 <section aria-label="opponent-actions" class="flex flex-row justify-evenly space-x-2">
@@ -30,7 +30,7 @@
   {/each}
 </section>
 <section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
-  {#each hand as card}
+  {#each cardsInHand as card}
     <div class="aspect-[8/11] h-[16.2vh]">
       <Card type="back" />
     </div>

@@ -41,7 +41,7 @@
     return Object.values(G.players[playerID].actions);
   }
 
-  function getHand(G: GameState, playerID: string): ItemCard[] {
+  function getCardsInHand(G: GameState, playerID: string): ItemCard[] {
     return G.players[playerID].hand;
   }
 
@@ -108,7 +108,7 @@
 
 {#if G && ctx}
   <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito">
-    <Opponent actions={getActions(G, opponentPlayerID)} hand={getHand(G, opponentPlayerID)} />
+    <Opponent actions={getActions(G, opponentPlayerID)} cardsInHand={getCardsInHand(G, opponentPlayerID)} />
     <section aria-label="game-interface" class="grid grid-rows-[1fr_16.2vh_1fr]">
       <div aria-label="instruction" class="place-self-center max-w-prose h-full">
         {#each getInstructions(ctx, currentAction, playerID, opponentPlayerID) as line}
@@ -201,11 +201,9 @@
       {/each}
     </section>
     <Hand
-      {G}
-      {playerID}
+      cardsInHand={getCardsInHand(G, playerID)}
       {availableMove}
       {selectedCards}
-      {getHand}
       {removeCardFromSelectedCards}
       {addCardToSelectedCards}
     />
