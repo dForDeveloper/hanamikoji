@@ -5,14 +5,14 @@
 
   export let G: GameState;
   export let playerID: string;
-  export let availableMove: string;
+  export let playerStage: string;
   export let selectAction: (actionIndex: string) => void;
 </script>
 
 <section aria-label="your-actions" class="flex flex-row justify-evenly space-x-2 items-end">
   {#each Object.values(G.players[playerID].actions) as action, i}
     <div class="relative aspect-[8/11] h-[16.2vh] grid items-end justify-center">
-      {#if availableMove === 'selectAction'}
+      {#if playerStage === 'selectAction'}
         <button
           on:click={() => selectAction(i.toString())}
           class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black"

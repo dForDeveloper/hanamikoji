@@ -15,16 +15,18 @@
   const opponentPlayerID = playerID === '0' ? '1' : '0';
   let G: GameState;
   let ctx: Ctx;
-  let availableMove = '';
-  let currentAction: string | null = null;
+  let playerStage: string;
+  let opponentStage: string;
+  let currentAction: string;
   let selectedCards: SelectedCard[] = [null, null, null, null];
 
   const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
     if (gameState.G && gameState.ctx) {
       G = gameState.G;
       ctx = gameState.ctx;
-      currentAction = G.currentAction;
-      availableMove = getAvailableMove(ctx);
+      currentAction = G.currentAction ? G.currentAction : '';
+      playerStage = ctx.activePlayers ? ctx.activePlayers[playerID] : '';
+      opponentStage = ctx.activePlayers ? ctx.activePlayers[opponentPlayerID] : '';
     } else {
       throw new Error('Error syncing game state');
     }
@@ -62,7 +64,7 @@
   }
 
   function confirmSelection(selectedCards: SelectedCard[]): void {
-    if (availableMove === 'selectCardsAsCurrentPlayer') {
+    if (playerStage === 'selectCardsAsCurrentPlayer') {
       const arg = selectedCards.filter((maybeCard) => maybeCard !== null).map((itemCard) => itemCard!.index.toString());
       client.moves.selectCardsAsCurrent(arg);
       setSelectedCards([null, null, null, null]);
@@ -70,7 +72,7 @@
   }
 
   function getIsConfirmationButtonDisabled(selectedCards: SelectedCard[]): boolean {
-    if (availableMove === 'selectCardsAsCurrentPlayer') {
+    if (playerStage === 'selectCardsAsCurrentPlayer') {
       const requiredSelectedCardCount = Number(currentAction) + 1;
       const nonNullSelectedCardCount = selectedCards.filter((maybeCard) => maybeCard !== null).length;
       return nonNullSelectedCardCount !== requiredSelectedCardCount;
@@ -85,14 +87,14 @@
     <Opponent {G} {opponentPlayerID} />
     <section aria-label="game-interface" class="grid grid-rows-[1fr_16.2vh_1fr]">
       <div aria-label="instruction" class="place-self-center max-w-prose h-full">
-        {#each getInstructions(ctx, currentAction, playerID, opponentPlayerID) as line}
+        {#each getInstructions(currentAction, playerStage, opponentStage) as line}
           <p class="text-3xl my-6">{line}</p>
         {/each}
       </div>
       <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
-        {#if availableMove === 'draw'}
+        {#if playerStage === 'draw'}
           <Deck handleClick={() => client.moves.draw()} />
-        {:else if availableMove === 'selectCardsAsCurrentPlayer'}
+        {:else if playerStage === 'selectCardsAsCurrentPlayer'}
           {#if currentAction === '0'}
             <div class="aspect-[8/11]">
               {#if selectedCards[0]}
@@ -117,7 +119,7 @@
         {/if}
       </div>
       <div aria-label="confirmation-button-area" class="grid pt-10 justify-items-center">
-        {#if availableMove === 'selectCardsAsCurrentPlayer' || availableMove === 'selectCardsAsOpposingPlayer'}
+        {#if playerStage === 'selectCardsAsCurrentPlayer' || playerStage === 'selectCardsAsOpposingPlayer'}
           <button
             on:click={() => confirmSelection(selectedCards)}
             disabled={getIsConfirmationButtonDisabled(selectedCards)}
@@ -139,7 +141,7 @@
       </div>
       <div aria-label="your-played-cards" />
     </section>
-    <Actions {G} {playerID} {availableMove} {selectAction} />
-    <Hand {G} {playerID} {availableMove} {selectedCards} {currentAction} {setSelectedCards} />
+    <Actions {G} {playerID} {playerStage} {selectAction} />
+    <Hand {G} {playerID} {playerStage} {selectedCards} {currentAction} {setSelectedCards} />
   </main>
 {/if}

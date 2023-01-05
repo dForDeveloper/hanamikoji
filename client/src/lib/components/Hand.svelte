@@ -5,7 +5,7 @@
 
   export let G: GameState;
   export let playerID: string;
-  export let availableMove: string;
+  export let playerStage: string;
   export let selectedCards: SelectedCard[];
   export let currentAction: string | null;
   export let setSelectedCards: (updatedSelectedCards: SelectedCard[]) => void;
@@ -46,7 +46,7 @@
 
 <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
   {#each G.players[playerID].hand as card, index}
-    {#if availableMove === 'selectCardsAsCurrentPlayer'}
+    {#if playerStage === 'selectCardsAsCurrentPlayer'}
       {#if getIsSelected(selectedCards, index)}
         <button on:click={() => removeCardFromSelectedCards(selectedCards, index)} class="aspect-[8/11] h-[16.2vh]">
           <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
