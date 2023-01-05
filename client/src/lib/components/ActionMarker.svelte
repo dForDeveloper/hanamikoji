@@ -18,7 +18,7 @@
     }
   }
 
-  function getClass(): string {
+  function getCssClasses(isEnabled: boolean, isHoverable: boolean): string {
     let cssClass = 'block object-fill object-center rounded-md';
     if (!isEnabled) {
       cssClass = cssClass + ' grayscale';
@@ -30,4 +30,4 @@
   }
 </script>
 
-<img src={`/images/action${index}.webp`} alt={getAlt(index)} class={getClass()} />
+<img src={`/images/action${index}.webp`} alt={getAlt(index)} class={getCssClasses(isEnabled, isHoverable)} />

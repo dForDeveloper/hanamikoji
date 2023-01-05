@@ -1,16 +1,15 @@
 <script lang="ts">
   import ActionMarker from '$lib/components/ActionMarker.svelte';
   import Card from '$lib/components/Card.svelte';
-  import type { GameState } from 'game-logic';
+  import type { Player } from 'game-logic';
 
-  export let G: GameState;
-  export let opponentPlayerID: string;
+  export let player: Player;
 </script>
 
 <section aria-label="opponent-actions" class="flex flex-row justify-evenly space-x-2">
-  {#each Object.values(G.players[opponentPlayerID].actions) as action, i}
+  {#each Object.values(player.actions) as action, i}
     <div class="relative aspect-[8/11] h-[16.2vh] grid items-start justify-center">
-      <div class="aspect-square disabled:cursor-default aspect-square rounded-md h-[8vh] shadow-sm shadow-black">
+      <div class="aspect-square aspect-square rounded-md h-[8vh] shadow-sm shadow-black">
         <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
       </div>
       {#if action.savedCard}
@@ -30,7 +29,7 @@
   {/each}
 </section>
 <section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
-  {#each G.players[opponentPlayerID].hand as card}
+  {#each player.hand as _}
     <div class="aspect-[8/11] h-[16.2vh]">
       <Card type="back" />
     </div>

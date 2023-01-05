@@ -6,7 +6,7 @@
   import Opponent from '$lib/components/Opponent.svelte';
   import { getInstructions } from '$lib/utils';
   import { onDestroy } from 'svelte';
-  import type { GameState, GeishaCard } from 'game-logic';
+  import type { GameState, GeishaCard, Player } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
   import type { SelectedCard } from '$lib/types';
 
@@ -41,6 +41,10 @@
 
   function getGeishaCards(G: GameState): GeishaCard[] {
     return Object.values(G.geisha);
+  }
+
+  function getPlayer(G: GameState, id: string): Player {
+    return G.players[id];
   }
 
   function getSelectedCardsToDisplay(currentAction: string, selectedCards: SelectedCard[]): SelectedCard[] {
@@ -80,7 +84,7 @@
 
 {#if G && ctx}
   <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito">
-    <Opponent {G} {opponentPlayerID} />
+    <Opponent player={getPlayer(G, opponentPlayerID)} />
     <section aria-label="game-interface" class="grid grid-rows-[1fr_16.2vh_1fr]">
       <div aria-label="instruction" class="place-self-center max-w-prose h-full">
         {#each getInstructions(currentAction, playerStage, opponentStage) as line}
@@ -116,7 +120,7 @@
           {/if}
         {:else if opponentStage}
           {#if opponentStage === 'draw'}
-            <Deck handleClick={() => {}} isDisabled={true} />
+            <Deck handleClick={() => false} isDisabled={true} />
           {:else if opponentStage === 'selectCardsAsCurrentPlayer'}
             {#if currentAction === '0' || currentAction === '1' || currentAction === '2'}
               <div class="flex flex-row justify-center space-x-2">
@@ -153,7 +157,7 @@
       </div>
       <div aria-label="your-played-cards" />
     </section>
-    <Actions {G} {playerID} {playerStage} {selectAction} />
-    <Hand {G} {playerID} {playerStage} {selectedCards} {currentAction} {setSelectedCards} />
+    <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} />
+    <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCards} />
   </main>
 {/if}
