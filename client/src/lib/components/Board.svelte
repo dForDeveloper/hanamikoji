@@ -43,16 +43,12 @@
     return Object.values(G.geisha);
   }
 
-  function getAvailableMove(ctx: Ctx): string {
-    if (ctx.activePlayers && ctx.activePlayers[playerID]) {
-      return ctx.activePlayers[playerID];
-    } else {
-      return '';
-    }
-  }
-
   function getSelectedCardsToDisplay(currentAction: string, selectedCards: SelectedCard[]): SelectedCard[] {
     return selectedCards.slice(0, Number(currentAction) + 1);
+  }
+
+  function drawCard(): void {
+    client.moves.draw();
   }
 
   function selectAction(actionIndex: string): void {
@@ -92,29 +88,35 @@
         {/each}
       </div>
       <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
-        {#if playerStage === 'draw'}
-          <Deck handleClick={() => client.moves.draw()} />
-        {:else if playerStage === 'selectCardsAsCurrentPlayer'}
-          {#if currentAction === '0'}
-            <div class="aspect-[8/11]">
-              {#if selectedCards[0]}
-                <Card type="item" color={selectedCards[0].color} />
-              {:else}
-                <Card type="empty" />
-              {/if}
-            </div>
-          {:else if currentAction === '1' || currentAction === '2'}
-            <div class="flex flex-row justify-center space-x-2">
-              {#each getSelectedCardsToDisplay(currentAction, selectedCards) as selectedCard, i}
-                <div class="aspect-[8/11] h-[16.2vh]">
-                  {#if selectedCard && i <= Number(currentAction)}
-                    <Card type="item" color={selectedCard.color} />
-                  {:else}
-                    <Card type="empty" />
-                  {/if}
-                </div>
-              {/each}
-            </div>
+        {#if playerStage}
+          {#if playerStage === 'draw'}
+            <Deck handleClick={() => drawCard()} isDisabled={false} />
+          {:else if playerStage === 'selectCardsAsCurrentPlayer'}
+            {#if currentAction === '0'}
+              <div class="aspect-[8/11]">
+                {#if selectedCards[0]}
+                  <Card type="item" color={selectedCards[0].color} />
+                {:else}
+                  <Card type="empty" />
+                {/if}
+              </div>
+            {:else if currentAction === '1' || currentAction === '2'}
+              <div class="flex flex-row justify-center space-x-2">
+                {#each getSelectedCardsToDisplay(currentAction, selectedCards) as selectedCard, i}
+                  <div class="aspect-[8/11] h-[16.2vh]">
+                    {#if selectedCard && i <= Number(currentAction)}
+                      <Card type="item" color={selectedCard.color} />
+                    {:else}
+                      <Card type="empty" />
+                    {/if}
+                  </div>
+                {/each}
+              </div>
+            {/if}
+          {/if}
+        {:else if opponentStage}
+          {#if opponentStage === 'draw'}
+              <Deck handleClick={() => {}} isDisabled={true} />
           {/if}
         {/if}
       </div>

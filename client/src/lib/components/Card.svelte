@@ -46,15 +46,15 @@
     [Color.PURPLE]: 'purple item card - 2 points',
   };
 
-  function getItemClass() {
-    let itemClass = 'block h-[16.2vh] object-center rounded-xl shadow-sm shadow-black w-full';
+  function getCssClasses() {
+    let cssClasses = 'block h-[16.2vh] object-center rounded-xl shadow-sm shadow-black w-full';
     if (isSelected) {
-      itemClass = itemClass + ' -translate-y-6';
+      cssClasses = cssClasses + ' -translate-y-6';
     }
     if (isHoverable) {
-      itemClass = itemClass + ' hover:shadow hover:shadow-black';
+      cssClasses = cssClasses + ' hover:shadow hover:shadow-black';
     }
-    return itemClass;
+    return cssClasses;
   }
 </script>
 
@@ -65,9 +65,9 @@
     class="block h-[20vh] object-fill object-center rounded-xl shadow-sm shadow-black"
   />
 {:else if type === 'item'}
-  <img src={colorToItemSource[color]} alt={colorToItemAlt[color]} class={getItemClass()} />
+  <img src={colorToItemSource[color]} alt={colorToItemAlt[color]} class={getCssClasses()} />
 {:else if type === 'back'}
-  <img src="/images/item-back.webp" alt="back side of an item card" class={getItemClass()} />
+  <img src="/images/item-back.webp" alt="back side of an item card" class={getCssClasses()} />
 {:else if type === 'empty'}
   <div class="aspect-[8/11] h-[16.2vh] border-2 border-black border-dashed rounded-xl" />
 {/if}
