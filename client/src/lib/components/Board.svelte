@@ -116,7 +116,17 @@
           {/if}
         {:else if opponentStage}
           {#if opponentStage === 'draw'}
-              <Deck handleClick={() => {}} isDisabled={true} />
+            <Deck handleClick={() => {}} isDisabled={true} />
+          {:else if opponentStage === 'selectCardsAsCurrentPlayer'}
+            {#if currentAction === '0' || currentAction === '1' || currentAction === '2'}
+              <div class="flex flex-row justify-center space-x-2">
+                {#each Array(Number(currentAction) + 1) as _}
+                  <div class="aspect-[8/11] h-[16.2vh]">
+                    <Card type="empty" />
+                  </div>
+                {/each}
+              </div>
+            {/if}
           {/if}
         {/if}
       </div>
