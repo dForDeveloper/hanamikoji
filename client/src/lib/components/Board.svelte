@@ -6,7 +6,7 @@
   import Opponent from '$lib/components/Opponent.svelte';
   import { getInstructions } from '$lib/utils';
   import { onDestroy } from 'svelte';
-  import type { GameState, GeishaCard, Player } from 'game-logic';
+  import type { GameState, GeishaCard, ItemCard, Player } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
   import type { SelectedCard } from '$lib/types';
 
@@ -50,6 +50,14 @@
 
   function getSelectedCardsToDisplay(currentAction: string, selectedCards: SelectedCard[]): SelectedCard[] {
     return selectedCards.slice(0, Number(currentAction) + 1);
+  }
+
+  function getPresentedCardsToDisplay(G: GameState, currentAction: string): ItemCard[] {
+    if (currentAction === '2') {
+      return G.presentedCards;
+    } else {
+      return G.presentedPairs.flat();
+    }
   }
 
   function drawCard(): void {
@@ -152,24 +160,27 @@
           {#if opponentStage === 'draw'}
             <Deck handleClick={() => false} isDisabled={true} />
           {:else if opponentStage === 'selectCardsAsCurrentPlayer' || opponentStage === 'selectCardsAsOpposingPlayer'}
-            {#if currentAction === '0' || currentAction === '1' || currentAction === '2'}
-              <div class="flex flex-row justify-center space-x-2">
-                {#if opponentStage === 'selectCardsAsCurrentPlayer'}
-                  {#each Array(Number(currentAction) + 1) as _}
-                    <div class="aspect-[8/11] h-[16.2vh]">
-                      <Card type="empty" />
-                    </div>
-                  {/each}
-                {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
-                  {#each G.presentedCards as card}
-                    <div class="aspect-[8/11] h-[16.2vh]">
-                      <Card type="item" color={card.color} />
-                    </div>
-                  {/each}
-                {/if}
-              </div>
-            <!-- {:else if currentAction === '3'} -->
-            {/if}
+            <div class="flex flex-row justify-center space-x-2">
+              {#if opponentStage === 'selectCardsAsCurrentPlayer'}
+                {#each Array(Number(currentAction) + 1) as _, i}
+                  {#if currentAction === '3' && i === 2}
+                    <div class="aspect-[8/11] h-[16.2vh]"></div>
+                  {/if}
+                  <div class="aspect-[8/11] h-[16.2vh]">
+                    <Card type="empty" />
+                  </div>
+                {/each}
+              {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
+                {#each getPresentedCardsToDisplay(G, currentAction) as card, i}
+                  {#if currentAction === '3' && i === 2}
+                    <div class="aspect-[8/11] h-[16.2vh]"></div>
+                  {/if}
+                  <div class="aspect-[8/11] h-[16.2vh]">
+                    <Card type="item" color={card.color} />
+                  </div>
+                {/each}
+              {/if}
+            </div>
           {/if}
         {/if}
       </div>
