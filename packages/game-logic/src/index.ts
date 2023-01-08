@@ -8,32 +8,8 @@ export const Hanamikoji: Game<GameState> = {
     return {
       secret: { deck, unusedItemCard },
       geisha: {
-        [Color.PINK]: {
-          color: Color.PINK,
-          charmPoints: 5,
-          favoredPlayerID: null,
-          playerItemCards: { 0: [], 1: [] },
-        },
-        [Color.GREEN]: {
-          color: Color.GREEN,
-          charmPoints: 4,
-          favoredPlayerID: null,
-          playerItemCards: { 0: [], 1: [] },
-        },
-        [Color.ORANGE]: {
-          color: Color.ORANGE,
-          charmPoints: 3,
-          favoredPlayerID: null,
-          playerItemCards: { 0: [], 1: [] },
-        },
-        [Color.BLUE]: {
-          color: Color.BLUE,
-          charmPoints: 3,
-          favoredPlayerID: null,
-          playerItemCards: { 0: [], 1: [] },
-        },
-        [Color.YELLOW]: {
-          color: Color.YELLOW,
+        [Color.PURPLE]: {
+          color: Color.PURPLE,
           charmPoints: 2,
           favoredPlayerID: null,
           playerItemCards: { 0: [], 1: [] },
@@ -44,9 +20,33 @@ export const Hanamikoji: Game<GameState> = {
           favoredPlayerID: null,
           playerItemCards: { 0: [], 1: [] },
         },
-        [Color.PURPLE]: {
-          color: Color.PURPLE,
+        [Color.YELLOW]: {
+          color: Color.YELLOW,
           charmPoints: 2,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.BLUE]: {
+          color: Color.BLUE,
+          charmPoints: 3,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.ORANGE]: {
+          color: Color.ORANGE,
+          charmPoints: 3,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.GREEN]: {
+          color: Color.GREEN,
+          charmPoints: 4,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.PINK]: {
+          color: Color.PINK,
+          charmPoints: 5,
           favoredPlayerID: null,
           playerItemCards: { 0: [], 1: [] },
         },
@@ -326,13 +326,13 @@ export const Hanamikoji: Game<GameState> = {
 
 function getDeckAndHands(random: Random): DeckAndHands {
   const stackedDeck = [
-    ...Array(5).fill({ charmPoints: 5, color: Color.PINK }),
-    ...Array(4).fill({ charmPoints: 4, color: Color.GREEN }),
-    ...Array(3).fill({ charmPoints: 3, color: Color.ORANGE }),
-    ...Array(3).fill({ charmPoints: 3, color: Color.BLUE }),
-    ...Array(2).fill({ charmPoints: 2, color: Color.YELLOW }),
-    ...Array(2).fill({ charmPoints: 2, color: Color.RED }),
     ...Array(2).fill({ charmPoints: 2, color: Color.PURPLE }),
+    ...Array(2).fill({ charmPoints: 2, color: Color.RED }),
+    ...Array(2).fill({ charmPoints: 2, color: Color.YELLOW }),
+    ...Array(3).fill({ charmPoints: 3, color: Color.BLUE }),
+    ...Array(3).fill({ charmPoints: 3, color: Color.ORANGE }),
+    ...Array(4).fill({ charmPoints: 4, color: Color.GREEN }),
+    ...Array(5).fill({ charmPoints: 5, color: Color.PINK }),
   ];
 
   const deck: ItemCard[] = random.Shuffle(stackedDeck);
@@ -363,13 +363,13 @@ function setGameStateForNextRound({ G, random }: { G: GameState; random: Random 
   const { deck, unusedItemCard, player0Hand, player1Hand } = getDeckAndHands(random);
   G.secret = { deck, unusedItemCard };
   G.geisha = {
-    [Color.PINK]: { ...G.geisha[Color.PINK], playerItemCards: { 0: [], 1: [] } },
-    [Color.GREEN]: { ...G.geisha[Color.GREEN], playerItemCards: { 0: [], 1: [] } },
-    [Color.ORANGE]: { ...G.geisha[Color.ORANGE], playerItemCards: { 0: [], 1: [] } },
-    [Color.BLUE]: { ...G.geisha[Color.BLUE], playerItemCards: { 0: [], 1: [] } },
-    [Color.YELLOW]: { ...G.geisha[Color.YELLOW], playerItemCards: { 0: [], 1: [] } },
-    [Color.RED]: { ...G.geisha[Color.RED], playerItemCards: { 0: [], 1: [] } },
     [Color.PURPLE]: { ...G.geisha[Color.PURPLE], playerItemCards: { 0: [], 1: [] } },
+    [Color.RED]: { ...G.geisha[Color.RED], playerItemCards: { 0: [], 1: [] } },
+    [Color.YELLOW]: { ...G.geisha[Color.YELLOW], playerItemCards: { 0: [], 1: [] } },
+    [Color.BLUE]: { ...G.geisha[Color.BLUE], playerItemCards: { 0: [], 1: [] } },
+    [Color.ORANGE]: { ...G.geisha[Color.ORANGE], playerItemCards: { 0: [], 1: [] } },
+    [Color.GREEN]: { ...G.geisha[Color.GREEN], playerItemCards: { 0: [], 1: [] } },
+    [Color.PINK]: { ...G.geisha[Color.PINK], playerItemCards: { 0: [], 1: [] } },
   };
   G.players = {
     0: {
@@ -399,13 +399,13 @@ function setGameStateForNextRound({ G, random }: { G: GameState; random: Random 
 }
 
 export enum Color {
-  PINK = 'pink',
-  GREEN = 'green',
-  ORANGE = 'orange',
-  BLUE = 'blue',
-  YELLOW = 'yellow',
-  RED = 'red',
   PURPLE = 'purple',
+  RED = 'red',
+  YELLOW = 'yellow',
+  BLUE = 'blue',
+  ORANGE = 'orange',
+  GREEN = 'green',
+  PINK = 'pink',
 }
 
 export interface GeishaCard {
