@@ -19,6 +19,7 @@
   let opponentStage: string;
   let currentAction: string;
   let selectedCards: SelectedCard[] = [null, null, null, null];
+  let presentedSelection = '';
 
   const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
     if (gameState.G && gameState.ctx) {
@@ -63,22 +64,35 @@
     selectedCards = updatedSelectedCards;
   }
 
-  function confirmSelection(selectedCards: SelectedCard[]): void {
+  function confirmSelection(selectedCards: SelectedCard[], presentedSelection: string): void {
     if (playerStage === 'selectCardsAsCurrentPlayer') {
       const arg = selectedCards.filter((maybeCard) => maybeCard !== null).map((itemCard) => itemCard!.index.toString());
       client.moves.selectCardsAsCurrent(arg);
       setSelectedCards([null, null, null, null]);
+    } else if (playerStage === 'selectCardsAsOpposingPlayer') {
+      client.moves.selectCardsAsOpposing(presentedSelection);
+      presentedSelection = '';
     }
   }
 
-  function getIsConfirmationButtonDisabled(selectedCards: SelectedCard[]): boolean {
+  function getIsConfirmationButtonDisabled(selectedCards: SelectedCard[], presentedSelection: string): boolean {
     if (playerStage === 'selectCardsAsCurrentPlayer') {
       const requiredSelectedCardCount = Number(currentAction) + 1;
       const nonNullSelectedCardCount = selectedCards.filter((maybeCard) => maybeCard !== null).length;
       return nonNullSelectedCardCount !== requiredSelectedCardCount;
+    } else if (playerStage === 'selectCardsAsOpposingPlayer') {
+      return presentedSelection === '';
     } else {
       return false;
     }
+  }
+
+  function selectFromPresented(i: number): void {
+    presentedSelection = i.toString();
+  }
+
+  function deselectFromPresented(): void {
+    presentedSelection = '';
   }
 </script>
 
@@ -117,6 +131,29 @@
                 {/each}
               </div>
             {/if}
+          {:else if playerStage === 'selectCardsAsOpposingPlayer'}
+            {#if currentAction === '2'}
+              <div class="flex flex-row justify-center space-x-2">
+                {#each G.presentedCards as card, i}
+                  {#if presentedSelection === i.toString()}
+                    <button
+                      on:click={() => deselectFromPresented()}
+                      class="aspect-[8/11] h-[16.2vh]"
+                    >
+                      <Card type="item" color={card.color} isSelected={true} isHoverable={true} selectionDirection={'down'}/>
+                    </button>
+                  {:else}
+                    <button
+                      on:click={() => selectFromPresented(i)}
+                      class="aspect-[8/11] h-[16.2vh]"
+                    >
+                      <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
+                    </button>
+                  {/if}
+                {/each}
+              </div>
+            <!-- {:else if currentAction === '3'} -->
+            {/if}
           {/if}
         {:else if opponentStage}
           {#if opponentStage === 'draw'}
@@ -148,8 +185,8 @@
       <div aria-label="confirmation-button-area" class="grid pt-10 justify-items-center">
         {#if playerStage === 'selectCardsAsCurrentPlayer' || playerStage === 'selectCardsAsOpposingPlayer'}
           <button
-            on:click={() => confirmSelection(selectedCards)}
-            disabled={getIsConfirmationButtonDisabled(selectedCards)}
+            on:click={() => confirmSelection(selectedCards, presentedSelection)}
+            disabled={getIsConfirmationButtonDisabled(selectedCards, presentedSelection)}
             class="bg-violet-300 text-xl h-14 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:bg-gray-200 disabled:shadow-none"
           >
             confirm
