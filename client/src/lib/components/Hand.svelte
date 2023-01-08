@@ -14,7 +14,7 @@
     return maybeSelectedCard !== undefined;
   }
 
-  function addCardToSelectedCards(selectedCard: SelectedCard, currentAction: string | null): void {
+  function selectCardFromHand(selectedCard: SelectedCard, currentAction: string | null): void {
     if (currentAction === '0') {
       setSelectedCards([selectedCard, null, null, null]);
     } else {
@@ -34,7 +34,7 @@
     }
   }
 
-  function removeCardFromSelectedCards(selectedCards: SelectedCard[], indexToRemove: number): void {
+  function deselectCardFromHand(selectedCards: SelectedCard[], indexToRemove: number): void {
     const updatedSelectedCards = selectedCards.map((maybeCard) => {
       if (maybeCard && maybeCard.index === indexToRemove) return null;
       return maybeCard;
@@ -47,12 +47,12 @@
   {#each player.hand as card, index}
     {#if playerStage === 'selectCardsAsCurrentPlayer'}
       {#if getIsSelected(selectedCards, index)}
-        <button on:click={() => removeCardFromSelectedCards(selectedCards, index)} class="aspect-[8/11] h-[16.2vh]">
+        <button on:click={() => deselectCardFromHand(selectedCards, index)} class="aspect-[8/11] h-[16.2vh]">
           <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
         </button>
       {:else}
         <button
-          on:click={() => addCardToSelectedCards({ ...card, index }, currentAction)}
+          on:click={() => selectCardFromHand({ ...card, index }, currentAction)}
           class="aspect-[8/11] h-[16.2vh]"
         >
           <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
