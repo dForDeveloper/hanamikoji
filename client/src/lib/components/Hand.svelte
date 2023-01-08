@@ -9,7 +9,7 @@
   export let currentAction: string | null;
   export let setSelectedCards: (updatedSelectedCards: SelectedCard[]) => void;
 
-  function getIsSelected(selectedCards: SelectedCard[], index: number): boolean {
+  function getIsSelectedFromHand(selectedCards: SelectedCard[], index: number): boolean {
     const maybeSelectedCard = selectedCards.find((maybeCard) => maybeCard && maybeCard.index === index);
     return maybeSelectedCard !== undefined;
   }
@@ -46,7 +46,7 @@
 <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
   {#each player.hand as card, index}
     {#if playerStage === 'selectCardsAsCurrentPlayer'}
-      {#if getIsSelected(selectedCards, index)}
+      {#if getIsSelectedFromHand(selectedCards, index)}
         <button on:click={() => deselectCardFromHand(selectedCards, index)} class="aspect-[8/11] h-[16.2vh]">
           <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
         </button>

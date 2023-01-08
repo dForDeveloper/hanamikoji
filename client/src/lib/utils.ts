@@ -41,7 +41,7 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
       case 'draw':
         return ["It's your turn.", 'Draw a card.'];
       case 'selectAction':
-        return ['Select an action.'];
+        return ['Select an action from the options below.'];
       case 'selectCardsAsCurrentPlayer':
         switch (currentAction) {
           case '0':
