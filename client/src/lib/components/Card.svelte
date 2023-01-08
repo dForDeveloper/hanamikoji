@@ -6,6 +6,7 @@
   export let isSelected = false;
   export let isHoverable = false;
   export let isInverted = false;
+  export let backAlt = 'back side of an item card';
 
   const colorToGeishaSource = {
     [Color.PINK]: '/images/pink-geisha.webp',
@@ -47,6 +48,10 @@
     [Color.PURPLE]: 'purple item card - 2 points',
   };
 
+  function getItemCardAlt(color: Color): string {
+    return isSelected ? `selected ${colorToItemAlt[color]}` : colorToItemAlt[color];
+  }
+
   function getCssClasses() {
     let cssClasses = 'block h-[16.2vh] w-[11.53vh] object-center rounded-xl shadow-sm shadow-black w-full';
     if (isSelected) {
@@ -70,9 +75,9 @@
     class="block h-[20vh] w-[13.31vh] object-fill object-center rounded-xl shadow-sm shadow-black"
   />
 {:else if type === 'item'}
-  <img src={colorToItemSource[color]} alt={colorToItemAlt[color]} class={getCssClasses()} />
+  <img src={colorToItemSource[color]} alt={getItemCardAlt(color)} class={getCssClasses()} />
 {:else if type === 'back'}
-  <img src="/images/item-back.webp" alt="back side of an item card" class={getCssClasses()} />
+  <img src="/images/item-back.webp" alt={backAlt} class={getCssClasses()} />
 {:else if type === 'empty'}
   <div class="h-[16.2vh] w-[11.53vh] border-2 border-black border-dashed rounded-xl" />
 {/if}

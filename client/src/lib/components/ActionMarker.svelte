@@ -4,18 +4,7 @@
   export let isHoverable: boolean;
 
   function getAlt(index: number): string {
-    switch (index) {
-      case 1:
-        return 'pictogram of one card covered by a checkmark';
-      case 2:
-        return 'pictogram of two cards covered by an X';
-      case 3:
-        return 'pictogram of three cards with an arrow on one card pointing up and an arrow on each of the other two cards pointing down';
-      case 4:
-        return 'pictorgram of two pairs of cards with an arrow on one pair pointing up and an arrow on the other pair pointing down';
-      default:
-        return `pictogram of action ${index}`;
-    }
+    return isEnabled ? `action ${index} marker` : `disabled action ${index + 1} marker`;
   }
 
   function getCssClasses(isEnabled: boolean, isHoverable: boolean): string {
