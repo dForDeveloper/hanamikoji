@@ -95,8 +95,13 @@
     }
   }
 
-  function selectFromPresented(i: number): void {
-    presentedSelection = i.toString();
+  function selectFromPresented(currentAction: string, i: number): void {
+    if (currentAction === '2') {
+      presentedSelection = i.toString();
+    } else if (currentAction === '3') {
+      if (i <= 1) presentedSelection = '0';
+      if (i >= 2) presentedSelection = '1';
+    }
   }
 
   function deselectFromPresented(): void {
@@ -141,14 +146,31 @@
                       <Card type="item" color={card.color} isSelected={true} isHoverable={true} isInverted={true} />
                     </button>
                   {:else}
-                    <button on:click={() => selectFromPresented(i)} class="h-[16.2vh] w-[11.53vh]">
+                    <button on:click={() => selectFromPresented(currentAction, i)} class="h-[16.2vh] w-[11.53vh]">
                       <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
                     </button>
                   {/if}
                 {/each}
               </div>
             {:else if currentAction === '3'}
-              <div class="flex flex-row justify-center space-x-2" />
+              <div class="flex flex-row justify-center space-x-2">
+                <div class="flex flex-row justify-center space-x-2">
+                  {#each getPresentedCardsToDisplay(G, currentAction) as card, i}
+                    {#if currentAction === '3' && i === 2}
+                      <div class="h-[16.2vh] w-[11.53vh]" />
+                    {/if}
+                    {#if i <= 1 && presentedSelection === '0' || i >= 2 && presentedSelection === '1'}
+                      <button on:click={() => deselectFromPresented()} class="h-[16.2vh] w-[11.53vh]">
+                        <Card type="item" color={card.color} isSelected={true} isHoverable={true} isInverted={true} />
+                      </button>
+                    {:else}
+                      <button on:click={() => selectFromPresented(currentAction, i)} class="h-[16.2vh] w-[11.53vh]">
+                        <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
+                      </button>
+                    {/if}
+                  {/each}
+                </div>
+              </div>
             {/if}
           {/if}
         {:else if opponentStage}
