@@ -179,7 +179,7 @@
           {/if}
         {/if}
       </div>
-      <div aria-label="confirmation-button-area" class="grid pt-10 justify-items-center">
+      <div class="grid pt-10 justify-items-center">
         {#if playerStage === 'selectCardsAsCurrentPlayer' || playerStage === 'selectCardsAsOpposingPlayer'}
           <button
             on:click={() => confirmSelection(selectedCards, presentedSelection)}
@@ -192,7 +192,7 @@
       </div>
     </section>
     <section aria-label="game-board" class="grid grid-rows-[11fr_10fr_11fr]">
-      <div aria-label="opponent-played-cards" />
+      <section aria-label="opponent-played-cards" />
       <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-2 h-full">
         {#each getGeishaCards(G) as geishaCard}
           <div>
@@ -200,7 +200,7 @@
           </div>
         {/each}
       </div>
-      <div aria-label="your-played-cards" />
+      <section aria-label="your-played-cards" />
     </section>
     <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} />
     <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCards} />
