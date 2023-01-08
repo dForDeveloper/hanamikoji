@@ -131,6 +131,17 @@
                 {/each}
               </div>
             {/if}
+          {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
+            {#if currentAction === '2'}
+              <div class="flex flex-row justify-center space-x-2">
+                {#each G.presentedCards as card}
+                  <div class="aspect-[8/11] h-[16.2vh]">
+                    <Card type="item" color={card.color} />
+                  </div>
+                {/each}
+              </div>
+            <!-- {:else if currentAction === '3'} -->
+            {/if}
           {/if}
         {/if}
       </div>
