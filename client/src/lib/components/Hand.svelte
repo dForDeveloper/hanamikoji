@@ -7,7 +7,7 @@
   export let playerStage: string;
   export let selectedCards: SelectedCard[];
   export let currentAction: string | null;
-  export let setSelectedCards: (updatedSelectedCards: SelectedCard[]) => void;
+  export let setSelectedCardsFromHand: (updatedSelectedCards: SelectedCard[]) => void;
 
   function getIsSelectedFromHand(selectedCards: SelectedCard[], index: number): boolean {
     const maybeSelectedCard = selectedCards.find((maybeCard) => maybeCard && maybeCard.index === index);
@@ -16,7 +16,7 @@
 
   function selectCardFromHand(selectedCard: SelectedCard, currentAction: string | null): void {
     if (currentAction === '0') {
-      setSelectedCards([selectedCard, null, null, null]);
+      setSelectedCardsFromHand([selectedCard, null, null, null]);
     } else {
       const nonNullSelectedCardCount = selectedCards.filter((maybeCard) => maybeCard !== null).length;
       const enoughCardsHaveNotBeenSelected = nonNullSelectedCardCount <= Number(currentAction);
@@ -29,7 +29,7 @@
           if (i === maybeFirstNullIndex) return selectedCard;
           return maybeCard;
         });
-        setSelectedCards(updatedSelectedCards);
+        setSelectedCardsFromHand(updatedSelectedCards);
       }
     }
   }
@@ -39,7 +39,7 @@
       if (maybeCard && maybeCard.index === indexToRemove) return null;
       return maybeCard;
     });
-    setSelectedCards(updatedSelectedCards);
+    setSelectedCardsFromHand(updatedSelectedCards);
   }
 </script>
 

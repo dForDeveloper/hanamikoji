@@ -64,7 +64,7 @@
     client.moves.selectAction(actionIndex);
   }
 
-  function setSelectedCards(updatedSelectedCards: SelectedCard[]): void {
+  function setSelectedCardsFromHand(updatedSelectedCards: SelectedCard[]): void {
     selectedCards = updatedSelectedCards;
   }
 
@@ -139,6 +139,6 @@
       <section aria-label="your-played-cards" />
     </section>
     <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} />
-    <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCards} />
+    <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCardsFromHand} />
   </main>
 {/if}
