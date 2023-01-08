@@ -121,7 +121,7 @@
             <div class="flex flex-row justify-center space-x-2">
               {#each getSelectedCardsToDisplay(currentAction, selectedCards) as selectedCard, i}
                 {#if currentAction === '3' && i === 2}
-                  <div class="aspect-[8/11] h-[16.2vh]"></div>
+                  <div class="aspect-[8/11] h-[16.2vh]" />
                 {/if}
                 <div class="aspect-[8/11] h-[16.2vh]">
                   {#if selectedCard}
@@ -137,23 +137,18 @@
               <div class="flex flex-row justify-center space-x-2">
                 {#each G.presentedCards as card, i}
                   {#if presentedSelection === i.toString()}
-                    <button
-                      on:click={() => deselectFromPresented()}
-                      class="aspect-[8/11] h-[16.2vh]"
-                    >
-                      <Card type="item" color={card.color} isSelected={true} isHoverable={true} selectionDirection={'down'}/>
+                    <button on:click={() => deselectFromPresented()} class="aspect-[8/11] h-[16.2vh]">
+                      <Card type="item" color={card.color} isSelected={true} isHoverable={true} isInverted={true} />
                     </button>
                   {:else}
-                    <button
-                      on:click={() => selectFromPresented(i)}
-                      class="aspect-[8/11] h-[16.2vh]"
-                    >
+                    <button on:click={() => selectFromPresented(i)} class="aspect-[8/11] h-[16.2vh]">
                       <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
                     </button>
                   {/if}
                 {/each}
               </div>
-            <!-- {:else if currentAction === '3'} -->
+            {:else if currentAction === '3'}
+              <div class="flex flex-row justify-center space-x-2" />
             {/if}
           {/if}
         {:else if opponentStage}
@@ -164,7 +159,7 @@
               {#if opponentStage === 'selectCardsAsCurrentPlayer'}
                 {#each Array(Number(currentAction) + 1) as _, i}
                   {#if currentAction === '3' && i === 2}
-                    <div class="aspect-[8/11] h-[16.2vh]"></div>
+                    <div class="aspect-[8/11] h-[16.2vh]" />
                   {/if}
                   <div class="aspect-[8/11] h-[16.2vh]">
                     <Card type="empty" />
@@ -173,7 +168,7 @@
               {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
                 {#each getPresentedCardsToDisplay(G, currentAction) as card, i}
                   {#if currentAction === '3' && i === 2}
-                    <div class="aspect-[8/11] h-[16.2vh]"></div>
+                    <div class="aspect-[8/11] h-[16.2vh]" />
                   {/if}
                   <div class="aspect-[8/11] h-[16.2vh]">
                     <Card type="item" color={card.color} />

@@ -51,10 +51,7 @@
           <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
         </button>
       {:else}
-        <button
-          on:click={() => selectCardFromHand({ ...card, index }, currentAction)}
-          class="aspect-[8/11] h-[16.2vh]"
-        >
+        <button on:click={() => selectCardFromHand({ ...card, index }, currentAction)} class="aspect-[8/11] h-[16.2vh]">
           <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
         </button>
       {/if}

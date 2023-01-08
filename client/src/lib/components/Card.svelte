@@ -5,7 +5,7 @@
   export let color: Color = Color.PINK;
   export let isSelected = false;
   export let isHoverable = false;
-  export let selectionDirection = 'up';
+  export let isInverted = false;
 
   const colorToGeishaSource = {
     [Color.PINK]: '/images/pink-geisha.webp',
@@ -50,10 +50,10 @@
   function getCssClasses() {
     let cssClasses = 'block h-[16.2vh] object-center rounded-xl shadow-sm shadow-black w-full';
     if (isSelected) {
-      if (selectionDirection === 'up') {
-        cssClasses = cssClasses + ' -translate-y-6';
-      } else {
+      if (isInverted) {
         cssClasses = cssClasses + ' translate-y-6';
+      } else {
+        cssClasses = cssClasses + ' -translate-y-6';
       }
     }
     if (isHoverable) {
