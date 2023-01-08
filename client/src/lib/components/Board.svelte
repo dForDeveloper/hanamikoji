@@ -1,9 +1,9 @@
 <script lang="ts">
   import Actions from '$lib/components/Actions.svelte';
   import Card from '$lib/components/Card.svelte';
-  import Deck from '$lib/components/Deck.svelte';
   import Hand from '$lib/components/Hand.svelte';
   import Opponent from '$lib/components/Opponent.svelte';
+  import SelectedCardArea from '$lib/components/SelectedCardArea.svelte';
   import { getInstructions } from '$lib/utils';
   import { onDestroy } from 'svelte';
   import type { GameState, GeishaCard, ItemCard, Player } from 'game-logic';
@@ -48,11 +48,7 @@
     return G.players[id];
   }
 
-  function getSelectedCardsToDisplay(currentAction: string, selectedCards: SelectedCard[]): SelectedCard[] {
-    return selectedCards.slice(0, Number(currentAction) + 1);
-  }
-
-  function getPresentedCardsToDisplay(G: GameState, currentAction: string): ItemCard[] {
+  function getPresentedCards(G: GameState, currentAction: string): ItemCard[] {
     if (currentAction === '2') {
       return G.presentedCards;
     } else {
@@ -72,11 +68,15 @@
     selectedCards = updatedSelectedCards;
   }
 
+  function setPresentedSelection(updatedPresentedSelection: string): void {
+    presentedSelection = updatedPresentedSelection;
+  }
+
   function confirmSelection(selectedCards: SelectedCard[], presentedSelection: string): void {
     if (playerStage === 'selectCardsAsCurrentPlayer') {
       const arg = selectedCards.filter((maybeCard) => maybeCard !== null).map((itemCard) => itemCard!.index.toString());
       client.moves.selectCardsAsCurrent(arg);
-      setSelectedCards([null, null, null, null]);
+      setSelectedCardsFromHand([null, null, null, null]);
     } else if (playerStage === 'selectCardsAsOpposingPlayer') {
       client.moves.selectCardsAsOpposing(presentedSelection);
       presentedSelection = '';
@@ -94,19 +94,6 @@
       return false;
     }
   }
-
-  function selectFromPresented(currentAction: string, i: number): void {
-    if (currentAction === '2') {
-      presentedSelection = i.toString();
-    } else if (currentAction === '3') {
-      if (i <= 1) presentedSelection = '0';
-      if (i >= 2) presentedSelection = '1';
-    }
-  }
-
-  function deselectFromPresented(): void {
-    presentedSelection = '';
-  }
 </script>
 
 {#if G && ctx}
@@ -118,89 +105,16 @@
           <p class="text-3xl my-6">{line}</p>
         {/each}
       </div>
-      <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
-        {#if playerStage}
-          {#if playerStage === 'draw'}
-            <Deck handleClick={() => drawCard()} isDisabled={false} />
-          {:else if playerStage === 'selectCardsAsCurrentPlayer'}
-            <div class="flex flex-row justify-center space-x-2">
-              {#each getSelectedCardsToDisplay(currentAction, selectedCards) as selectedCard, i}
-                {#if currentAction === '3' && i === 2}
-                  <div class="h-[16.2vh] w-[11.53vh]" />
-                {/if}
-                <div class="h-[16.2vh] w-[11.53vh]">
-                  {#if selectedCard}
-                    <Card type="item" color={selectedCard.color} />
-                  {:else}
-                    <Card type="empty" />
-                  {/if}
-                </div>
-              {/each}
-            </div>
-          {:else if playerStage === 'selectCardsAsOpposingPlayer'}
-            {#if currentAction === '2'}
-              <div class="flex flex-row justify-center space-x-2">
-                {#each G.presentedCards as card, i}
-                  {#if presentedSelection === i.toString()}
-                    <button on:click={() => deselectFromPresented()} class="h-[16.2vh] w-[11.53vh]">
-                      <Card type="item" color={card.color} isSelected={true} isHoverable={true} isInverted={true} />
-                    </button>
-                  {:else}
-                    <button on:click={() => selectFromPresented(currentAction, i)} class="h-[16.2vh] w-[11.53vh]">
-                      <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
-                    </button>
-                  {/if}
-                {/each}
-              </div>
-            {:else if currentAction === '3'}
-              <div class="flex flex-row justify-center space-x-2">
-                <div class="flex flex-row justify-center space-x-2">
-                  {#each getPresentedCardsToDisplay(G, currentAction) as card, i}
-                    {#if currentAction === '3' && i === 2}
-                      <div class="h-[16.2vh] w-[11.53vh]" />
-                    {/if}
-                    {#if i <= 1 && presentedSelection === '0' || i >= 2 && presentedSelection === '1'}
-                      <button on:click={() => deselectFromPresented()} class="h-[16.2vh] w-[11.53vh]">
-                        <Card type="item" color={card.color} isSelected={true} isHoverable={true} isInverted={true} />
-                      </button>
-                    {:else}
-                      <button on:click={() => selectFromPresented(currentAction, i)} class="h-[16.2vh] w-[11.53vh]">
-                        <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
-                      </button>
-                    {/if}
-                  {/each}
-                </div>
-              </div>
-            {/if}
-          {/if}
-        {:else if opponentStage}
-          {#if opponentStage === 'draw'}
-            <Deck handleClick={() => false} isDisabled={true} />
-          {:else if opponentStage === 'selectCardsAsCurrentPlayer' || opponentStage === 'selectCardsAsOpposingPlayer'}
-            <div class="flex flex-row justify-center space-x-2">
-              {#if opponentStage === 'selectCardsAsCurrentPlayer'}
-                {#each Array(Number(currentAction) + 1) as _, i}
-                  {#if currentAction === '3' && i === 2}
-                    <div class="h-[16.2vh] w-[11.53vh]" />
-                  {/if}
-                  <div class="h-[16.2vh] w-[11.53vh]">
-                    <Card type="empty" />
-                  </div>
-                {/each}
-              {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
-                {#each getPresentedCardsToDisplay(G, currentAction) as card, i}
-                  {#if currentAction === '3' && i === 2}
-                    <div class="h-[16.2vh] w-[11.53vh]" />
-                  {/if}
-                  <div class="h-[16.2vh] w-[11.53vh]">
-                    <Card type="item" color={card.color} />
-                  </div>
-                {/each}
-              {/if}
-            </div>
-          {/if}
-        {/if}
-      </div>
+      <SelectedCardArea
+        presentedCards={getPresentedCards(G, currentAction)}
+        {playerStage}
+        {opponentStage}
+        {currentAction}
+        {presentedSelection}
+        {selectedCards}
+        {drawCard}
+        {setPresentedSelection}
+      />
       <div class="grid pt-10 justify-items-center">
         {#if playerStage === 'selectCardsAsCurrentPlayer' || playerStage === 'selectCardsAsOpposingPlayer'}
           <button
