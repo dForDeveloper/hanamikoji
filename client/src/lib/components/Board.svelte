@@ -121,9 +121,9 @@
             <div class="flex flex-row justify-center space-x-2">
               {#each getSelectedCardsToDisplay(currentAction, selectedCards) as selectedCard, i}
                 {#if currentAction === '3' && i === 2}
-                  <div class="aspect-[8/11] h-[16.2vh]" />
+                  <div class="h-[16.2vh] w-[11.53vh]" />
                 {/if}
-                <div class="aspect-[8/11] h-[16.2vh]">
+                <div class="h-[16.2vh] w-[11.53vh]">
                   {#if selectedCard}
                     <Card type="item" color={selectedCard.color} />
                   {:else}
@@ -137,11 +137,11 @@
               <div class="flex flex-row justify-center space-x-2">
                 {#each G.presentedCards as card, i}
                   {#if presentedSelection === i.toString()}
-                    <button on:click={() => deselectFromPresented()} class="aspect-[8/11] h-[16.2vh]">
+                    <button on:click={() => deselectFromPresented()} class="h-[16.2vh] w-[11.53vh]">
                       <Card type="item" color={card.color} isSelected={true} isHoverable={true} isInverted={true} />
                     </button>
                   {:else}
-                    <button on:click={() => selectFromPresented(i)} class="aspect-[8/11] h-[16.2vh]">
+                    <button on:click={() => selectFromPresented(i)} class="h-[16.2vh] w-[11.53vh]">
                       <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
                     </button>
                   {/if}
@@ -159,18 +159,18 @@
               {#if opponentStage === 'selectCardsAsCurrentPlayer'}
                 {#each Array(Number(currentAction) + 1) as _, i}
                   {#if currentAction === '3' && i === 2}
-                    <div class="aspect-[8/11] h-[16.2vh]" />
+                    <div class="h-[16.2vh] w-[11.53vh]" />
                   {/if}
-                  <div class="aspect-[8/11] h-[16.2vh]">
+                  <div class="h-[16.2vh] w-[11.53vh]">
                     <Card type="empty" />
                   </div>
                 {/each}
               {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
                 {#each getPresentedCardsToDisplay(G, currentAction) as card, i}
                   {#if currentAction === '3' && i === 2}
-                    <div class="aspect-[8/11] h-[16.2vh]" />
+                    <div class="h-[16.2vh] w-[11.53vh]" />
                   {/if}
-                  <div class="aspect-[8/11] h-[16.2vh]">
+                  <div class="h-[16.2vh] w-[11.53vh]">
                     <Card type="item" color={card.color} />
                   </div>
                 {/each}
@@ -195,7 +195,7 @@
       <div aria-label="opponent-played-cards" />
       <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-2 h-full">
         {#each getGeishaCards(G) as geishaCard}
-          <div class="aspect-[2/3]">
+          <div>
             <Card type="geisha" color={geishaCard.color} />
           </div>
         {/each}

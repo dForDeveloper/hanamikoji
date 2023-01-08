@@ -47,16 +47,16 @@
   {#each player.hand as card, index}
     {#if playerStage === 'selectCardsAsCurrentPlayer'}
       {#if getIsSelectedFromHand(selectedCards, index)}
-        <button on:click={() => deselectCardFromHand(selectedCards, index)} class="aspect-[8/11] h-[16.2vh]">
+        <button on:click={() => deselectCardFromHand(selectedCards, index)} class="h-[16.2vh] w-[11.53vh]">
           <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
         </button>
       {:else}
-        <button on:click={() => selectCardFromHand({ ...card, index }, currentAction)} class="aspect-[8/11] h-[16.2vh]">
+        <button on:click={() => selectCardFromHand({ ...card, index }, currentAction)} class="h-[16.2vh] w-[11.53vh]">
           <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
         </button>
       {/if}
     {:else}
-      <button disabled class="aspect-[8/11] h-[16.2vh]">
+      <button disabled class="h-[16.2vh] w-[11.53vh]">
         <Card type="item" color={card.color} isSelected={false} isHoverable={false} />
       </button>
     {/if}

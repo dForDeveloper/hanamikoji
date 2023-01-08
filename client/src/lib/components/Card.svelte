@@ -48,7 +48,7 @@
   };
 
   function getCssClasses() {
-    let cssClasses = 'block h-[16.2vh] object-center rounded-xl shadow-sm shadow-black w-full';
+    let cssClasses = 'block h-[16.2vh] w-[11.53vh] object-center rounded-xl shadow-sm shadow-black w-full';
     if (isSelected) {
       if (isInverted) {
         cssClasses = cssClasses + ' translate-y-6';
@@ -67,12 +67,12 @@
   <img
     src={colorToGeishaSource[color]}
     alt={colorToGeishaAlt[color]}
-    class="block h-[20vh] object-fill object-center rounded-xl shadow-sm shadow-black"
+    class="block h-[20vh] w-[13.31vh] object-fill object-center rounded-xl shadow-sm shadow-black"
   />
 {:else if type === 'item'}
   <img src={colorToItemSource[color]} alt={colorToItemAlt[color]} class={getCssClasses()} />
 {:else if type === 'back'}
   <img src="/images/item-back.webp" alt="back side of an item card" class={getCssClasses()} />
 {:else if type === 'empty'}
-  <div class="aspect-[8/11] h-[16.2vh] border-2 border-black border-dashed rounded-xl" />
+  <div class="h-[16.2vh] w-[11.53vh] border-2 border-black border-dashed rounded-xl" />
 {/if}
