@@ -110,25 +110,49 @@
           {#if playerStage === 'draw'}
             <Deck handleClick={() => drawCard()} isDisabled={false} />
           {:else if playerStage === 'selectCardsAsCurrentPlayer'}
-            {#if currentAction === '0'}
-              <div class="aspect-[8/11]">
-                {#if selectedCards[0]}
-                  <Card type="item" color={selectedCards[0].color} />
-                {:else}
-                  <Card type="empty" />
-                {/if}
-              </div>
-            {:else if currentAction === '1' || currentAction === '2'}
+            {#if currentAction === '0' || currentAction === '1' || currentAction === '2'}
               <div class="flex flex-row justify-center space-x-2">
-                {#each getSelectedCardsToDisplay(currentAction, selectedCards) as selectedCard, i}
+                {#each getSelectedCardsToDisplay(currentAction, selectedCards) as selectedCard}
                   <div class="aspect-[8/11] h-[16.2vh]">
-                    {#if selectedCard && i <= Number(currentAction)}
+                    {#if selectedCard}
                       <Card type="item" color={selectedCard.color} />
                     {:else}
                       <Card type="empty" />
                     {/if}
                   </div>
                 {/each}
+              </div>
+            {:else if currentAction === '3'}
+              <div class="flex flex-row justify-center space-x-2">
+                <div class="aspect-[8/11] h-[16.2vh]">
+                  {#if selectedCards[0]}
+                    <Card type="item" color={selectedCards[0].color} />
+                  {:else}
+                    <Card type="empty" />
+                  {/if}
+                </div>
+                <div class="aspect-[8/11] h-[16.2vh]">
+                  {#if selectedCards[1]}
+                    <Card type="item" color={selectedCards[1].color} />
+                  {:else}
+                    <Card type="empty" />
+                  {/if}
+                </div>
+                <div class="aspect-[8/11] h-[16.2vh]"></div>
+                <div class="aspect-[8/11] h-[16.2vh]">
+                  {#if selectedCards[2]}
+                    <Card type="item" color={selectedCards[2].color} />
+                  {:else}
+                    <Card type="empty" />
+                  {/if}
+                </div>
+                <div class="aspect-[8/11] h-[16.2vh]">
+                  {#if selectedCards[3]}
+                    <Card type="item" color={selectedCards[3].color} />
+                  {:else}
+                    <Card type="empty" />
+                  {/if}
+                </div>
               </div>
             {/if}
           {:else if playerStage === 'selectCardsAsOpposingPlayer'}
@@ -158,24 +182,22 @@
         {:else if opponentStage}
           {#if opponentStage === 'draw'}
             <Deck handleClick={() => false} isDisabled={true} />
-          {:else if opponentStage === 'selectCardsAsCurrentPlayer'}
+          {:else if opponentStage === 'selectCardsAsCurrentPlayer' || opponentStage === 'selectCardsAsOpposingPlayer'}
             {#if currentAction === '0' || currentAction === '1' || currentAction === '2'}
               <div class="flex flex-row justify-center space-x-2">
-                {#each Array(Number(currentAction) + 1) as _}
-                  <div class="aspect-[8/11] h-[16.2vh]">
-                    <Card type="empty" />
-                  </div>
-                {/each}
-              </div>
-            {/if}
-          {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
-            {#if currentAction === '2'}
-              <div class="flex flex-row justify-center space-x-2">
-                {#each G.presentedCards as card}
-                  <div class="aspect-[8/11] h-[16.2vh]">
-                    <Card type="item" color={card.color} />
-                  </div>
-                {/each}
+                {#if opponentStage === 'selectCardsAsCurrentPlayer'}
+                  {#each Array(Number(currentAction) + 1) as _}
+                    <div class="aspect-[8/11] h-[16.2vh]">
+                      <Card type="empty" />
+                    </div>
+                  {/each}
+                {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
+                  {#each G.presentedCards as card}
+                    <div class="aspect-[8/11] h-[16.2vh]">
+                      <Card type="item" color={card.color} />
+                    </div>
+                  {/each}
+                {/if}
               </div>
             <!-- {:else if currentAction === '3'} -->
             {/if}
