@@ -65,6 +65,12 @@
     client.moves.selectAction(actionIndex);
   }
 
+  function switchAction(actionIndex: string): void {
+    setSelectedCardsFromHand([null, null, null, null]);
+    client.undo();
+    client.moves.selectAction(actionIndex);
+  }
+
   function setSelectedCardsFromHand(updatedSelectedCards: SelectedCard[]): void {
     selectedCards = updatedSelectedCards;
   }
@@ -147,7 +153,7 @@
         {/each}
       </div>
     </section>
-    <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} />
+    <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} {switchAction} />
     <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCardsFromHand} />
   </main>
 {/if}
