@@ -20,13 +20,15 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
   if (opponentStage) {
     switch (opponentStage) {
       case 'draw':
-        return ["It's your opponent's turn", 'Waiting for them to draw a card...'];
+        return ["It's your opponent's turn", 'Waiting for them to draw a card.'];
       case 'selectAction':
-        return ['Waiting for opponent to select an action'];
+        return ['Waiting for your opponent to select an action.'];
       case 'selectCardsAsCurrentPlayer':
-        return ['Waiting for opponent to select cards'];
+        return [`Waiting for your opponent to select their ${currentAction === '0' ? 'card' : 'cards'} for  action ${Number(currentAction) + 1}.`];
       case 'selectCardsAsOpposingPlayer':
-        return ['Waiting for opponent to select cards'];
+        return [`Waiting for your opponent to choose their ${currentAction === '2' ? 'card' : 'set'}.`];
+      case 'acknowledgeOpponentChoice':
+        return ['Waiting for your opponent to acknowledge your choice.'];
       case 'reveal':
         return ['Opponent in reveal stage'];
       case 'calculate':
@@ -58,13 +60,13 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
           case '2':
             return [
               'Choose 3 cards from your hand to reveal to your opponent.',
-              'They will choose one of the cards to score for themself.',
+              'They will choose one of the cards to score.',
               'You will score the remaining two cards.',
             ];
           case '3':
             return [
               'Choose 4 cards from your hand separated into two sets of two to reveal to your opponent.',
-              'They will choose one set to score for themself.',
+              'They will choose one set to score.',
               'You will score the remaining set.',
             ];
           default:
@@ -87,6 +89,8 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
           default:
             return errorMessage;
         }
+      case 'acknowledgeOpponentChoice':
+        return ['Your opponent chose this split.'];
       case 'reveal':
         return ['reveal stage'];
       case 'calculate':
