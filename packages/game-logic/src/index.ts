@@ -77,6 +77,7 @@ export const Hanamikoji: Game<GameState> = {
       presentedCards: [],
       presentedPairs: [],
       startingPlayerID: '0',
+      opponentChoice: '',
     };
   },
 
@@ -189,27 +190,46 @@ export const Hanamikoji: Game<GameState> = {
 
           selectCardsAsOpposingPlayer: {
             moves: {
-              selectCardsAsOpposing: ({ G, ctx, events }, selectedIndex: string) => {
-                const presentingPlayer = ctx.currentPlayer;
-                const choosingPlayer = presentingPlayer === '0' ? '1' : '0';
-                const currentAction = G.currentAction!;
+              selectCardsAsOpposing: ({ G, events }, selectedIndex: string) => {
+                const currentAction = G.currentAction;
 
                 const isValidAction2Selection = ['0', '1', '2'].includes(selectedIndex) && currentAction === '2';
                 const isValidAction3Selection = ['0', '1'].includes(selectedIndex) && currentAction === '3';
 
-                if (isValidAction2Selection) {
+                if (isValidAction2Selection || isValidAction3Selection) {
+                  G.opponentChoice = selectedIndex;
+                  events.setActivePlayers({
+                    currentPlayer: 'acknowledgeOpponentChoice',
+                    others: Stage.NULL,
+                  });
+                } else {
+                  return INVALID_MOVE;
+                }
+              },
+            },
+          },
+
+          acknowledgeOpponentChoice: {
+            moves: {
+              acknowledge: ({ G, ctx, events }) => {
+                const presentingPlayer = ctx.currentPlayer;
+                const choosingPlayer = presentingPlayer === '0' ? '1' : '0';
+                const currentAction = G.currentAction;
+                const opponentChoice = G.opponentChoice;
+
+                if (currentAction === '2' && opponentChoice) {
                   G.presentedCards.forEach((card, i) => {
-                    if (i === Number(selectedIndex)) {
+                    if (i === Number(opponentChoice)) {
                       G.geisha[card.color].playerItemCards[choosingPlayer].push(card);
                     } else {
                       G.geisha[card.color].playerItemCards[presentingPlayer].push(card);
                     }
                   });
                   G.presentedCards = [];
-                } else if (isValidAction3Selection) {
-                  const unselectedIndex = selectedIndex === '0' ? '1' : '0';
+                } else if (currentAction === '3') {
+                  const unselectedIndex = opponentChoice === '0' ? '1' : '0';
                   G.presentedPairs.forEach((pair, i) => {
-                    if (i === Number(selectedIndex)) {
+                    if (i === Number(opponentChoice)) {
                       pair.forEach((card) => G.geisha[card.color].playerItemCards[choosingPlayer].push(card));
                     } else if (i === Number(unselectedIndex)) {
                       pair.forEach((card) => G.geisha[card.color].playerItemCards[presentingPlayer].push(card));
@@ -220,6 +240,7 @@ export const Hanamikoji: Game<GameState> = {
                   return INVALID_MOVE;
                 }
 
+                G.opponentChoice = '';
                 G.currentAction = null;
                 events.setActivePlayers({ all: Stage.NULL });
                 events.endTurn();
@@ -396,6 +417,7 @@ function setGameStateForNextRound({ G, random }: { G: GameState; random: Random 
   G.currentAction = null;
   G.presentedCards = [];
   G.presentedPairs = [];
+  G.opponentChoice = '';
 }
 
 export enum Color {
@@ -445,6 +467,7 @@ export interface GameState {
   presentedCards: ItemCard[];
   presentedPairs: ItemCard[][];
   startingPlayerID: string;
+  opponentChoice: string;
 }
 
 interface Random {
