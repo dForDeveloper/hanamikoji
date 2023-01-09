@@ -11,7 +11,9 @@
   }
 </script>
 
-{#if count === 1}
+{#if count === 0}
+  <div class="w-[13.31vh]" />
+{:else if count === 1}
   <div class={`relative w-[13.31vh] flex justify-center ${getFlippedClasses(isFlipped)}`}>
     <div class="rounded-xl absolute z-10">
       <Card type="item" {color} />
