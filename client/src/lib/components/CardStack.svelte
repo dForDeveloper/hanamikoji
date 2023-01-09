@@ -7,20 +7,20 @@
   export let isFlipped = false;
 
   function getFlippedClasses(isFlipped: boolean): string {
-    return isFlipped ? 'rotate-180 mb-2': 'mt-2';
+    return isFlipped ? 'rotate-180' : '';
   }
 </script>
 
 {#if count === 0}
   <div class="w-[13.31vh]" />
 {:else if count === 1}
-  <div class={`relative w-[13.31vh] flex justify-center ${getFlippedClasses(isFlipped)}`}>
+  <div class={`relative w-[13.31vh] pt-2 flex justify-center ${getFlippedClasses(isFlipped)}`}>
     <div class="rounded-xl absolute z-10">
       <Card type="item" {color} />
     </div>
   </div>
 {:else if count === 2}
-  <div class={`relative w-[13.31vh] ${getFlippedClasses(isFlipped)}`}>
+  <div class={`relative w-[13.31vh] pt-2 ${getFlippedClasses(isFlipped)}`}>
     <div class="rounded-xl absolute z-10">
       <Card type="item" {color} />
     </div>
@@ -29,7 +29,7 @@
     </div>
   </div>
 {:else if count === 3}
-  <div class={`relative w-[13.31vh] ${getFlippedClasses(isFlipped)}`}>
+  <div class={`relative w-[13.31vh] pt-2 ${getFlippedClasses(isFlipped)}`}>
     <div class="rounded-xl absolute z-10">
       <Card type="item" {color} />
     </div>
@@ -41,7 +41,7 @@
     </div>
   </div>
 {:else if count === 4}
-  <div class={`relative w-[13.31vh] ${getFlippedClasses(isFlipped)}`}>
+  <div class={`relative w-[13.31vh] pt-2 ${getFlippedClasses(isFlipped)}`}>
     <div class="rounded-xl absolute z-10">
       <Card type="item" {color} />
     </div>
@@ -56,7 +56,7 @@
     </div>
   </div>
 {:else if count === 5}
-  <div class={`relative w-[13.31vh] ${getFlippedClasses(isFlipped)}`}>
+  <div class={`relative w-[13.31vh] pt-2 ${getFlippedClasses(isFlipped)}`}>
     <div class="rounded-xl absolute z-10">
       <Card type="item" {color} />
     </div>
