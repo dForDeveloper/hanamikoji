@@ -6,7 +6,6 @@
   export let player: Player;
   export let playerStage: string;
   export let selectAction: (actionIndex: string) => void;
-  export let switchAction: (actionIndex: string) => void;
 </script>
 
 <section aria-label="your-actions" class="flex flex-row justify-evenly space-x-2 items-end">
@@ -19,14 +18,6 @@
           disabled={!action.enabled}
         >
           <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={action.enabled} />
-        </button>
-      {:else if playerStage === 'selectCardsAsCurrentPlayer'}
-        <button
-          on:click={() => switchAction(i.toString())}
-          class="rounded-md h-[8vh] w-[8vh] shadow-sm shadow-black"
-          disabled={!action.enabled}
-        >
-          <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
         </button>
       {:else}
         <button class="rounded-md h-[8vh] w-[8vh] shadow-sm shadow-black" disabled>

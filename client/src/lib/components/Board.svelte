@@ -7,7 +7,7 @@
   import SelectedCardArea from '$lib/components/SelectedCardArea.svelte';
   import { getInstructions } from '$lib/utils';
   import { onDestroy } from 'svelte';
-  import type { GameState, GeishaCard, ItemCard, Player } from 'game-logic';
+  import type { Action, GameState, GeishaCard, ItemCard, Player } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
   import type { SelectedCard } from '$lib/types';
 
@@ -67,10 +67,9 @@
     client.moves.selectAction(actionIndex);
   }
 
-  function switchAction(actionIndex: string): void {
+  function undoAction(): void {
     setSelectedCardsFromHand([null, null, null, null]);
     client.undo();
-    client.moves.selectAction(actionIndex);
   }
 
   function setSelectedCardsFromHand(updatedSelectedCards: SelectedCard[]): void {
@@ -102,6 +101,11 @@
     } else {
       return false;
     }
+  }
+
+  function getIsActionUndoable(G: GameState, id: string): boolean {
+    const player = getPlayer(G, id);
+    return Object.values(player.actions).some((action: Action) => action.enabled);
   }
 
   function getCardsToAcknowledge(G: GameState, currentAction: string, opponentChoice: string, id: string, playerStage: string): ItemCard[] {
@@ -193,7 +197,15 @@
           {drawCard}
           {setPresentedSelection}
         />
-        <div class="grid pt-10 justify-items-center">
+        <div class="flex pt-10 justify-center gap-8">
+          {#if playerStage === 'selectCardsAsCurrentPlayer' && getIsActionUndoable(G, playerID)}
+            <button
+              on:click={() => undoAction()}
+              class="bg-gray-600 text-white text-xl h-14 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600"
+            >
+              undo
+            </button>
+          {/if}
           {#if playerStage === 'selectCardsAsCurrentPlayer' || playerStage === 'selectCardsAsOpposingPlayer'}
             <button
               on:click={() => confirmSelection(selectedCards, presentedSelection)}
@@ -227,7 +239,7 @@
         {/each}
       </div>
     </section>
-    <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} {switchAction} />
+    <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} />
     <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCardsFromHand} />
   </main>
 {/if}
