@@ -31,6 +31,8 @@
       playerStage = ctx.activePlayers ? ctx.activePlayers[playerID] : '';
       opponentStage = ctx.activePlayers ? ctx.activePlayers[opponentPlayerID] : '';
       opponentChoice = G.opponentChoice;
+      setSelectedCardsFromHand([null, null, null, null]);
+      presentedSelection = '';
     } else {
       client.getState();
     }
@@ -72,6 +74,14 @@
     client.undo();
   }
 
+  function revealHiddenCard(): void {
+    client.moves.reveal();
+  }
+
+  function acknowledgeReveal(): void {
+    client.moves.acknowledgeReveal();
+  }
+
   function setSelectedCardsFromHand(updatedSelectedCards: SelectedCard[]): void {
     selectedCards = updatedSelectedCards;
   }
@@ -84,10 +94,8 @@
     if (playerStage === 'selectCardsAsCurrentPlayer') {
       const arg = selectedCards.filter((maybeCard) => maybeCard !== null).map((itemCard) => itemCard!.index.toString());
       client.moves.selectCardsAsCurrent(arg);
-      setSelectedCardsFromHand([null, null, null, null]);
     } else if (playerStage === 'selectCardsAsOpposingPlayer') {
       client.moves.selectCardsAsOpposing(presentedSelection);
-      presentedSelection = '';
     }
   }
 
@@ -143,7 +151,13 @@
   }
 
   function acknowledgeOpponentChoice(): void {
-    client.moves.acknowledge();
+    client.moves.acknowledgeOpponentChoice();
+  }
+
+  function getRevealedCard(G: GameState, id: string): ItemCard {
+    const player = getPlayer(G, id);
+    const revealedCard = player.actions[0].savedCard!;
+    return revealedCard;
   }
 </script>
 
@@ -178,6 +192,36 @@
               <Card type="item" color={card.color} />
             </div>
           {/each}
+        </div>
+      </section>
+    {:else if playerStage === 'acknowledgeReveal' || opponentStage === 'acknowledgeReveal'}
+      <section aria-label="game-interface" class="grid grid-rows-[1fr_20vh_1fr]">
+        <div class="flex flex-row justify-center space-x-2 items-end pb-2">
+          {#if playerStage === 'acknowledgeReveal'}
+            <div class="h-[16.2vh] w-[11.53vh]">
+              <Card type="item" color={getRevealedCard(G, opponentPlayerID).color} />
+            </div>
+          {/if}
+        </div>
+        <div aria-label="instruction" class="flex flex-col place-self-center max-w-prose justify-content-center">
+          {#each getInstructions(currentAction, playerStage, opponentStage) as instruction}
+            <p class="text-3xl my-6">{instruction}</p>
+          {/each}
+          {#if playerStage === 'acknowledgeReveal'}
+            <button
+              on:click={() => acknowledgeReveal()}
+              class="bg-violet-300 text-xl h-14 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 place-self-center"
+            >
+              accept
+            </button>
+          {/if}
+        </div>
+        <div class="flex flex-row justify-center space-x-2 pt-2">
+          {#if opponentStage === 'acknowledgeReveal'}
+            <div class="h-[16.2vh] w-[11.53vh]">
+              <Card type="item" color={getRevealedCard(G, playerID).color} />
+            </div>
+          {/if}
         </div>
       </section>
     {:else}
@@ -221,7 +265,6 @@
     <section aria-label="game-board" class="grid grid-rows-[1fr_20vh_1fr]">
       <div aria-label="opponent-played-cards" class="flex flex-row justify-center space-x-4">
         {#each getGeishaCards(G) as geishaCard}
-          <!-- <CardStack color={geishaCard.color} count={geishaCard.color === 'purple' ? 1 : geishaCard.charmPoints} isFlipped={true} /> -->
           <CardStack color={geishaCard.color} count={geishaCard.playerItemCards[opponentPlayerID].length} isFlipped={true} />
         {/each}
       </div>
@@ -234,12 +277,11 @@
       </div>
       <div aria-label="your-played-cards" class="flex flex-row justify-center space-x-4">
         {#each getGeishaCards(G) as geishaCard}
-          <!-- <CardStack color={geishaCard.color} count={geishaCard.color === 'purple' ? 1 : geishaCard.charmPoints} /> -->
           <CardStack color={geishaCard.color} count={geishaCard.playerItemCards[playerID].length} />
         {/each}
       </div>
     </section>
-    <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} />
+    <Actions player={getPlayer(G, playerID)} {playerStage} {opponentStage} {selectAction} {revealHiddenCard} />
     <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCardsFromHand} />
   </main>
 {/if}

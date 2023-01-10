@@ -211,7 +211,7 @@ export const Hanamikoji: Game<GameState> = {
 
           acknowledgeOpponentChoice: {
             moves: {
-              acknowledge: ({ G, ctx, events }) => {
+              acknowledgeOpponentChoice: ({ G, ctx, events }) => {
                 const presentingPlayer = ctx.currentPlayer;
                 const choosingPlayer = presentingPlayer === '0' ? '1' : '0';
                 const currentAction = G.currentAction;
@@ -263,7 +263,17 @@ export const Hanamikoji: Game<GameState> = {
         stages: {
           reveal: {
             moves: {
-              reveal: ({ G, ctx, events }) => {
+              reveal: ({ events }) => {
+                events.setActivePlayers({
+                  currentPlayer: Stage.NULL,
+                  others: 'acknowledgeReveal',
+                });
+              },
+            },
+          },
+          acknowledgeReveal: {
+            moves: {
+              acknowledgeReveal: ({ G, ctx, events }) => {
                 const { savedCard } = G.players[ctx.currentPlayer].actions[0];
                 if (savedCard !== null && savedCard !== undefined) {
                   G.geisha[savedCard.color].playerItemCards[ctx.currentPlayer].push(savedCard);

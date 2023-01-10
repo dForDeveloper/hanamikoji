@@ -24,13 +24,26 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
       case 'selectAction':
         return ['Waiting for your opponent to select an action.'];
       case 'selectCardsAsCurrentPlayer':
-        return [`Waiting for your opponent to select their ${currentAction === '0' ? 'card' : 'cards'} for  action ${Number(currentAction) + 1}.`];
+        switch (currentAction) {
+          case '0':
+            return ['Waiting for your opponent to hide 1 card.'];
+          case '1':
+            return ['Waiting for your opponent to discard 2 cards.'];
+          case '2':
+            return ['Waiting for your opponent to reveal three cards.'];
+          case '3':
+            return ['Waiting for your opponent to reveal 2 sets of cards.'];
+          default:
+            return errorMessage;
+        }
       case 'selectCardsAsOpposingPlayer':
         return [`Waiting for your opponent to choose their ${currentAction === '2' ? 'card' : 'set'}.`];
       case 'acknowledgeOpponentChoice':
         return ['Waiting for your opponent to acknowledge your choice.'];
       case 'reveal':
-        return ['Opponent in reveal stage'];
+        return ['Waiting for your opponent to reveal their hidden card.'];
+      case 'acknowledgeReveal':
+        return ['Waiting for your opponent to acknowledge your final card.'];
       case 'calculate':
         return ['Opponent in calculate stage'];
       case 'prepareNextRound':
@@ -92,7 +105,9 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
       case 'acknowledgeOpponentChoice':
         return ['Your opponent chose this split.'];
       case 'reveal':
-        return ['reveal stage'];
+        return ['Reveal your hidden card.'];
+      case 'acknowledgeReveal':
+        return ['Your opponent revealed their hidden card.'];
       case 'calculate':
         return ['calculate stage'];
       case 'prepareNextRound':
