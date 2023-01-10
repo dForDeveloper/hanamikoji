@@ -79,5 +79,5 @@
 {:else if type === 'back'}
   <img src="/images/item-back.webp" alt={backAlt} class={getCssClasses()} />
 {:else if type === 'empty'}
-  <div class="h-[16.2vh] w-[11.53vh] border-2 border-black border-dashed rounded-xl" />
+  <div class="h-[16.2vh] w-[11.53vh] border-2 border-gray-600 border-dashed rounded-xl" />
 {/if}
