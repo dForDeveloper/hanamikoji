@@ -24,7 +24,7 @@
   let opponentChoice = '';
 
   const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
-    if (gameState.G && gameState.ctx) {
+    if (gameState && gameState.G && gameState.ctx) {
       G = gameState.G;
       ctx = gameState.ctx;
       currentAction = G.currentAction ? G.currentAction : '';
@@ -32,7 +32,7 @@
       opponentStage = ctx.activePlayers ? ctx.activePlayers[opponentPlayerID] : '';
       opponentChoice = G.opponentChoice;
     } else {
-      throw new Error('Error syncing game state');
+      client.getState();
     }
   });
 
