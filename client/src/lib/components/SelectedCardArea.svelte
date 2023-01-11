@@ -43,7 +43,9 @@
 
   function confirmSelection(selectedCards: SelectedCard[], selectedPresentedIndex: string): void {
     if (playerStage === 'selectCardsAsCurrentPlayer') {
-      const selectedCardIndexes = selectedCards.filter((maybeCard) => maybeCard !== null).map((itemCard) => itemCard!.index.toString());
+      const selectedCardIndexes = selectedCards
+        .filter((maybeCard) => maybeCard !== null)
+        .map((itemCard) => itemCard!.index.toString());
       selectCardsAsCurrent(selectedCardIndexes);
     } else if (playerStage === 'selectCardsAsOpposingPlayer') {
       selectCardsAsOpposing(selectedPresentedIndex);

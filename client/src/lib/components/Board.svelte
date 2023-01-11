@@ -90,8 +90,6 @@
   function setSelectedPresentedIndex(updatedSelectedPresentedIndex: string): void {
     selectedPresentedIndex = updatedSelectedPresentedIndex;
   }
-
-
 </script>
 
 {#if G && ctx}
