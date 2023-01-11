@@ -33,7 +33,7 @@
     <div class="rounded-xl absolute z-10">
       <Card type="item" {color} />
     </div>
-    <div class="rounded-xl absolute z-20 top-[1.125rem] left-2">
+    <div class="rounded-xl absolute z-20 top-[1.3rem] left-2">
       <Card type="item" {color} />
     </div>
     <div class="rounded-xl absolute z-30 top-9 left-4">
