@@ -1,5 +1,6 @@
 <script lang="ts">
-  import AcknowledgeChoice from './AcknowledgeChoice.svelte';
+  import AcknowledgeReveal from '$lib/components/AcknowledgeReveal.svelte';
+  import AcknowledgeChoice from '$lib/components/AcknowledgeChoice.svelte';
   import Actions from '$lib/components/Actions.svelte';
   import Card from '$lib/components/Card.svelte';
   import CardStack from '$lib/components/CardStack.svelte';
@@ -75,6 +76,10 @@
     client.undo();
   }
 
+  function acknowledgeChoice(): void {
+    client.moves.acknowledgeOpponentChoice();
+  }
+
   function revealHiddenCard(): void {
     client.moves.reveal();
   }
@@ -117,14 +122,19 @@
     return Object.values(player.actions).some((action: Action) => action.enabled);
   }
 
-  function acknowledgeChoice(): void {
-    client.moves.acknowledgeOpponentChoice();
-  }
+  function getRevealedCard(G: GameState): ItemCard {
+    let player;
+    if (playerStage === 'acknowledgeReveal') {
+      player = getPlayer(G, opponentPlayerID);
+    } else if (opponentStage === 'acknowledgeReveal') {
+      player = getPlayer(G, playerID);
+    }
 
-  function getRevealedCard(G: GameState, id: string): ItemCard {
-    const player = getPlayer(G, id);
-    const revealedCard = player.actions[0].savedCard!;
-    return revealedCard;
+    if (player && player.actions[0].savedCard) {
+      return player.actions[0].savedCard;
+    } else {
+      throw new Error('No hidden card to reveal');
+    }
   }
 </script>
 
@@ -141,35 +151,13 @@
         {acknowledgeChoice}
       />
     {:else if playerStage === 'acknowledgeReveal' || opponentStage === 'acknowledgeReveal'}
-      <section aria-label="game-interface" class="grid grid-rows-[1fr_20vh_1fr]">
-        <div class="flex flex-row justify-center space-x-2 items-end pb-2">
-          {#if playerStage === 'acknowledgeReveal'}
-            <div class="h-[16.2vh] w-[11.53vh]">
-              <Card type="item" color={getRevealedCard(G, opponentPlayerID).color} />
-            </div>
-          {/if}
-        </div>
-        <div aria-label="instruction" class="flex flex-col place-self-center max-w-prose justify-content-center">
-          {#each getInstructions(currentAction, playerStage, opponentStage) as instruction}
-            <p class="text-3xl my-6">{instruction}</p>
-          {/each}
-          {#if playerStage === 'acknowledgeReveal'}
-            <button
-              on:click={() => acknowledgeReveal()}
-              class="bg-violet-300 text-xl h-14 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 place-self-center"
-            >
-              accept
-            </button>
-          {/if}
-        </div>
-        <div class="flex flex-row justify-center space-x-2 pt-2">
-          {#if opponentStage === 'acknowledgeReveal'}
-            <div class="h-[16.2vh] w-[11.53vh]">
-              <Card type="item" color={getRevealedCard(G, playerID).color} />
-            </div>
-          {/if}
-        </div>
-      </section>
+      <AcknowledgeReveal
+        revealedCard={getRevealedCard(G)}
+        {playerStage}
+        {opponentStage}
+        {currentAction}
+        {acknowledgeReveal}
+      />
     {:else}
       <section aria-label="game-interface" class="grid grid-rows-[1fr_16.2vh_1fr]">
         <div aria-label="instruction" class="place-self-center max-w-prose h-full">
