@@ -45,10 +45,10 @@
     <div class="rounded-xl absolute z-10">
       <Card type="item" {color} />
     </div>
-    <div class="rounded-xl absolute z-20 top-3 left-1.5">
+    <div class="rounded-xl absolute z-20 top-4 left-1.5">
       <Card type="item" {color} />
     </div>
-    <div class="rounded-xl absolute z-30 top-6 left-3">
+    <div class="rounded-xl absolute z-30 top-[1.6rem] left-3">
       <Card type="item" {color} />
     </div>
     <div class="rounded-xl absolute z-40 top-9 left-[1.125rem]">
