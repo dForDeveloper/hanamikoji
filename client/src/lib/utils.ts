@@ -45,7 +45,7 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
       case 'acknowledgeReveal':
         return ['Waiting for your opponent to acknowledge your final card.'];
       case 'calculate':
-        return ['Opponent in calculate stage'];
+        return ['Waiting for your opponent to calculate the score.'];
       case 'prepareNextRound':
         return ['Opponent in prepareNextRound stage'];
       default:
@@ -109,7 +109,7 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
       case 'acknowledgeReveal':
         return ['Your opponent revealed their hidden card.'];
       case 'calculate':
-        return ['calculate stage'];
+        return ['Calculate the score.'];
       case 'prepareNextRound':
         return ['prepareNextRound stage'];
       default:
