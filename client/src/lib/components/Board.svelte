@@ -4,7 +4,7 @@
   import CardStack from '$lib/components/CardStack.svelte';
   import Hand from '$lib/components/Hand.svelte';
   import Opponent from '$lib/components/Opponent.svelte';
-  import SelectedCardArea from '$lib/components/SelectedCardArea.svelte';
+  import SharedPlayerInterface from '$lib/components/SharedPlayerInterface.svelte';
   import { onDestroy } from 'svelte';
   import type { GameState, GeishaCard, Player } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
@@ -95,7 +95,7 @@
 {#if G && ctx}
   <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito">
     <Opponent player={getPlayer(G, opponentPlayerID)} />
-    <SelectedCardArea
+    <SharedPlayerInterface
       {G}
       {playerID}
       {opponentPlayerID}
