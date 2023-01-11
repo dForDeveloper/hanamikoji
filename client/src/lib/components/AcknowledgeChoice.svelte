@@ -15,10 +15,12 @@
     opponentChoice: string,
     presentedCards: ItemCard[],
   ): ItemCard[] {
-    if (currentAction === '3') {
+    if (currentAction === '2') {
+      return presentedCards.filter((card, i) => i === Number(opponentChoice));
+    } else if (currentAction === '3') {
       return opponentChoice === '0' ? presentedCards.slice(0, 2) : presentedCards.slice(2, 4);
     } else {
-      return presentedCards.filter((card, i) => i === Number(opponentChoice));
+      throw new Error('Cards to acknowledge should not exist');
     }
   }
 
@@ -27,10 +29,12 @@
     opponentChoice: string,
     presentedCards: ItemCard[],
   ): ItemCard[] {
-    if (currentAction === '3') {
+    if (currentAction === '2') {
+      return presentedCards.filter((card, i) => i !== Number(opponentChoice));
+    } else if (currentAction === '3') {
       return opponentChoice === '0' ? presentedCards.slice(2, 4) : presentedCards.slice(0, 2);
     } else {
-      return presentedCards.filter((card, i) => i !== Number(opponentChoice));
+      throw new Error('Cards to acknowledge should not exist');
     }
   }
 </script>

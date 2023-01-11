@@ -58,8 +58,10 @@
   function getPresentedCards(G: GameState, currentAction: string): ItemCard[] {
     if (currentAction === '2') {
       return G.presentedCards;
-    } else {
+    } else if (currentAction === '3') {
       return G.presentedPairs.flat();
+    } else {
+      throw new Error('Presented cards should not exist');
     }
   }
 
@@ -113,7 +115,7 @@
     } else if (playerStage === 'selectCardsAsOpposingPlayer') {
       return presentedSelection === '';
     } else {
-      return false;
+      throw new Error('Confirmation button should exist');
     }
   }
 
