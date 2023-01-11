@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getPlayerData, setPlayerData } from '$lib/utils';
+  import { getPlayerData, setPlayerData } from '$lib/local-storage';
   import { Client } from 'boardgame.io/client';
   import { Hanamikoji } from 'game-logic';
   import NameForm from '$lib/components/NameForm.svelte';

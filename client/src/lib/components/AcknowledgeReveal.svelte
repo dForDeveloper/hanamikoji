@@ -1,6 +1,6 @@
 <script lang="ts">
   import Card from '$lib/components/Card.svelte';
-  import { getInstructions } from '$lib/utils';
+  import { getInstructions } from '$lib/instruction-messages';
   import type { ItemCard } from 'game-logic';
 
   export let revealedCard: ItemCard;
