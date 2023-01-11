@@ -7,7 +7,7 @@
   import Hand from '$lib/components/Hand.svelte';
   import Opponent from '$lib/components/Opponent.svelte';
   import SelectedCardArea from '$lib/components/SelectedCardArea.svelte';
-  import { getInstructions } from '$lib/utils';
+  import { getInstructions } from '$lib/instruction-messages';
   import { onDestroy } from 'svelte';
   import type { Action, GameState, GeishaCard, ItemCard, Player } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
