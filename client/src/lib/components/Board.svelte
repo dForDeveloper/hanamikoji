@@ -100,8 +100,8 @@
 
   function confirmSelection(selectedCards: SelectedCard[], presentedSelection: string): void {
     if (playerStage === 'selectCardsAsCurrentPlayer') {
-      const arg = selectedCards.filter((maybeCard) => maybeCard !== null).map((itemCard) => itemCard!.index.toString());
-      client.moves.selectCardsAsCurrent(arg);
+      const selectedCardIndexes = selectedCards.filter((maybeCard) => maybeCard !== null).map((itemCard) => itemCard!.index.toString());
+      client.moves.selectCardsAsCurrent(selectedCardIndexes);
     } else if (playerStage === 'selectCardsAsOpposingPlayer') {
       client.moves.selectCardsAsOpposing(presentedSelection);
     }
@@ -124,7 +124,7 @@
     return Object.values(player.actions).some((action: Action) => action.enabled);
   }
 
-  function getRevealedCard(G: GameState): ItemCard {
+  function getRevealedCard(G: GameState, playerStage: string, opponentStage: string): ItemCard {
     let player;
     if (playerStage === 'acknowledgeReveal') {
       player = getPlayer(G, opponentPlayerID);
@@ -154,7 +154,7 @@
       />
     {:else if playerStage === 'acknowledgeReveal' || opponentStage === 'acknowledgeReveal'}
       <AcknowledgeReveal
-        revealedCard={getRevealedCard(G)}
+        revealedCard={getRevealedCard(G, playerStage, opponentStage)}
         {playerStage}
         {opponentStage}
         {currentAction}
