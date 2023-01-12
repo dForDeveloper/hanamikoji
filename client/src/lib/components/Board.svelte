@@ -1,7 +1,6 @@
 <script lang="ts">
   import Actions from '$lib/components/Actions.svelte';
-  import Card from '$lib/components/Card.svelte';
-  import CardStack from '$lib/components/CardStack.svelte';
+  import GeishaCardArea from '$lib/components/GeishaCardArea.svelte';
   import Hand from '$lib/components/Hand.svelte';
   import Opponent from '$lib/components/Opponent.svelte';
   import SharedPlayerInterface from '$lib/components/SharedPlayerInterface.svelte';
@@ -113,29 +112,7 @@
       {acknowledgeReveal}
       {setSelectedPresentedIndex}
     />
-    <section aria-label="game-board" class="grid grid-rows-[1fr_20vh_1fr]">
-      <div aria-label="opponent-played-cards" class="flex flex-row justify-center space-x-4">
-        {#each getGeishaCards(G) as geishaCard}
-          <CardStack
-            color={geishaCard.color}
-            count={geishaCard.playerItemCards[opponentPlayerID].length}
-            isFlipped={true}
-          />
-        {/each}
-      </div>
-      <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-4">
-        {#each getGeishaCards(G) as geishaCard}
-          <div>
-            <Card type="geisha" color={geishaCard.color} />
-          </div>
-        {/each}
-      </div>
-      <div aria-label="your-played-cards" class="flex flex-row justify-center space-x-4">
-        {#each getGeishaCards(G) as geishaCard}
-          <CardStack color={geishaCard.color} count={geishaCard.playerItemCards[playerID].length} />
-        {/each}
-      </div>
-    </section>
+    <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentPlayerID} />
     <Actions player={getPlayer(G, playerID)} {playerStage} {opponentStage} {selectAction} {revealHiddenCard} />
     <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCardsFromHand} />
   </main>
