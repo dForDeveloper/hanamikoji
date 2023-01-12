@@ -1,7 +1,7 @@
 <script lang="ts">
   import Card from '$lib/components/Card.svelte';
   import CardStack from '$lib/components/CardStack.svelte';
-  import type { GameState, GeishaCard, Player } from 'game-logic';
+  import type { GeishaCard } from 'game-logic';
 
   export let geishaCards: GeishaCard[];
   export let playerID: string;

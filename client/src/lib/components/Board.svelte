@@ -41,12 +41,12 @@
     client.stop();
   });
 
-  function getGeishaCards(G: GameState): GeishaCard[] {
-    return Object.values(G.geisha);
-  }
-
   function getPlayer(G: GameState, id: string): Player {
     return G.players[id];
+  }
+
+  function getGeishaCards(G: GameState): GeishaCard[] {
+    return Object.values(G.geisha);
   }
 
   function drawCard(): void {
@@ -58,7 +58,6 @@
   }
 
   function undoAction(): void {
-    setSelectedCardsFromHand([null, null, null, null]);
     client.undo();
   }
 
