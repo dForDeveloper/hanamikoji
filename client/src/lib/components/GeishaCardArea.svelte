@@ -6,6 +6,16 @@
   export let geishaCards: GeishaCard[];
   export let playerID: string;
   export let opponentPlayerID: string;
+
+  function getVictoryMarkerDirection(favoredPlayerID: number | null, playerID: string, opponentPlayerID: string): number {
+    if (favoredPlayerID === Number(playerID)) {
+      return 1;
+    } else if (favoredPlayerID === Number(opponentPlayerID)) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
 </script>
 
 <section aria-label="game-board" class="grid grid-rows-[1fr_20vh_1fr]">
@@ -21,7 +31,7 @@
   <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-4">
     {#each geishaCards as geishaCard}
       <div>
-        <Card type="geisha" color={geishaCard.color} />
+        <Card type="geisha" color={geishaCard.color} victoryMarkerDirection={getVictoryMarkerDirection(geishaCard.favoredPlayerID, playerID, opponentPlayerID)} />
       </div>
     {/each}
   </div>
