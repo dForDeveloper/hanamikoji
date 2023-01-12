@@ -6,6 +6,7 @@
   export let isSelected = false;
   export let isHoverable = false;
   export let isInverted = false;
+  export let victoryMarkerDirection: number = 0;
   export let backAlt = 'back side of an item card';
 
   const colorToGeishaSource = {
@@ -48,6 +49,17 @@
     [Color.PURPLE]: 'purple item card - 2 points',
   };
 
+  function getVictoryMarkerClasses(victoryMarkerDirection: number | null): string {
+    let cssClasses = 'absolute z-10 h-[4vh] w-[4vh]';
+    if (victoryMarkerDirection === -1) {
+      return cssClasses + ' top-0';
+    } else if (victoryMarkerDirection === 1) {
+      return cssClasses + ' bottom-0';
+    } else {
+      return cssClasses + 'align-self-center';
+    }
+  }
+
   function getItemCardAlt(color: Color): string {
     return isSelected ? `selected ${colorToItemAlt[color]}` : colorToItemAlt[color];
   }
@@ -69,11 +81,18 @@
 </script>
 
 {#if type === 'geisha'}
-  <img
-    src={colorToGeishaSource[color]}
-    alt={colorToGeishaAlt[color]}
-    class="block h-[20vh] w-[13.31vh] object-fill object-center rounded-xl shadow-sm shadow-black"
-  />
+  <div class="relative h-[20vh] w-[13.31vh] grid place-items-center">
+    <img
+      src={colorToGeishaSource[color]}
+      alt={colorToGeishaAlt[color]}
+      class="block h-[20vh] w-[13.31vh] object-fill object-center rounded-xl shadow-sm shadow-black"
+    />
+    <img
+      src="/images/victory-marker.webp"
+      alt="victory marker"
+      class={getVictoryMarkerClasses(victoryMarkerDirection)}
+    />
+  </div>
 {:else if type === 'item'}
   <img src={colorToItemSource[color]} alt={getItemCardAlt(color)} class={getCssClasses()} />
 {:else if type === 'back'}
