@@ -81,6 +81,10 @@
     client.moves.acknowledgeReveal();
   }
 
+  function calculateScore(): void {
+    client.moves.calculateScore();
+  }
+
   function setSelectedCardsFromHand(updatedSelectedCards: SelectedCard[]): void {
     selectedCards = updatedSelectedCards;
   }
@@ -109,6 +113,7 @@
       {selectCardsAsOpposing}
       {acknowledgeChoice}
       {acknowledgeReveal}
+      {calculateScore}
       {setSelectedPresentedIndex}
     />
     <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentPlayerID} />

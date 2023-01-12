@@ -25,6 +25,7 @@
   export let selectCardsAsOpposing: (selectedIndex: string) => void;
   export let acknowledgeChoice: () => void;
   export let acknowledgeReveal: () => void;
+  export let calculateScore: () => void;
   export let setSelectedPresentedIndex: (updatedPresentedSelection: string) => void;
 
   function selectFromPresented(currentAction: string, i: number): void {
@@ -141,6 +142,13 @@
         <SelectedCardAreaNonactivePlayer {currentAction} />
       {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
         <PresentedCardAreaNonactivePlayer {G} {currentAction} {getPresentedCards} />
+      {:else if playerStage === 'calculate'}
+        <button
+          on:click={() => calculateScore()}
+          class="bg-violet-300 text-xl h-14 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600"
+        >
+          calculate
+      </button>
       {/if}
     </div>
     <div class="flex pt-10 justify-center gap-8">
