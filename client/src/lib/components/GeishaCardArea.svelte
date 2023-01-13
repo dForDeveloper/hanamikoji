@@ -5,12 +5,12 @@
 
   export let geishaCards: GeishaCard[];
   export let playerID: string;
-  export let opponentPlayerID: string;
+  export let opponentID: string;
 
-  function getVictoryMarkerDirection(favoredPlayerID: number | null, playerID: string, opponentPlayerID: string): number {
+  function getVictoryMarkerDirection(favoredPlayerID: number | null, playerID: string, opponentID: string): number {
     if (favoredPlayerID === Number(playerID)) {
       return 1;
-    } else if (favoredPlayerID === Number(opponentPlayerID)) {
+    } else if (favoredPlayerID === Number(opponentID)) {
       return -1;
     } else {
       return 0;
@@ -23,7 +23,7 @@
     {#each geishaCards as geishaCard}
       <CardStack
         color={geishaCard.color}
-        count={geishaCard.playerItemCards[opponentPlayerID].length}
+        count={geishaCard.playerItemCards[opponentID].length}
         isFlipped={true}
       />
     {/each}
@@ -31,7 +31,7 @@
   <div aria-label="geisha-cards" class="flex flex-row justify-center space-x-4">
     {#each geishaCards as geishaCard}
       <div>
-        <Card type="geisha" color={geishaCard.color} victoryMarkerDirection={getVictoryMarkerDirection(geishaCard.favoredPlayerID, playerID, opponentPlayerID)} />
+        <Card type="geisha" color={geishaCard.color} victoryMarkerDirection={getVictoryMarkerDirection(geishaCard.favoredPlayerID, playerID, opponentID)} />
       </div>
     {/each}
   </div>

@@ -11,7 +11,7 @@
 
   export let client: any;
   const playerID: string = client.playerID;
-  const opponentPlayerID = playerID === '0' ? '1' : '0';
+  const opponentID = playerID === '0' ? '1' : '0';
   let G: GameState;
   let ctx: Ctx;
   let playerStage: string;
@@ -26,7 +26,7 @@
       ctx = gameState.ctx;
       currentAction = G.currentAction ? G.currentAction : '';
       playerStage = ctx.activePlayers ? ctx.activePlayers[playerID] : '';
-      opponentStage = ctx.activePlayers ? ctx.activePlayers[opponentPlayerID] : '';
+      opponentStage = ctx.activePlayers ? ctx.activePlayers[opponentID] : '';
       setSelectedCardsFromHand([null, null, null, null]);
       setSelectedPresentedIndex('');
     } else {
@@ -96,11 +96,11 @@
 
 {#if G && ctx}
   <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito">
-    <Opponent player={getPlayer(G, opponentPlayerID)} />
+    <Opponent player={getPlayer(G, opponentID)} />
     <SharedPlayerInterface
       {G}
       {playerID}
-      {opponentPlayerID}
+      {opponentID}
       {playerStage}
       {opponentStage}
       {currentAction}
@@ -116,7 +116,7 @@
       {calculateScore}
       {setSelectedPresentedIndex}
     />
-    <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentPlayerID} />
+    <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentID} />
     <Actions player={getPlayer(G, playerID)} {playerStage} {opponentStage} {selectAction} {revealHiddenCard} />
     <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCardsFromHand} />
   </main>

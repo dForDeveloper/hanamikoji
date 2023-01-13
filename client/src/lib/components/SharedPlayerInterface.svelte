@@ -12,7 +12,7 @@
 
   export let G: GameState;
   export let playerID: string;
-  export let opponentPlayerID: string;
+  export let opponentID: string;
   export let playerStage: string;
   export let opponentStage: string;
   export let currentAction: string;
@@ -82,7 +82,7 @@
     let player;
 
     if (playerStage === 'acknowledgeReveal') {
-      player = getPlayer(G, opponentPlayerID);
+      player = getPlayer(G, opponentID);
     } else if (opponentStage === 'acknowledgeReveal') {
       player = getPlayer(G, playerID);
     }
