@@ -138,9 +138,15 @@
 {:else}
   <section aria-label="game-interface" class="grid grid-rows-[1fr_16.2vh_1fr]">
     <div aria-label="instruction" class="place-self-center max-w-prose h-full">
-      {#each getInstructions(currentAction, playerStage, opponentStage, getScoreMessages(G, playerID, opponentID, winnerID)) as instruction}
-        <p class="text-3xl my-6">{instruction}</p>
-      {/each}
+      {#if playerStage === 'prepareNextRound' || winnerID}
+        {#each getScoreMessages(G, playerID, opponentID, winnerID) as message}
+          <p class="text-3xl my-6">{message}</p>
+        {/each}
+      {:else}
+        {#each getInstructions(currentAction, playerStage, opponentStage) as instruction}
+          <p class="text-3xl my-6">{instruction}</p>
+        {/each}
+      {/if}
     </div>
     <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
       {#if playerStage === 'draw' || opponentStage === 'draw'}

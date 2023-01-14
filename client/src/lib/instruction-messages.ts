@@ -1,5 +1,4 @@
-export const getInstructions = (currentAction: string, playerStage: string, opponentStage: string, scoreMessages: string[]): string[] => {
-  const errorMessage = ['ERROR: No player has any available moves to make'];
+export const getInstructions = (currentAction: string, playerStage: string, opponentStage: string): string[] => {
   if (opponentStage) {
     switch (opponentStage) {
       case 'draw':
@@ -17,7 +16,7 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
           case '3':
             return ['Waiting for your opponent to reveal 2 sets of cards.'];
           default:
-            return errorMessage;
+            return [''];
         }
       case 'selectCardsAsOpposingPlayer':
         return [`Waiting for your opponent to choose their ${currentAction === '2' ? 'card' : 'set'}.`];
@@ -29,10 +28,8 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
         return ['Waiting for your opponent to acknowledge your final card.'];
       case 'calculate':
         return ['Waiting for your opponent to calculate the score.'];
-      case 'prepareNextRound':
-        return scoreMessages;
       default:
-        return errorMessage;
+        return [''];
     }
   } else if (playerStage) {
     switch (playerStage) {
@@ -66,7 +63,7 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
               'You will score the remaining set.',
             ];
           default:
-            return errorMessage;
+            return [''];
         }
       case 'selectCardsAsOpposingPlayer':
         switch (currentAction) {
@@ -83,7 +80,7 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
               'They will score the remaining set.',
             ];
           default:
-            return errorMessage;
+            return [''];
         }
       case 'acknowledgeOpponentChoice':
         return ['Your opponent chose this split.'];
@@ -93,12 +90,10 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
         return ['Your opponent revealed their hidden card.'];
       case 'calculate':
         return ['Calculate the score.'];
-      case 'prepareNextRound':
-        return ['prepareNextRound stage'];
       default:
-        return errorMessage;
+        return [''];
     }
   } else {
-    return errorMessage;
+    return [''];
   }
 };
