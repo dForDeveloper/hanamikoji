@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getPlayerData, setPlayerData } from '$lib/local-storage';
+  import Board from '$lib/components/Board.svelte';
   import { Client } from 'boardgame.io/client';
   import { Hanamikoji } from 'game-logic';
   import NameForm from '$lib/components/NameForm.svelte';
@@ -53,6 +54,7 @@
       matchID: data.match.matchID,
       credentials: player.credentials,
       playerID,
+      debug: { collapseOnLoad: true },
     });
 
     client.start();
@@ -106,12 +108,7 @@
   </main>
 {:then success}
   {#if success}
-    <div>
-      <p>match id: {client.matchID}</p>
-      <p>player id: {client.playerID}</p>
-      <p>player credentials: {client.credentials}</p>
-      <!-- <Board client={client} /> -->
-    </div>
+    <Board {client} />
   {:else}
     <main class="grid place-items-center h-screen">
       <NameForm
