@@ -18,6 +18,7 @@
   export let currentAction: string;
   export let selectedCards: SelectedCard[];
   export let selectedPresentedIndex: string;
+  export let winnerID: string;
   export let getPlayer: (G: GameState, id: string) => Player;
   export let drawCard: () => void;
   export let undoAction: () => void;
@@ -98,6 +99,23 @@
     const player = getPlayer(G, id);
     return Object.values(player.actions).some((action: Action) => action.enabled);
   }
+
+  function getScoreMessages(G: GameState, playerID: string, opponentID: string, winnerID: string): string[] {
+    const playerScore = getPlayer(G, playerID).score;
+    const opponentScore = getPlayer(G, opponentID).score;
+    const messages = [
+      `You have ${playerScore.charmPoints} points and ${playerScore.geishaCount} geisha.`,
+      `They have ${opponentScore.charmPoints} points and ${opponentScore.geishaCount} geisha.`,
+    ];
+    if (winnerID === playerID) {
+      messages.push('You won! 🎉');
+    } else if (winnerID === opponentID) {
+      messages.push('You lost. 😞')
+    } else {
+      messages.push('No one has won. Continue to the next round.');
+    }
+    return messages;
+  }
 </script>
 
 {#if playerStage === 'acknowledgeOpponentChoice' || opponentStage === 'acknowledgeOpponentChoice'}
@@ -120,7 +138,7 @@
 {:else}
   <section aria-label="game-interface" class="grid grid-rows-[1fr_16.2vh_1fr]">
     <div aria-label="instruction" class="place-self-center max-w-prose h-full">
-      {#each getInstructions(currentAction, playerStage, opponentStage) as instruction}
+      {#each getInstructions(currentAction, playerStage, opponentStage, getScoreMessages(G, playerID, opponentID, winnerID)) as instruction}
         <p class="text-3xl my-6">{instruction}</p>
       {/each}
     </div>

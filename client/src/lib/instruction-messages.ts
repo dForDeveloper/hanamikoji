@@ -1,4 +1,4 @@
-export const getInstructions = (currentAction: string, playerStage: string, opponentStage: string): string[] => {
+export const getInstructions = (currentAction: string, playerStage: string, opponentStage: string, scoreMessages: string[]): string[] => {
   const errorMessage = ['ERROR: No player has any available moves to make'];
   if (opponentStage) {
     switch (opponentStage) {
@@ -30,7 +30,7 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
       case 'calculate':
         return ['Waiting for your opponent to calculate the score.'];
       case 'prepareNextRound':
-        return ['Opponent in prepareNextRound stage'];
+        return scoreMessages;
       default:
         return errorMessage;
     }

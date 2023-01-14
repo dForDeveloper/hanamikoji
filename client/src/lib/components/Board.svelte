@@ -19,6 +19,7 @@
   let currentAction: string;
   let selectedCards: SelectedCard[] = [null, null, null, null];
   let selectedPresentedIndex = '';
+  let winnerID: string;
 
   const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
     if (gameState && gameState.G && gameState.ctx) {
@@ -29,6 +30,10 @@
       opponentStage = ctx.activePlayers ? ctx.activePlayers[opponentID] : '';
       setSelectedCardsFromHand([null, null, null, null]);
       setSelectedPresentedIndex('');
+      if (ctx.gameover) {
+        winnerID = ctx.gameover;
+      }
+      console.log('ctx.gameover', ctx.gameover);
     } else {
       client.getState();
     }
@@ -106,6 +111,7 @@
       {currentAction}
       {selectedCards}
       {selectedPresentedIndex}
+      {winnerID}
       {getPlayer}
       {drawCard}
       {undoAction}
