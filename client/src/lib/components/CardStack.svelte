@@ -6,7 +6,7 @@
   export let count: number;
   export let isUpsideDown = false;
 
-  function getParentClass(count: number, isUpsideDown: boolean): string {
+  function getParentClasses(count: number, isUpsideDown: boolean): string {
     let cssClasses = 'relative w-[13.31vh] pt-2';
     if (count === 1) {
       cssClasses = cssClasses + ' flex justify-center';
@@ -41,7 +41,7 @@
   }
 </script>
 
-<div class={getParentClass(count, isUpsideDown)}>
+<div class={getParentClasses(count, isUpsideDown)}>
   {#each Array(count) as _, i}
     <div class={getChildClasses(count, i)}>
       <Card type="item" {color} {isUpsideDown} />
