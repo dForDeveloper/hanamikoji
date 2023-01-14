@@ -24,7 +24,7 @@
       <CardStack
         color={geishaCard.color}
         count={geishaCard.playerItemCards[opponentID].length}
-        isFlipped={true}
+        isUpsideDown={true}
       />
     {/each}
   </div>
