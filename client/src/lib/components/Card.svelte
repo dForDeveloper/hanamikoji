@@ -5,7 +5,8 @@
   export let color: Color = Color.PINK;
   export let isSelected = false;
   export let isHoverable = false;
-  export let isInverted = false;
+  export let isTranslatedDown = false;
+  export let isUpsideDown = false;
   export let victoryMarkerDirection: number = 0;
   export let backAlt = 'back side of an item card';
 
@@ -65,9 +66,9 @@
   }
 
   function getCssClasses() {
-    let cssClasses = 'block h-[16.2vh] w-[11.53vh] object-center rounded-xl shadow-sm shadow-black w-full';
+    let cssClasses = 'block h-[16.2vh] w-[11.53vh] object-center rounded-xl shadow-black w-full';
     if (isSelected) {
-      if (isInverted) {
+      if (isTranslatedDown) {
         cssClasses = cssClasses + ' translate-y-6';
       } else {
         cssClasses = cssClasses + ' -translate-y-6';
@@ -75,6 +76,11 @@
     }
     if (isHoverable) {
       cssClasses = cssClasses + ' hover:shadow hover:shadow-black';
+    }
+    if (isUpsideDown) {
+      cssClasses = cssClasses + ' shadow-[0_-1px_2px_0_rgb(0,0,0,0.05)]';
+    } else {
+      cssClasses = cssClasses + ' shadow-sm';
     }
     return cssClasses;
   }

@@ -4,73 +4,47 @@
 
   export let color: Color;
   export let count: number;
-  export let isFlipped = false;
+  export let isUpsideDown = false;
 
-  function getFlippedClasses(isFlipped: boolean): string {
-    return isFlipped ? 'rotate-180' : '';
+  function getParentClass(count: number, isUpsideDown: boolean): string {
+    let cssClasses = 'relative w-[13.31vh] pt-2';
+    if (count === 1) {
+      cssClasses = cssClasses + ' flex justify-center';
+    }
+    if (isUpsideDown) {
+      cssClasses = cssClasses + ' rotate-180';
+    }
+    return cssClasses;
+  }
+
+  function getChildClasses(count: number, index: number): string {
+    const defaultClasses = 'absolute rounded-xl';
+    const zIndex = ' z-' + ((index + 1) * 10).toString();
+    return defaultClasses + zIndex + getAbsolutePositions(count)[index];
+  }
+
+  function getAbsolutePositions(count: number): string[] {
+    switch (count) {
+      case 1:
+        return [''];
+      case 2:
+        return ['', ' top-9 left-4'];
+      case 3:
+        return ['', ' top-[1.3rem] left-2', ' top-9 left-4'];
+      case 4:
+        return ['', ' top-4 left-1.5', ' top-[1.6rem] left-3', ' top-9 left-[1.125rem]'];
+      case 5:
+        return ['', ' top-[0.9rem] left-1', ' top-[1.35rem] left-2', ' top-[1.8rem] left-3', ' top-9 left-4'];
+      default:
+        return [''];
+    }
   }
 </script>
 
-{#if count === 0}
-  <div class="w-[13.31vh]" />
-{:else if count === 1}
-  <div class={`relative w-[13.31vh] pt-2 flex justify-center ${getFlippedClasses(isFlipped)}`}>
-    <div class="rounded-xl absolute z-10">
-      <Card type="item" {color} />
+<div class={getParentClass(count, isUpsideDown)}>
+  {#each Array(count) as _, i}
+    <div class={getChildClasses(count, i)}>
+      <Card type="item" {color} {isUpsideDown} />
     </div>
-  </div>
-{:else if count === 2}
-  <div class={`relative w-[13.31vh] pt-2 ${getFlippedClasses(isFlipped)}`}>
-    <div class="rounded-xl absolute z-10">
-      <Card type="item" {color} />
-    </div>
-    <div class="rounded-xl absolute z-20 top-9 left-4">
-      <Card type="item" {color} />
-    </div>
-  </div>
-{:else if count === 3}
-  <div class={`relative w-[13.31vh] pt-2 ${getFlippedClasses(isFlipped)}`}>
-    <div class="rounded-xl absolute z-10">
-      <Card type="item" {color} />
-    </div>
-    <div class="rounded-xl absolute z-20 top-[1.3rem] left-2">
-      <Card type="item" {color} />
-    </div>
-    <div class="rounded-xl absolute z-30 top-9 left-4">
-      <Card type="item" {color} />
-    </div>
-  </div>
-{:else if count === 4}
-  <div class={`relative w-[13.31vh] pt-2 ${getFlippedClasses(isFlipped)}`}>
-    <div class="rounded-xl absolute z-10">
-      <Card type="item" {color} />
-    </div>
-    <div class="rounded-xl absolute z-20 top-4 left-1.5">
-      <Card type="item" {color} />
-    </div>
-    <div class="rounded-xl absolute z-30 top-[1.6rem] left-3">
-      <Card type="item" {color} />
-    </div>
-    <div class="rounded-xl absolute z-40 top-9 left-[1.125rem]">
-      <Card type="item" {color} />
-    </div>
-  </div>
-{:else if count === 5}
-  <div class={`relative w-[13.31vh] pt-2 ${getFlippedClasses(isFlipped)}`}>
-    <div class="rounded-xl absolute z-10">
-      <Card type="item" {color} />
-    </div>
-    <div class="rounded-xl absolute z-20 top-[0.5625rem] left-1">
-      <Card type="item" {color} />
-    </div>
-    <div class="rounded-xl absolute z-30 top-[1.125rem] left-2">
-      <Card type="item" {color} />
-    </div>
-    <div class="rounded-xl absolute z-40 top-[1.6875rem] left-3">
-      <Card type="item" {color} />
-    </div>
-    <div class="rounded-xl absolute z-50 top-9 left-4">
-      <Card type="item" {color} />
-    </div>
-  </div>
-{/if}
+  {/each}
+</div>

@@ -14,7 +14,7 @@
   {#each getPresentedCards(G, currentAction) as card, i}
     {#if selectedPresentedIndex === i.toString()}
       <button on:click={() => deselectFromPresented()} class="h-[16.2vh] w-[11.53vh]">
-        <Card type="item" color={card.color} isSelected={true} isHoverable={true} isInverted={true} />
+        <Card type="item" color={card.color} isSelected={true} isHoverable={true} isTranslatedDown={true} />
       </button>
     {:else}
       <button on:click={() => selectFromPresented(currentAction, i)} class="h-[16.2vh] w-[11.53vh]">
@@ -29,7 +29,7 @@
     {/if}
     {#if (i <= 1 && selectedPresentedIndex === '0') || (i >= 2 && selectedPresentedIndex === '1')}
       <button on:click={() => deselectFromPresented()} class="h-[16.2vh] w-[11.53vh]">
-        <Card type="item" color={card.color} isSelected={true} isHoverable={true} isInverted={true} />
+        <Card type="item" color={card.color} isSelected={true} isHoverable={true} isTranslatedDown={true} />
       </button>
     {:else}
       <button on:click={() => selectFromPresented(currentAction, i)} class="h-[16.2vh] w-[11.53vh]">
