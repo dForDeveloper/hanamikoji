@@ -31,9 +31,8 @@
       setSelectedCardsFromHand([null, null, null, null]);
       setSelectedPresentedIndex('');
       if (ctx.gameover) {
-        winnerID = ctx.gameover;
+        winnerID = ctx.gameover.winner;
       }
-      console.log('ctx.gameover', ctx.gameover);
     } else {
       client.getState();
     }
@@ -90,6 +89,10 @@
     client.moves.calculateScore();
   }
 
+  function readyUp(): void {
+    client.moves.readyUp();
+  }
+
   function setSelectedCardsFromHand(updatedSelectedCards: SelectedCard[]): void {
     selectedCards = updatedSelectedCards;
   }
@@ -120,6 +123,7 @@
       {acknowledgeChoice}
       {acknowledgeReveal}
       {calculateScore}
+      {readyUp}
       {setSelectedPresentedIndex}
     />
     <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentID} />

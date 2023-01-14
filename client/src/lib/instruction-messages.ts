@@ -28,6 +28,8 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
         return ['Waiting for your opponent to acknowledge your final card.'];
       case 'calculate':
         return ['Waiting for your opponent to calculate the score.'];
+      case 'prepareNextRound':
+        return ['Waiting for your opponent to ready up.'];
       default:
         return [''];
     }

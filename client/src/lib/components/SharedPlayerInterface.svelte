@@ -27,6 +27,7 @@
   export let acknowledgeChoice: () => void;
   export let acknowledgeReveal: () => void;
   export let calculateScore: () => void;
+  export let readyUp: () => void;
   export let setSelectedPresentedIndex: (updatedPresentedSelection: string) => void;
 
   function selectFromPresented(currentAction: string, i: number): void {
@@ -108,11 +109,11 @@
       `They have ${opponentScore.charmPoints} points and ${opponentScore.geishaCount} geisha.`,
     ];
     if (winnerID === playerID) {
-      messages.push('You won! 🎉');
+      messages.push('You win! 🎉');
     } else if (winnerID === opponentID) {
-      messages.push('You lost. 😞')
+      messages.push('You lose. 😞');
     } else {
-      messages.push('No one has won. Continue to the next round.');
+      messages.push("The game's still on. Ready for another round?");
     }
     return messages;
   }
@@ -166,13 +167,20 @@
         <SelectedCardAreaNonactivePlayer {currentAction} />
       {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
         <PresentedCardAreaNonactivePlayer {G} {currentAction} {getPresentedCards} />
-      {:else if playerStage === 'calculate'}
+      {:else if playerStage === 'calculate' && !winnerID}
         <button
           on:click={() => calculateScore()}
-          class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600"
+          class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 self-center"
         >
           calculate
-      </button>
+        </button>
+      {:else if playerStage === 'prepareNextRound'}
+        <button
+          on:click={() => readyUp()}
+          class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 self-center"
+        >
+          ready
+        </button>
       {/if}
     </div>
     <div class="flex pt-10 justify-center gap-8">

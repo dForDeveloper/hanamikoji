@@ -291,7 +291,7 @@ export const Hanamikoji: Game<GameState> = {
 
     scoringPhase: {
       turn: {
-        activePlayers: { all: 'calculate', minMoves: 1, maxMoves: 1 },
+        activePlayers: { currentPlayer: 'calculate' },
         stages: {
           calculate: {
             moves: {
@@ -333,18 +333,28 @@ export const Hanamikoji: Game<GameState> = {
     restartPhase: {
       next: 'playPhase',
       turn: {
-        activePlayers: { all: 'prepareNextRound', minMoves: 1, maxMoves: 1 },
+        activePlayers: { all: 'prepareNextRound' },
         stages: {
           prepareNextRound: {
             moves: {
-              goToNextRound: ({ G, events, random }) => {
-                setGameStateForNextRound({ G, random });
-                events.endTurn({ next: G.startingPlayerID });
-                G.startingPlayerID = G.startingPlayerID === '0' ? '1' : '0';
-                events.endPhase();
+              readyUp: {
+                move: ({ G, ctx, events, random, playerID }) => {
+                  const isPlayer0Ready = ctx.activePlayers && ctx.activePlayers[0] === 'ready';
+                  const isPlayer1Ready = ctx.activePlayers && ctx.activePlayers[1] === 'ready';
+                  if ((playerID === '0' && isPlayer1Ready) || (playerID === '1' && isPlayer0Ready)) {
+                    setGameStateForNextRound({ G, random });
+                    events.endTurn({ next: G.startingPlayerID });
+                    G.startingPlayerID = G.startingPlayerID === '0' ? '1' : '0';
+                    events.endPhase();
+                  } else {
+                    events.setStage('ready');
+                  }
+                },
+                client: false,
               },
             },
           },
+          ready: {},
         },
       },
     },
