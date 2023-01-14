@@ -100,7 +100,7 @@
 </script>
 
 {#if G && ctx}
-  <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito">
+  <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito bg-purple-100">
     <Opponent player={getPlayer(G, opponentID)} />
     <SharedPlayerInterface
       {G}

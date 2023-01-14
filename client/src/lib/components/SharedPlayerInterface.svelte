@@ -163,7 +163,7 @@
       {:else if playerStage === 'calculate'}
         <button
           on:click={() => calculateScore()}
-          class="bg-violet-300 text-xl h-14 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600"
+          class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600"
         >
           calculate
       </button>
@@ -173,7 +173,7 @@
       {#if playerStage === 'selectCardsAsCurrentPlayer' && getIsActionUndoable(G, playerID)}
         <button
           on:click={() => undoAction()}
-          class="bg-gray-600 text-white text-xl h-14 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600"
+          class="bg-pink-200 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600"
         >
           undo
         </button>
@@ -182,7 +182,7 @@
         <button
           on:click={() => confirmSelection(selectedCards, selectedPresentedIndex)}
           disabled={getIsConfirmationButtonDisabled(selectedCards, selectedPresentedIndex)}
-          class="bg-violet-300 text-xl h-14 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:bg-gray-200 disabled:shadow-none"
+          class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:bg-gray-300 disabled:shadow-none"
         >
           confirm
         </button>

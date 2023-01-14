@@ -25,7 +25,7 @@
     {#if playerStage === 'acknowledgeReveal'}
       <button
         on:click={() => acknowledgeReveal()}
-        class="bg-violet-300 text-xl h-14 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 place-self-center"
+        class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 place-self-center"
       >
         accept
       </button>
