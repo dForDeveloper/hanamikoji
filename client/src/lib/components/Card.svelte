@@ -62,13 +62,13 @@
   };
 
   function getVictoryMarkerClasses(victoryMarkerDirection: number | null): string {
-    let cssClasses = 'absolute z-10 h-[4vh] w-[4vh]';
+    let cssClasses = 'absolute z-10 h-[4vh] w-[4vh] shadow-sm shadow-black rounded-full';
     if (victoryMarkerDirection === -1) {
       return cssClasses + ' top-0';
     } else if (victoryMarkerDirection === 1) {
       return cssClasses + ' bottom-0';
     } else {
-      return cssClasses + 'align-self-center';
+      return cssClasses + ' align-self-center';
     }
   }
 
