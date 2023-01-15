@@ -6,6 +6,7 @@
   import PresentedCardAreaNonactivePlayer from '$lib/components/PresentedCardAreaNonactivePlayer.svelte';
   import SelectedCardAreaActivePlayer from '$lib/components/SelectedCardAreaActivePlayer.svelte';
   import SelectedCardAreaNonactivePlayer from '$lib/components/SelectedCardAreaNonactivePlayer.svelte';
+  import { Stage } from 'game-logic';
   import { getInstructions } from '$lib/instruction-messages';
   import type { Action, GameState, ItemCard, Player } from 'game-logic';
   import type { SelectedCard } from '$lib/types';
@@ -13,8 +14,8 @@
   export let G: GameState;
   export let playerID: string;
   export let opponentID: string;
-  export let playerStage: string;
-  export let opponentStage: string;
+  export let playerStage: Stage | null;
+  export let opponentStage: Stage | null;
   export let currentAction: string;
   export let selectedCards: SelectedCard[];
   export let selectedPresentedIndex: string;
@@ -44,22 +45,22 @@
   }
 
   function confirmSelection(selectedCards: SelectedCard[], selectedPresentedIndex: string): void {
-    if (playerStage === 'selectCardsAsCurrentPlayer') {
+    if (playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER) {
       const selectedCardIndexes = selectedCards
         .filter((maybeCard) => maybeCard !== null)
         .map((itemCard) => itemCard!.index.toString());
       selectCardsAsCurrent(selectedCardIndexes);
-    } else if (playerStage === 'selectCardsAsOpposingPlayer') {
+    } else if (playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER) {
       selectCardsAsOpposing(selectedPresentedIndex);
     }
   }
 
   function getIsConfirmationButtonDisabled(selectedCards: SelectedCard[], selectedPresentedIndex: string): boolean {
-    if (playerStage === 'selectCardsAsCurrentPlayer') {
+    if (playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER) {
       const requiredSelectedCardCount = Number(currentAction) + 1;
       const nonNullSelectedCardCount = selectedCards.filter((maybeCard) => maybeCard !== null).length;
       return nonNullSelectedCardCount !== requiredSelectedCardCount;
-    } else if (playerStage === 'selectCardsAsOpposingPlayer') {
+    } else if (playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER) {
       return selectedPresentedIndex === '';
     } else {
       throw new Error('Confirmation button should not exist');
@@ -80,12 +81,12 @@
     return G.opponentChoice;
   }
 
-  function getRevealedCard(G: GameState, playerStage: string, opponentStage: string): ItemCard {
+  function getRevealedCard(G: GameState, playerStage: Stage | null, opponentStage: Stage | null): ItemCard {
     let player;
 
-    if (playerStage === 'acknowledgeReveal') {
+    if (playerStage === Stage.ACKNOWLEDGE_REVEAL) {
       player = getPlayer(G, opponentID);
-    } else if (opponentStage === 'acknowledgeReveal') {
+    } else if (opponentStage === Stage.ACKNOWLEDGE_REVEAL) {
       player = getPlayer(G, playerID);
     }
 
@@ -119,7 +120,7 @@
   }
 </script>
 
-{#if playerStage === 'acknowledgeOpponentChoice' || opponentStage === 'acknowledgeOpponentChoice'}
+{#if playerStage === Stage.ACKNOWLEDGE_CHOICE || opponentStage === Stage.ACKNOWLEDGE_CHOICE}
   <AcknowledgeChoice
     presentedCards={getPresentedCards(G, currentAction)}
     opponentChoice={getOpponentChoice(G)}
@@ -128,7 +129,7 @@
     {currentAction}
     {acknowledgeChoice}
   />
-{:else if playerStage === 'acknowledgeReveal' || opponentStage === 'acknowledgeReveal'}
+{:else if playerStage === Stage.ACKNOWLEDGE_REVEAL || opponentStage === Stage.ACKNOWLEDGE_REVEAL}
   <AcknowledgeReveal
     revealedCard={getRevealedCard(G, playerStage, opponentStage)}
     {playerStage}
@@ -139,7 +140,7 @@
 {:else}
   <section aria-label="game-interface" class="grid grid-rows-[1fr_16.2vh_1fr]">
     <div aria-label="instruction" class="place-self-center max-w-prose h-full">
-      {#if playerStage === 'prepareNextRound' || winnerID}
+      {#if playerStage === Stage.PREPARE_NEXT_ROUND || winnerID}
         {#each getScoreMessages(G, playerID, opponentID, winnerID) as message}
           <p class="text-3xl my-6">{message}</p>
         {/each}
@@ -150,11 +151,11 @@
       {/if}
     </div>
     <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
-      {#if playerStage === 'draw' || opponentStage === 'draw'}
-        <Deck handleClick={() => drawCard()} isDisabled={playerStage !== 'draw'} />
-      {:else if playerStage === 'selectCardsAsCurrentPlayer'}
+      {#if playerStage === Stage.DRAW || opponentStage === Stage.DRAW}
+        <Deck handleClick={() => drawCard()} isDisabled={playerStage !== Stage.DRAW} />
+      {:else if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
         <SelectedCardAreaActivePlayer {currentAction} {selectedCards} />
-      {:else if playerStage === 'selectCardsAsOpposingPlayer'}
+      {:else if playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
         <PresentedCardAreaActivePlayer
           {G}
           {currentAction}
@@ -163,18 +164,18 @@
           {deselectFromPresented}
           {getPresentedCards}
         />
-      {:else if opponentStage === 'selectCardsAsCurrentPlayer'}
+      {:else if opponentStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
         <SelectedCardAreaNonactivePlayer {currentAction} />
-      {:else if opponentStage === 'selectCardsAsOpposingPlayer'}
+      {:else if opponentStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
         <PresentedCardAreaNonactivePlayer {G} {currentAction} {getPresentedCards} />
-      {:else if playerStage === 'calculate' && !winnerID}
+      {:else if playerStage === Stage.CALCULATE && !winnerID}
         <button
           on:click={() => calculateScore()}
           class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 self-center"
         >
           calculate
         </button>
-      {:else if playerStage === 'prepareNextRound'}
+      {:else if playerStage === Stage.PREPARE_NEXT_ROUND}
         <button
           on:click={() => readyUp()}
           class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 self-center"
@@ -184,7 +185,7 @@
       {/if}
     </div>
     <div class="flex pt-10 justify-center gap-8">
-      {#if playerStage === 'selectCardsAsCurrentPlayer' && getIsActionUndoable(G, playerID)}
+      {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER && getIsActionUndoable(G, playerID)}
         <button
           on:click={() => undoAction()}
           class="bg-pink-200 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600"
@@ -192,7 +193,7 @@
           undo
         </button>
       {/if}
-      {#if playerStage === 'selectCardsAsCurrentPlayer' || playerStage === 'selectCardsAsOpposingPlayer'}
+      {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER || playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
         <button
           on:click={() => confirmSelection(selectedCards, selectedPresentedIndex)}
           disabled={getIsConfirmationButtonDisabled(selectedCards, selectedPresentedIndex)}

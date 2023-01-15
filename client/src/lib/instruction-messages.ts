@@ -1,11 +1,17 @@
-export const getInstructions = (currentAction: string, playerStage: string, opponentStage: string): string[] => {
+import { Stage } from 'game-logic';
+
+export const getInstructions = (
+  currentAction: string,
+  playerStage: Stage | null,
+  opponentStage: Stage | null,
+): string[] => {
   if (opponentStage) {
     switch (opponentStage) {
-      case 'draw':
+      case Stage.DRAW:
         return ["It's your opponent's turn", 'Waiting for them to draw a card.'];
-      case 'selectAction':
+      case Stage.SELECT_ACTION:
         return ['Waiting for your opponent to select an action.'];
-      case 'selectCardsAsCurrentPlayer':
+      case Stage.SELECT_CARDS_AS_ACTIVE_PLAYER:
         switch (currentAction) {
           case '0':
             return ['Waiting for your opponent to hide 1 card.'];
@@ -18,28 +24,28 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
           default:
             return [''];
         }
-      case 'selectCardsAsOpposingPlayer':
+      case Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER:
         return [`Waiting for your opponent to choose their ${currentAction === '2' ? 'card' : 'set'}.`];
-      case 'acknowledgeOpponentChoice':
+      case Stage.ACKNOWLEDGE_CHOICE:
         return ['Waiting for your opponent to acknowledge your choice.'];
       case 'reveal':
         return ['Waiting for your opponent to reveal their hidden card.'];
-      case 'acknowledgeReveal':
+      case Stage.ACKNOWLEDGE_REVEAL:
         return ['Waiting for your opponent to acknowledge your final card.'];
-      case 'calculate':
+      case Stage.CALCULATE:
         return ['Waiting for your opponent to calculate the score.'];
-      case 'prepareNextRound':
+      case Stage.PREPARE_NEXT_ROUND:
         return ['Waiting for your opponent to ready up.'];
       default:
         return [''];
     }
   } else if (playerStage) {
     switch (playerStage) {
-      case 'draw':
+      case Stage.DRAW:
         return ["It's your turn.", 'Draw a card.'];
-      case 'selectAction':
+      case Stage.SELECT_ACTION:
         return ['Select an action from the options below.'];
-      case 'selectCardsAsCurrentPlayer':
+      case Stage.SELECT_CARDS_AS_ACTIVE_PLAYER:
         switch (currentAction) {
           case '0':
             return [
@@ -67,7 +73,7 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
           default:
             return [''];
         }
-      case 'selectCardsAsOpposingPlayer':
+      case Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER:
         switch (currentAction) {
           case '2':
             return [
@@ -84,13 +90,13 @@ export const getInstructions = (currentAction: string, playerStage: string, oppo
           default:
             return [''];
         }
-      case 'acknowledgeOpponentChoice':
+      case Stage.ACKNOWLEDGE_CHOICE:
         return ['Your opponent chose this split.'];
       case 'reveal':
         return ['Reveal your hidden card.'];
-      case 'acknowledgeReveal':
+      case Stage.ACKNOWLEDGE_REVEAL:
         return ['Your opponent revealed their hidden card.'];
-      case 'calculate':
+      case Stage.CALCULATE:
         return ['Calculate the score.'];
       default:
         return [''];
