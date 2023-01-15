@@ -1,5 +1,5 @@
 import { Ctx } from 'boardgame.io';
-import { INVALID_MOVE, Stage as BoardgameIOStage } from 'boardgame.io/core';
+import { INVALID_MOVE } from 'boardgame.io/core';
 import { EventsAPI } from 'boardgame.io/dist/types/src/plugins/events/events';
 import { GameState, ItemCard, MoveResult, Stage } from '../types';
 
@@ -79,7 +79,7 @@ export function selectCardsAsCurrent(
     case '2':
       G.presentedCards = selectedCards;
       events.setActivePlayers({
-        currentPlayer: BoardgameIOStage.NULL,
+        currentPlayer: Stage.NULL,
         others: Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER,
       });
       break;
@@ -89,7 +89,7 @@ export function selectCardsAsCurrent(
         [selectedCards.at(2)!, selectedCards.at(3)!],
       ];
       events.setActivePlayers({
-        currentPlayer: BoardgameIOStage.NULL,
+        currentPlayer: Stage.NULL,
         others: Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER,
       });
       break;
@@ -109,7 +109,7 @@ export function selectCardsAsOpposing(
     G.opponentChoice = selectedIndex;
     events.setActivePlayers({
       currentPlayer: Stage.ACKNOWLEDGE_CHOICE,
-      others: BoardgameIOStage.NULL,
+      others: Stage.NULL,
     });
   } else {
     return INVALID_MOVE;
@@ -155,6 +155,6 @@ export function acknowledgeOpponentChoice({
 
   G.opponentChoice = '';
   G.currentAction = null;
-  events.setActivePlayers({ all: BoardgameIOStage.NULL });
+  events.setActivePlayers({ all: Stage.NULL });
   events.endTurn();
 }

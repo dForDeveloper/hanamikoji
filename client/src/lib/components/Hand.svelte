@@ -5,7 +5,7 @@
   import type { SelectedCard } from '$lib/types';
 
   export let player: Player;
-  export let playerStage: Stage | null;
+  export let playerStage: Stage;
   export let selectedCards: SelectedCard[];
   export let currentAction: string | null;
   export let setSelectedCardsFromHand: (updatedSelectedCards: SelectedCard[]) => void;

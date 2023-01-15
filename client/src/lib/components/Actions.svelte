@@ -5,8 +5,8 @@
   import type { Player } from 'game-logic';
 
   export let player: Player;
-  export let playerStage: Stage | null;
-  export let opponentStage: Stage | null;
+  export let playerStage: Stage;
+  export let opponentStage: Stage;
   export let selectAction: (actionIndex: string) => void;
   export let revealHiddenCard: () => void;
 </script>

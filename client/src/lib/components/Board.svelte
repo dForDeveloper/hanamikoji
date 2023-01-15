@@ -5,7 +5,8 @@
   import Opponent from '$lib/components/Opponent.svelte';
   import SharedPlayerInterface from '$lib/components/SharedPlayerInterface.svelte';
   import { onDestroy } from 'svelte';
-  import type { GameState, GeishaCard, Player, Stage } from 'game-logic';
+  import { Stage } from 'game-logic';
+  import type { GameState, GeishaCard, Player } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
   import type { SelectedCard } from '$lib/types';
 
@@ -14,8 +15,8 @@
   const opponentID = playerID === '0' ? '1' : '0';
   let G: GameState;
   let ctx: Ctx;
-  let playerStage: Stage | null;
-  let opponentStage: Stage | null;
+  let playerStage: Stage;
+  let opponentStage: Stage;
   let currentAction: string;
   let selectedCards: SelectedCard[] = [null, null, null, null];
   let selectedPresentedIndex = '';
@@ -30,13 +31,13 @@
       if (ctx.activePlayers && ctx.activePlayers[playerID]) {
         playerStage = ctx.activePlayers[playerID] as Stage;
       } else {
-        playerStage = null;
+        playerStage = Stage.NULL;
       }
 
       if (ctx.activePlayers && ctx.activePlayers[opponentID]) {
         opponentStage = ctx.activePlayers[opponentID] as Stage;
       } else {
-        opponentStage = null;
+        opponentStage = Stage.NULL;
       }
 
       setSelectedCardsFromHand([null, null, null, null]);

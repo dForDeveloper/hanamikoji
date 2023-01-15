@@ -1,10 +1,7 @@
 import { Stage } from 'game-logic';
 
-export const getInstructions = (
-  currentAction: string,
-  playerStage: Stage | null,
-  opponentStage: Stage | null,
-): string[] => {
+export const getInstructions = (currentAction: string, playerStage: Stage, opponentStage: Stage): string[] => {
+  const NO_MESSAGE = [''];
   if (opponentStage) {
     switch (opponentStage) {
       case Stage.DRAW:
@@ -22,7 +19,7 @@ export const getInstructions = (
           case '3':
             return ['Waiting for your opponent to reveal 2 sets of cards.'];
           default:
-            return [''];
+            return NO_MESSAGE;
         }
       case Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER:
         return [`Waiting for your opponent to choose their ${currentAction === '2' ? 'card' : 'set'}.`];
@@ -37,7 +34,7 @@ export const getInstructions = (
       case Stage.PREPARE_NEXT_ROUND:
         return ['Waiting for your opponent to ready up.'];
       default:
-        return [''];
+        return NO_MESSAGE;
     }
   } else if (playerStage) {
     switch (playerStage) {
@@ -71,7 +68,7 @@ export const getInstructions = (
               'You will score the remaining set.',
             ];
           default:
-            return [''];
+            return NO_MESSAGE;
         }
       case Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER:
         switch (currentAction) {
@@ -88,7 +85,7 @@ export const getInstructions = (
               'They will score the remaining set.',
             ];
           default:
-            return [''];
+            return NO_MESSAGE;
         }
       case Stage.ACKNOWLEDGE_CHOICE:
         return ['Your opponent chose this split.'];
@@ -99,9 +96,9 @@ export const getInstructions = (
       case Stage.CALCULATE:
         return ['Calculate the score.'];
       default:
-        return [''];
+        return NO_MESSAGE;
     }
   } else {
-    return [''];
+    return NO_MESSAGE;
   }
 };

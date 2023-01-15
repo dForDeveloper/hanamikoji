@@ -5,8 +5,8 @@
   import type { ItemCard } from 'game-logic';
 
   export let presentedCards: ItemCard[];
-  export let playerStage: Stage | null;
-  export let opponentStage: Stage | null;
+  export let playerStage: Stage;
+  export let opponentStage: Stage;
   export let currentAction: string;
   export let opponentChoice: string;
   export let acknowledgeChoice: () => void;

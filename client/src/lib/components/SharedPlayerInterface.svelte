@@ -14,8 +14,8 @@
   export let G: GameState;
   export let playerID: string;
   export let opponentID: string;
-  export let playerStage: Stage | null;
-  export let opponentStage: Stage | null;
+  export let playerStage: Stage;
+  export let opponentStage: Stage;
   export let currentAction: string;
   export let selectedCards: SelectedCard[];
   export let selectedPresentedIndex: string;
@@ -81,7 +81,7 @@
     return G.opponentChoice;
   }
 
-  function getRevealedCard(G: GameState, playerStage: Stage | null, opponentStage: Stage | null): ItemCard {
+  function getRevealedCard(G: GameState, playerStage: Stage, opponentStage: Stage): ItemCard {
     let player;
 
     if (playerStage === Stage.ACKNOWLEDGE_REVEAL) {

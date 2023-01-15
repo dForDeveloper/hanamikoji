@@ -1,5 +1,5 @@
 import { Ctx } from 'boardgame.io';
-import { INVALID_MOVE, Stage as BoardgameIOStage } from 'boardgame.io/core';
+import { INVALID_MOVE } from 'boardgame.io/core';
 import { EventsAPI } from 'boardgame.io/dist/types/src/plugins/events/events';
 import { GameState, MoveResult, Stage } from '../types';
 
@@ -11,7 +11,7 @@ export function endRevealPhaseIf({ G }: { G: GameState }): boolean | void | { ne
 
 export function reveal({ events }: { events: EventsAPI }): MoveResult {
   events.setActivePlayers({
-    currentPlayer: BoardgameIOStage.NULL,
+    currentPlayer: Stage.NULL,
     others: Stage.ACKNOWLEDGE_REVEAL,
   });
 }
