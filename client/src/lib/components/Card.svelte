@@ -11,43 +11,54 @@
   export let backAlt = 'back side of an item card';
 
   const colorToGeishaSource = {
-    [Color.PINK]: '/images/pink-geisha.webp',
-    [Color.GREEN]: '/images/green-geisha.webp',
-    [Color.ORANGE]: '/images/orange-geisha.webp',
-    [Color.BLUE]: '/images/blue-geisha.webp',
-    [Color.YELLOW]: '/images/yellow-geisha.webp',
-    [Color.RED]: '/images/red-geisha.webp',
-    [Color.PURPLE]: '/images/purple-geisha.webp',
+    [Color.PURPLE]:
+      '/images/1080/purple-geisha.webp 144w, /images/1440/purple-geisha.webp 192w, /images/4k/purple-geisha.webp 298w',
+    [Color.RED]:
+      '/images/1080/red-geisha.webp 144w, /images/1440/red-geisha.webp 192w, /images/4k/red-geisha.webp 298w',
+    [Color.YELLOW]:
+      '/images/1080/yellow-geisha.webp 144w, /images/1440/yellow-geisha.webp 192w, /images/4k/yellow-geisha.webp 298w',
+    [Color.BLUE]:
+      '/images/1080/blue-geisha.webp 144w, /images/1440/blue-geisha.webp 192w, /images/4k/blue-geisha.webp 298w',
+    [Color.ORANGE]:
+      '/images/1080/orange-geisha.webp 144w, /images/1440/orange-geisha.webp 192w, /images/4k/orange-geisha.webp 298w',
+    [Color.GREEN]:
+      '/images/1080/green-geisha.webp 144w, /images/1440/green-geisha.webp 192w, /images/4k/green-geisha.webp 298w',
+    [Color.PINK]:
+      '/images/1080/pink-geisha.webp 144w, /images/1440/pink-geisha.webp 192w, /images/4k/pink-geisha.webp 298w',
   };
 
   const colorToGeishaAlt = {
-    [Color.PINK]: 'pink geisha card - 5 points',
-    [Color.GREEN]: 'green geisha card - 4 points',
-    [Color.ORANGE]: 'orange geisha card - 3 points',
-    [Color.BLUE]: 'blue geisha card - 3 points',
-    [Color.YELLOW]: 'yellow geisha card - 2 points',
-    [Color.RED]: 'red geisha card - 2 points',
     [Color.PURPLE]: 'purple geisha card - 2 points',
+    [Color.RED]: 'red geisha card - 2 points',
+    [Color.YELLOW]: 'yellow geisha card - 2 points',
+    [Color.BLUE]: 'blue geisha card - 3 points',
+    [Color.ORANGE]: 'orange geisha card - 3 points',
+    [Color.GREEN]: 'green geisha card - 4 points',
+    [Color.PINK]: 'pink geisha card - 5 points',
   };
 
   const colorToItemSource = {
-    [Color.PINK]: '/images/pink-item.webp',
-    [Color.GREEN]: '/images/green-item.webp',
-    [Color.ORANGE]: '/images/orange-item.webp',
-    [Color.BLUE]: '/images/blue-item.webp',
-    [Color.YELLOW]: '/images/yellow-item.webp',
-    [Color.RED]: '/images/red-item.webp',
-    [Color.PURPLE]: '/images/purple-item.webp',
+    [Color.PURPLE]:
+      '/images/1080/purple-item.webp 125w, /images/1440/purple-item.webp 167w, /images/4k/purple-item.webp 258w',
+    [Color.RED]: '/images/1080/red-item.webp 125w, /images/1440/red-item.webp 167w, /images/4k/red-item.webp 258w',
+    [Color.YELLOW]:
+      '/images/1080/yellow-item.webp 125w, /images/1440/yellow-item.webp 167w, /images/4k/yellow-item.webp 258w',
+    [Color.BLUE]: '/images/1080/blue-item.webp 125w, /images/1440/blue-item.webp 167w, /images/4k/blue-item.webp 258w',
+    [Color.ORANGE]:
+      '/images/1080/orange-item.webp 125w, /images/1440/orange-item.webp 167w, /images/4k/orange-item.webp 258w',
+    [Color.GREEN]:
+      '/images/1080/green-item.webp 125w, /images/1440/green-item.webp 167w, /images/4k/green-item.webp 258w',
+    [Color.PINK]: '/images/1080/pink-item.webp 125w, /images/1440/pink-item.webp 167w, /images/4k/pink-item.webp 258w',
   };
 
   const colorToItemAlt = {
-    [Color.PINK]: 'pink item card - 5 points',
-    [Color.GREEN]: 'green item card - 4 points',
-    [Color.ORANGE]: 'orange item card - 3 points',
-    [Color.BLUE]: 'blue item card - 3 points',
-    [Color.YELLOW]: 'yellow item card - 2 points',
-    [Color.RED]: 'red item card - 2 points',
     [Color.PURPLE]: 'purple item card - 2 points',
+    [Color.RED]: 'red item card - 2 points',
+    [Color.YELLOW]: 'yellow item card - 2 points',
+    [Color.BLUE]: 'blue item card - 3 points',
+    [Color.ORANGE]: 'orange item card - 3 points',
+    [Color.GREEN]: 'green item card - 4 points',
+    [Color.PINK]: 'pink item card - 5 points',
   };
 
   function getVictoryMarkerClasses(victoryMarkerDirection: number | null): string {
@@ -89,20 +100,32 @@
 {#if type === 'geisha'}
   <div class="relative h-[20vh] w-[13.31vh] grid place-items-center">
     <img
-      src={colorToGeishaSource[color]}
+      srcset={colorToGeishaSource[color]}
+      sizes="(max-width: 1920px) 144px, (max-width: 2560px) 192px, (max-width: 3840px) 298px"
       alt={colorToGeishaAlt[color]}
       class="block h-[20vh] w-[13.31vh] object-fill object-center rounded-xl shadow-sm shadow-black"
     />
     <img
-      src="/images/victory-marker.webp"
+      srcset="/images/1080/victory-marker.webp 44w, /images/1440/victory-marker.webp 58w, /images/4k/victory-marker.webp 90w"
+      sizes="(max-width: 1920px) 44px, (max-width: 2560px) 58px, (max-width: 3840px) 90px"
       alt="victory marker"
       class={getVictoryMarkerClasses(victoryMarkerDirection)}
     />
   </div>
 {:else if type === 'item'}
-  <img src={colorToItemSource[color]} alt={getItemCardAlt(color)} class={getCssClasses()} />
+  <img
+    srcset={colorToItemSource[color]}
+    sizes="(max-width: 1920px) 125px, (max-width: 2560px) 167px, (max-width: 3840px) 258px"
+    alt={getItemCardAlt(color)}
+    class={getCssClasses()}
+  />
 {:else if type === 'back'}
-  <img src="/images/item-back.webp" alt={backAlt} class={getCssClasses()} />
+  <img
+    srcset="/images/1080/item-back.webp 125w, /images/1440/item-back.webp 167w, /images/4k/item-back.webp 258w"
+    sizes="(max-width: 1920px) 125px, (max-width: 2560px) 167px, (max-width: 3840px) 258px"
+    alt={backAlt}
+    class={getCssClasses()}
+  />
 {:else if type === 'empty'}
   <div class="h-[16.2vh] w-[11.53vh] border-2 border-gray-600 border-dashed rounded-xl" />
 {/if}
