@@ -44,7 +44,7 @@
     setSelectedPresentedIndex('');
   }
 
-  function confirmSelection(selectedCards: SelectedCard[], selectedPresentedIndex: string): void {
+  function confirmSelection(selectedCards: SelectedCard[], selectedPresentedIndex: string, playerStage: Stage): void {
     if (playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER) {
       const selectedCardIndexes = selectedCards
         .filter((maybeCard) => maybeCard !== null)
@@ -55,7 +55,11 @@
     }
   }
 
-  function getIsConfirmationButtonDisabled(selectedCards: SelectedCard[], selectedPresentedIndex: string): boolean {
+  function getIsConfirmationButtonDisabled(
+    selectedCards: SelectedCard[],
+    selectedPresentedIndex: string,
+    playerStage: Stage,
+  ): boolean {
     if (playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER) {
       const requiredSelectedCardCount = Number(currentAction) + 1;
       const nonNullSelectedCardCount = selectedCards.filter((maybeCard) => maybeCard !== null).length;
@@ -195,8 +199,8 @@
       {/if}
       {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER || playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
         <button
-          on:click={() => confirmSelection(selectedCards, selectedPresentedIndex)}
-          disabled={getIsConfirmationButtonDisabled(selectedCards, selectedPresentedIndex)}
+          on:click={() => confirmSelection(selectedCards, selectedPresentedIndex, playerStage)}
+          disabled={getIsConfirmationButtonDisabled(selectedCards, selectedPresentedIndex, playerStage)}
           class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:bg-gray-300 disabled:shadow-none"
         >
           confirm
