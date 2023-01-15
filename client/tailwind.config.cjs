@@ -2,7 +2,11 @@
 module.exports = {
   content: ['./src/**/*.{svelte,html,ts}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        nunito: ['nunito'],
+      },
+    },
   },
   plugins: [],
 };

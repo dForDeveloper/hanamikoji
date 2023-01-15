@@ -1,20 +1,10 @@
 <script lang="ts">
-  import { getPlayerData, setPlayerData } from '$lib/utils';
+  import { getPlayerData, setPlayerData } from '$lib/local-storage';
   import NameForm from '$lib/components/NameForm.svelte';
   import { goto } from '$app/navigation';
   import { lobby } from '$lib/stores';
   import { onMount } from 'svelte';
   import type { Player } from '$lib/types';
-
-  // const test = false;
-  const test = true;
-  // test client
-  import { Client } from 'boardgame.io/client';
-  import { Hanamikoji } from 'game-logic';
-  import Board from '$lib/components/Board.svelte';
-  const client = Client({ game: Hanamikoji, playerID: '0' });
-  client.start();
-  // end test client
 
   let player: Player = { name: '', credentials: '' };
 
@@ -37,11 +27,6 @@
   }
 </script>
 
-<!-- TODO: remove test condition after UI implementation is complete -->
-{#if test}
-  <Board {client} />
-{:else}
-  <main class="grid place-items-center h-screen">
-    <NameForm buttonText={'New Match'} {getIsDisabled} {handleClick} name={player.name} />
-  </main>
-{/if}
+<main class="grid place-items-center h-screen">
+  <NameForm buttonText={'New Match'} {getIsDisabled} {handleClick} name={player.name} />
+</main>

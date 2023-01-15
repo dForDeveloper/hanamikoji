@@ -8,32 +8,8 @@ export const Hanamikoji: Game<GameState> = {
     return {
       secret: { deck, unusedItemCard },
       geisha: {
-        [Color.PINK]: {
-          color: Color.PINK,
-          charmPoints: 5,
-          favoredPlayerID: null,
-          playerItemCards: { 0: [], 1: [] },
-        },
-        [Color.GREEN]: {
-          color: Color.GREEN,
-          charmPoints: 4,
-          favoredPlayerID: null,
-          playerItemCards: { 0: [], 1: [] },
-        },
-        [Color.ORANGE]: {
-          color: Color.ORANGE,
-          charmPoints: 3,
-          favoredPlayerID: null,
-          playerItemCards: { 0: [], 1: [] },
-        },
-        [Color.BLUE]: {
-          color: Color.BLUE,
-          charmPoints: 3,
-          favoredPlayerID: null,
-          playerItemCards: { 0: [], 1: [] },
-        },
-        [Color.YELLOW]: {
-          color: Color.YELLOW,
+        [Color.PURPLE]: {
+          color: Color.PURPLE,
           charmPoints: 2,
           favoredPlayerID: null,
           playerItemCards: { 0: [], 1: [] },
@@ -44,9 +20,33 @@ export const Hanamikoji: Game<GameState> = {
           favoredPlayerID: null,
           playerItemCards: { 0: [], 1: [] },
         },
-        [Color.PURPLE]: {
-          color: Color.PURPLE,
+        [Color.YELLOW]: {
+          color: Color.YELLOW,
           charmPoints: 2,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.BLUE]: {
+          color: Color.BLUE,
+          charmPoints: 3,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.ORANGE]: {
+          color: Color.ORANGE,
+          charmPoints: 3,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.GREEN]: {
+          color: Color.GREEN,
+          charmPoints: 4,
+          favoredPlayerID: null,
+          playerItemCards: { 0: [], 1: [] },
+        },
+        [Color.PINK]: {
+          color: Color.PINK,
+          charmPoints: 5,
           favoredPlayerID: null,
           playerItemCards: { 0: [], 1: [] },
         },
@@ -77,6 +77,7 @@ export const Hanamikoji: Game<GameState> = {
       presentedCards: [],
       presentedPairs: [],
       startingPlayerID: '0',
+      opponentChoice: '',
     };
   },
 
@@ -189,27 +190,46 @@ export const Hanamikoji: Game<GameState> = {
 
           selectCardsAsOpposingPlayer: {
             moves: {
-              selectCardsAsOpposing: ({ G, ctx, events }, selectedIndex: string) => {
-                const presentingPlayer = ctx.currentPlayer;
-                const choosingPlayer = presentingPlayer === '0' ? '1' : '0';
-                const currentAction = G.currentAction!;
+              selectCardsAsOpposing: ({ G, events }, selectedIndex: string) => {
+                const currentAction = G.currentAction;
 
                 const isValidAction2Selection = ['0', '1', '2'].includes(selectedIndex) && currentAction === '2';
                 const isValidAction3Selection = ['0', '1'].includes(selectedIndex) && currentAction === '3';
 
-                if (isValidAction2Selection) {
+                if (isValidAction2Selection || isValidAction3Selection) {
+                  G.opponentChoice = selectedIndex;
+                  events.setActivePlayers({
+                    currentPlayer: 'acknowledgeOpponentChoice',
+                    others: Stage.NULL,
+                  });
+                } else {
+                  return INVALID_MOVE;
+                }
+              },
+            },
+          },
+
+          acknowledgeOpponentChoice: {
+            moves: {
+              acknowledgeOpponentChoice: ({ G, ctx, events }) => {
+                const presentingPlayer = ctx.currentPlayer;
+                const choosingPlayer = presentingPlayer === '0' ? '1' : '0';
+                const currentAction = G.currentAction;
+                const opponentChoice = G.opponentChoice;
+
+                if (currentAction === '2' && opponentChoice) {
                   G.presentedCards.forEach((card, i) => {
-                    if (i === Number(selectedIndex)) {
+                    if (i === Number(opponentChoice)) {
                       G.geisha[card.color].playerItemCards[choosingPlayer].push(card);
                     } else {
                       G.geisha[card.color].playerItemCards[presentingPlayer].push(card);
                     }
                   });
                   G.presentedCards = [];
-                } else if (isValidAction3Selection) {
-                  const unselectedIndex = selectedIndex === '0' ? '1' : '0';
+                } else if (currentAction === '3') {
+                  const unselectedIndex = opponentChoice === '0' ? '1' : '0';
                   G.presentedPairs.forEach((pair, i) => {
-                    if (i === Number(selectedIndex)) {
+                    if (i === Number(opponentChoice)) {
                       pair.forEach((card) => G.geisha[card.color].playerItemCards[choosingPlayer].push(card));
                     } else if (i === Number(unselectedIndex)) {
                       pair.forEach((card) => G.geisha[card.color].playerItemCards[presentingPlayer].push(card));
@@ -220,6 +240,7 @@ export const Hanamikoji: Game<GameState> = {
                   return INVALID_MOVE;
                 }
 
+                G.opponentChoice = '';
                 G.currentAction = null;
                 events.setActivePlayers({ all: Stage.NULL });
                 events.endTurn();
@@ -242,7 +263,17 @@ export const Hanamikoji: Game<GameState> = {
         stages: {
           reveal: {
             moves: {
-              reveal: ({ G, ctx, events }) => {
+              reveal: ({ events }) => {
+                events.setActivePlayers({
+                  currentPlayer: Stage.NULL,
+                  others: 'acknowledgeReveal',
+                });
+              },
+            },
+          },
+          acknowledgeReveal: {
+            moves: {
+              acknowledgeReveal: ({ G, ctx, events }) => {
                 const { savedCard } = G.players[ctx.currentPlayer].actions[0];
                 if (savedCard !== null && savedCard !== undefined) {
                   G.geisha[savedCard.color].playerItemCards[ctx.currentPlayer].push(savedCard);
@@ -260,7 +291,7 @@ export const Hanamikoji: Game<GameState> = {
 
     scoringPhase: {
       turn: {
-        activePlayers: { all: 'calculate', minMoves: 1, maxMoves: 1 },
+        activePlayers: { currentPlayer: 'calculate' },
         stages: {
           calculate: {
             moves: {
@@ -302,18 +333,28 @@ export const Hanamikoji: Game<GameState> = {
     restartPhase: {
       next: 'playPhase',
       turn: {
-        activePlayers: { all: 'prepareNextRound', minMoves: 1, maxMoves: 1 },
+        activePlayers: { all: 'prepareNextRound' },
         stages: {
           prepareNextRound: {
             moves: {
-              goToNextRound: ({ G, events, random }) => {
-                setGameStateForNextRound({ G, random });
-                events.endTurn({ next: G.startingPlayerID });
-                G.startingPlayerID = G.startingPlayerID === '0' ? '1' : '0';
-                events.endPhase();
+              readyUp: {
+                move: ({ G, ctx, events, random, playerID }) => {
+                  const isPlayer0Ready = ctx.activePlayers && ctx.activePlayers[0] === 'ready';
+                  const isPlayer1Ready = ctx.activePlayers && ctx.activePlayers[1] === 'ready';
+                  if ((playerID === '0' && isPlayer1Ready) || (playerID === '1' && isPlayer0Ready)) {
+                    setGameStateForNextRound({ G, random });
+                    events.endTurn({ next: G.startingPlayerID });
+                    G.startingPlayerID = G.startingPlayerID === '0' ? '1' : '0';
+                    events.endPhase();
+                  } else {
+                    events.setStage('ready');
+                  }
+                },
+                client: false,
               },
             },
           },
+          ready: {},
         },
       },
     },
@@ -326,13 +367,13 @@ export const Hanamikoji: Game<GameState> = {
 
 function getDeckAndHands(random: Random): DeckAndHands {
   const stackedDeck = [
-    ...Array(5).fill({ charmPoints: 5, color: Color.PINK }),
-    ...Array(4).fill({ charmPoints: 4, color: Color.GREEN }),
-    ...Array(3).fill({ charmPoints: 3, color: Color.ORANGE }),
-    ...Array(3).fill({ charmPoints: 3, color: Color.BLUE }),
-    ...Array(2).fill({ charmPoints: 2, color: Color.YELLOW }),
-    ...Array(2).fill({ charmPoints: 2, color: Color.RED }),
     ...Array(2).fill({ charmPoints: 2, color: Color.PURPLE }),
+    ...Array(2).fill({ charmPoints: 2, color: Color.RED }),
+    ...Array(2).fill({ charmPoints: 2, color: Color.YELLOW }),
+    ...Array(3).fill({ charmPoints: 3, color: Color.BLUE }),
+    ...Array(3).fill({ charmPoints: 3, color: Color.ORANGE }),
+    ...Array(4).fill({ charmPoints: 4, color: Color.GREEN }),
+    ...Array(5).fill({ charmPoints: 5, color: Color.PINK }),
   ];
 
   const deck: ItemCard[] = random.Shuffle(stackedDeck);
@@ -363,13 +404,13 @@ function setGameStateForNextRound({ G, random }: { G: GameState; random: Random 
   const { deck, unusedItemCard, player0Hand, player1Hand } = getDeckAndHands(random);
   G.secret = { deck, unusedItemCard };
   G.geisha = {
-    [Color.PINK]: { ...G.geisha[Color.PINK], playerItemCards: { 0: [], 1: [] } },
-    [Color.GREEN]: { ...G.geisha[Color.GREEN], playerItemCards: { 0: [], 1: [] } },
-    [Color.ORANGE]: { ...G.geisha[Color.ORANGE], playerItemCards: { 0: [], 1: [] } },
-    [Color.BLUE]: { ...G.geisha[Color.BLUE], playerItemCards: { 0: [], 1: [] } },
-    [Color.YELLOW]: { ...G.geisha[Color.YELLOW], playerItemCards: { 0: [], 1: [] } },
-    [Color.RED]: { ...G.geisha[Color.RED], playerItemCards: { 0: [], 1: [] } },
     [Color.PURPLE]: { ...G.geisha[Color.PURPLE], playerItemCards: { 0: [], 1: [] } },
+    [Color.RED]: { ...G.geisha[Color.RED], playerItemCards: { 0: [], 1: [] } },
+    [Color.YELLOW]: { ...G.geisha[Color.YELLOW], playerItemCards: { 0: [], 1: [] } },
+    [Color.BLUE]: { ...G.geisha[Color.BLUE], playerItemCards: { 0: [], 1: [] } },
+    [Color.ORANGE]: { ...G.geisha[Color.ORANGE], playerItemCards: { 0: [], 1: [] } },
+    [Color.GREEN]: { ...G.geisha[Color.GREEN], playerItemCards: { 0: [], 1: [] } },
+    [Color.PINK]: { ...G.geisha[Color.PINK], playerItemCards: { 0: [], 1: [] } },
   };
   G.players = {
     0: {
@@ -396,16 +437,17 @@ function setGameStateForNextRound({ G, random }: { G: GameState; random: Random 
   G.currentAction = null;
   G.presentedCards = [];
   G.presentedPairs = [];
+  G.opponentChoice = '';
 }
 
 export enum Color {
-  PINK = 'pink',
-  GREEN = 'green',
-  ORANGE = 'orange',
-  BLUE = 'blue',
-  YELLOW = 'yellow',
-  RED = 'red',
   PURPLE = 'purple',
+  RED = 'red',
+  YELLOW = 'yellow',
+  BLUE = 'blue',
+  ORANGE = 'orange',
+  GREEN = 'green',
+  PINK = 'pink',
 }
 
 export interface GeishaCard {
@@ -445,6 +487,7 @@ export interface GameState {
   presentedCards: ItemCard[];
   presentedPairs: ItemCard[][];
   startingPlayerID: string;
+  opponentChoice: string;
 }
 
 interface Random {

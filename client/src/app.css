@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'nunito';
+    src: url('/fonts/nunito/Nunito-Regular.ttf');
+    font-display: swap;
+  }
+}

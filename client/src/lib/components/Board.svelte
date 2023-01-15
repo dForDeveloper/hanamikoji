@@ -1,20 +1,40 @@
 <script lang="ts">
+  import Actions from '$lib/components/Actions.svelte';
+  import GeishaCardArea from '$lib/components/GeishaCardArea.svelte';
+  import Hand from '$lib/components/Hand.svelte';
+  import Opponent from '$lib/components/Opponent.svelte';
+  import SharedPlayerInterface from '$lib/components/SharedPlayerInterface.svelte';
   import { onDestroy } from 'svelte';
-  import type { Action, GameState, GeishaCard, ItemCard } from 'game-logic';
+  import type { GameState, GeishaCard, Player } from 'game-logic';
   import type { Ctx } from 'boardgame.io';
+  import type { SelectedCard } from '$lib/types';
 
   export let client: any;
   const playerID: string = client.playerID;
-  const opponentPlayerID = playerID === '0' ? '1' : '0';
+  const opponentID = playerID === '0' ? '1' : '0';
   let G: GameState;
   let ctx: Ctx;
+  let playerStage: string;
+  let opponentStage: string;
+  let currentAction: string;
+  let selectedCards: SelectedCard[] = [null, null, null, null];
+  let selectedPresentedIndex = '';
+  let winnerID: string;
 
   const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
-    if (gameState.G && gameState.ctx) {
+    if (gameState && gameState.G && gameState.ctx) {
       G = gameState.G;
       ctx = gameState.ctx;
+      currentAction = G.currentAction ? G.currentAction : '';
+      playerStage = ctx.activePlayers ? ctx.activePlayers[playerID] : '';
+      opponentStage = ctx.activePlayers ? ctx.activePlayers[opponentID] : '';
+      setSelectedCardsFromHand([null, null, null, null]);
+      setSelectedPresentedIndex('');
+      if (ctx.gameover) {
+        winnerID = ctx.gameover.winner;
+      }
     } else {
-      throw new Error('Error syncing game state');
+      client.getState();
     }
   });
 
@@ -25,62 +45,89 @@
     client.stop();
   });
 
-  function getActions(playerID: string): Action[] {
-    return Object.values(G.players[playerID].actions);
+  function getPlayer(G: GameState, id: string): Player {
+    return G.players[id];
   }
 
-  function getHand(playerID: string): ItemCard[] {
-    return G.players[playerID].hand;
-  }
-
-  function getGeishaCards(): GeishaCard[] {
+  function getGeishaCards(G: GameState): GeishaCard[] {
     return Object.values(G.geisha);
+  }
+
+  function drawCard(): void {
+    client.moves.draw();
+  }
+
+  function selectAction(actionIndex: string): void {
+    client.moves.selectAction(actionIndex);
+  }
+
+  function undoAction(): void {
+    client.undo();
+  }
+
+  function selectCardsAsCurrent(selectedIndexes: string[]): void {
+    client.moves.selectCardsAsCurrent(selectedIndexes);
+  }
+
+  function selectCardsAsOpposing(selectedIndex: string): void {
+    client.moves.selectCardsAsOpposing(selectedIndex);
+  }
+
+  function acknowledgeChoice(): void {
+    client.moves.acknowledgeOpponentChoice();
+  }
+
+  function revealHiddenCard(): void {
+    client.moves.reveal();
+  }
+
+  function acknowledgeReveal(): void {
+    client.moves.acknowledgeReveal();
+  }
+
+  function calculateScore(): void {
+    client.moves.calculateScore();
+  }
+
+  function readyUp(): void {
+    client.moves.readyUp();
+  }
+
+  function setSelectedCardsFromHand(updatedSelectedCards: SelectedCard[]): void {
+    selectedCards = updatedSelectedCards;
+  }
+
+  function setSelectedPresentedIndex(updatedSelectedPresentedIndex: string): void {
+    selectedPresentedIndex = updatedSelectedPresentedIndex;
   }
 </script>
 
 {#if G && ctx}
-  <main class="grid grid-cols-[3fr_7fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2">
-    <section aria-label="opponent-actions" class="grid grid-cols-4 gap-2">
-      {#each getActions(opponentPlayerID) as action, i}
-        <div class="border-2 border-black aspect-square">
-          {`Action ${i + 1}`}
-        </div>
-      {/each}
-    </section>
-    <section aria-label="opponent-hand" class="grid grid-cols-7 gap-2">
-      {#each getHand(opponentPlayerID) as card}
-        <div class="border-2 border-black aspect-[8/11]">
-          <p>{card.color}</p>
-          <p>{card.charmPoints}</p>
-        </div>
-      {/each}
-    </section>
-    <section aria-label="game-interface">Main Area</section>
-    <section aria-label="game-board" class="grid grid-cols-7 gap-2 items-center">
-      {#each getGeishaCards() as geishaCard}
-        <div class="border-2 border-black aspect-[2/3]">
-          <p>{geishaCard.color}</p>
-          <p>{geishaCard.charmPoints}</p>
-          <p>{geishaCard.favoredPlayerID}</p>
-          <p>Opponent Cards: {geishaCard.playerItemCards[opponentPlayerID].length}</p>
-          <p>Your Cards: {geishaCard.playerItemCards[playerID].length}</p>
-        </div>
-      {/each}
-    </section>
-    <section aria-label="your-actions" class="grid grid-cols-4 gap-2 items-end">
-      {#each getActions(playerID) as action, i}
-        <div class="border-2 border-black aspect-square">
-          {`Action ${i + 1}`}
-        </div>
-      {/each}
-    </section>
-    <section aria-label="your-hand" class="grid grid-cols-7 gap-2 items-end">
-      {#each getHand(playerID) as card}
-        <div class="border-2 border-black aspect-[8/11]">
-          <p>{card.color}</p>
-          <p>{card.charmPoints}</p>
-        </div>
-      {/each}
-    </section>
+  <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito bg-purple-100">
+    <Opponent player={getPlayer(G, opponentID)} />
+    <SharedPlayerInterface
+      {G}
+      {playerID}
+      {opponentID}
+      {playerStage}
+      {opponentStage}
+      {currentAction}
+      {selectedCards}
+      {selectedPresentedIndex}
+      {winnerID}
+      {getPlayer}
+      {drawCard}
+      {undoAction}
+      {selectCardsAsCurrent}
+      {selectCardsAsOpposing}
+      {acknowledgeChoice}
+      {acknowledgeReveal}
+      {calculateScore}
+      {readyUp}
+      {setSelectedPresentedIndex}
+    />
+    <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentID} />
+    <Actions player={getPlayer(G, playerID)} {playerStage} {opponentStage} {selectAction} {revealHiddenCard} />
+    <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCardsFromHand} />
   </main>
 {/if}
