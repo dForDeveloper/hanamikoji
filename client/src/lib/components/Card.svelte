@@ -7,7 +7,7 @@
   export let isHoverable = false;
   export let isTranslatedDown = false;
   export let isUpsideDown = false;
-  export let victoryMarkerDirection: number = 0;
+  export let victoryMarkerDirection = 0;
   export let backAlt = 'back side of an item card';
 
   const colorToGeishaSource = {
