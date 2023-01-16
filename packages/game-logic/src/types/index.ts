@@ -68,6 +68,7 @@ export interface GameState {
   presentedCards: ItemCard[];
   startingPlayerID: string;
   opponentChoice: string;
+  revealedCard: ItemCard | null;
 }
 
 export interface DeckAndHands {

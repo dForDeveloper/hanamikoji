@@ -79,20 +79,11 @@
     return G.opponentChoice;
   }
 
-  function getRevealedCard(G: GameState, playerStage: Stage, opponentStage: Stage): ItemCard {
-    let player;
-
-    if (playerStage === Stage.ACKNOWLEDGE_REVEAL) {
-      player = getPlayer(G, opponentID);
-    } else if (opponentStage === Stage.ACKNOWLEDGE_REVEAL) {
-      player = getPlayer(G, playerID);
+  function getRevealedCard(G: GameState): ItemCard {
+    if (!G.revealedCard) {
+      throw new Error('Revealed card should exist');
     }
-
-    if (player && player.actions[0].savedCard) {
-      return player.actions[0].savedCard;
-    } else {
-      throw new Error('No hidden card to reveal');
-    }
+    return G.revealedCard;
   }
 
   function getIsActionUndoable(G: GameState, id: string): boolean {
@@ -129,7 +120,7 @@
   />
 {:else if playerStage === Stage.ACKNOWLEDGE_REVEAL || opponentStage === Stage.ACKNOWLEDGE_REVEAL}
   <AcknowledgeReveal
-    revealedCard={getRevealedCard(G, playerStage, opponentStage)}
+    revealedCard={getRevealedCard(G)}
     {playerStage}
     {opponentStage}
     {currentAction}

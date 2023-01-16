@@ -140,7 +140,7 @@
       {setSelectedPresentedIndex}
     />
     <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentID} />
-    <Actions player={getPlayer(G, playerID)} {playerStage} {opponentStage} {selectAction} {revealHiddenCard} />
+    <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} {revealHiddenCard} />
     <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCardsFromHand} />
   </main>
 {/if}

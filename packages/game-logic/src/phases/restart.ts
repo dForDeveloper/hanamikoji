@@ -65,6 +65,7 @@ function setGameStateForNextRound({ G, random }: { G: GameState; random: RandomA
   G.currentAction = null;
   G.presentedCards = [];
   G.opponentChoice = '';
+  G.revealedCard = null;
 }
 
 export function randomizeDeckAndHands(random: RandomAPI): DeckAndHands {
