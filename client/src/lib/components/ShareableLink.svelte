@@ -2,7 +2,7 @@
   export let matchID: string;
 
   // TODO: update with production URL
-  const baseURL = 'http://localhost:5173/match/';
+  const baseURL = 'localhost:5173/match/';
   let isCopied = false;
 
   async function copyLink(url: string) {
