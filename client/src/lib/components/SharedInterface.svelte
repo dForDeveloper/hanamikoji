@@ -18,7 +18,7 @@
   export let opponentStage: Stage;
   export let currentAction: string;
   export let selectedCards: SelectedCard[];
-  export let selectedPresentedIndex: string;
+  export let selectedFromPresented: string;
   export let winnerID: string;
   export let getPlayer: (G: GameState, id: string) => Player;
   export let drawCard: () => void;
@@ -29,35 +29,22 @@
   export let acknowledgeReveal: () => void;
   export let calculateScore: () => void;
   export let readyUp: () => void;
-  export let setSelectedPresentedIndex: (updatedPresentedSelection: string) => void;
+  export let setSelectedFromPresented: (updatedPresentedSelection: string) => void;
 
-  function selectFromPresented(currentAction: string, i: number): void {
-    if (currentAction === '2') {
-      setSelectedPresentedIndex(i.toString());
-    } else if (currentAction === '3') {
-      if (i <= 1) setSelectedPresentedIndex('0');
-      if (i >= 2) setSelectedPresentedIndex('1');
-    }
-  }
-
-  function deselectFromPresented(): void {
-    setSelectedPresentedIndex('');
-  }
-
-  function confirmSelection(selectedCards: SelectedCard[], selectedPresentedIndex: string, playerStage: Stage): void {
+  function confirmSelection(selectedCards: SelectedCard[], selectedFromPresented: string, playerStage: Stage): void {
     if (playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER) {
       const selectedCardIndexes = selectedCards
         .filter((maybeCard) => maybeCard !== null)
         .map((itemCard) => itemCard!.index.toString());
       selectCardsAsCurrent(selectedCardIndexes);
     } else if (playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER) {
-      selectCardsAsOpposing(selectedPresentedIndex);
+      selectCardsAsOpposing(selectedFromPresented);
     }
   }
 
   function getIsConfirmationButtonDisabled(
     selectedCards: SelectedCard[],
-    selectedPresentedIndex: string,
+    selectedFromPresented: string,
     playerStage: Stage,
   ): boolean {
     if (playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER) {
@@ -65,7 +52,7 @@
       const nonNullSelectedCardCount = selectedCards.filter((maybeCard) => maybeCard !== null).length;
       return nonNullSelectedCardCount !== requiredSelectedCardCount;
     } else if (playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER) {
-      return selectedPresentedIndex === '';
+      return selectedFromPresented === '';
     } else {
       throw new Error('Confirmation button should not exist');
     }
@@ -148,9 +135,8 @@
         <PresentedCardAreaActivePlayer
           presentedCards={getPresentedCards(G)}
           {currentAction}
-          {selectedPresentedIndex}
-          {selectFromPresented}
-          {deselectFromPresented}
+          {selectedFromPresented}
+          {setSelectedFromPresented}
         />
       {:else if opponentStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
         <SelectedCardAreaNonactivePlayer {currentAction} />
@@ -183,8 +169,8 @@
       {/if}
       {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER || playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
         <button
-          on:click={() => confirmSelection(selectedCards, selectedPresentedIndex, playerStage)}
-          disabled={getIsConfirmationButtonDisabled(selectedCards, selectedPresentedIndex, playerStage)}
+          on:click={() => confirmSelection(selectedCards, selectedFromPresented, playerStage)}
+          disabled={getIsConfirmationButtonDisabled(selectedCards, selectedFromPresented, playerStage)}
           class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:bg-gray-300 disabled:shadow-none"
         >
           confirm

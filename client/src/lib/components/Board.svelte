@@ -19,33 +19,18 @@
   let opponentStage: Stage;
   let currentAction: string;
   let selectedCards: SelectedCard[] = [null, null, null, null];
-  let selectedPresentedIndex = '';
+  let selectedFromPresented = '';
   let winnerID: string;
 
   const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
     if (gameState && gameState.G && gameState.ctx) {
       G = gameState.G;
       ctx = gameState.ctx;
-      currentAction = G.currentAction ? G.currentAction : '';
-
-      if (ctx.activePlayers && ctx.activePlayers[playerID]) {
-        playerStage = ctx.activePlayers[playerID] as Stage;
-      } else {
-        playerStage = Stage.NULL;
-      }
-
-      if (ctx.activePlayers && ctx.activePlayers[opponentID]) {
-        opponentStage = ctx.activePlayers[opponentID] as Stage;
-      } else {
-        opponentStage = Stage.NULL;
-      }
-
+      setCurrentAction(G);
+      setPlayerStages(ctx);
       setSelectedCardsFromHand([null, null, null, null]);
-      setSelectedPresentedIndex('');
-
-      if (ctx.gameover) {
-        winnerID = ctx.gameover.winner;
-      }
+      setSelectedFromPresented('');
+      setWinner(ctx);
     } else {
       client.getState();
     }
@@ -57,6 +42,38 @@
     }
     client.stop();
   });
+
+  function setCurrentAction(G: GameState): void {
+    currentAction = G.currentAction ? G.currentAction : '';
+  }
+
+  function setPlayerStages(ctx: Ctx): void {
+    if (ctx.activePlayers && ctx.activePlayers[playerID]) {
+      playerStage = ctx.activePlayers[playerID] as Stage;
+    } else {
+      playerStage = Stage.NULL;
+    }
+
+    if (ctx.activePlayers && ctx.activePlayers[opponentID]) {
+      opponentStage = ctx.activePlayers[opponentID] as Stage;
+    } else {
+      opponentStage = Stage.NULL;
+    }
+  }
+
+  function setSelectedCardsFromHand(updatedSelectedCards: SelectedCard[]): void {
+    selectedCards = updatedSelectedCards;
+  }
+
+  function setSelectedFromPresented(updatedSelectedFromPresented: string): void {
+    selectedFromPresented = updatedSelectedFromPresented;
+  }
+
+  function setWinner(ctx: Ctx): void {
+    if (ctx.gameover) {
+      winnerID = ctx.gameover.winner;
+    }
+  }
 
   function getPlayer(G: GameState, id: string): Player {
     return G.players[id];
@@ -105,14 +122,6 @@
   function readyUp(): void {
     client.moves.readyUp();
   }
-
-  function setSelectedCardsFromHand(updatedSelectedCards: SelectedCard[]): void {
-    selectedCards = updatedSelectedCards;
-  }
-
-  function setSelectedPresentedIndex(updatedSelectedPresentedIndex: string): void {
-    selectedPresentedIndex = updatedSelectedPresentedIndex;
-  }
 </script>
 
 {#if G && ctx}
@@ -126,7 +135,7 @@
       {opponentStage}
       {currentAction}
       {selectedCards}
-      {selectedPresentedIndex}
+      {selectedFromPresented}
       {winnerID}
       {getPlayer}
       {drawCard}
@@ -137,7 +146,7 @@
       {acknowledgeReveal}
       {calculateScore}
       {readyUp}
-      {setSelectedPresentedIndex}
+      {setSelectedFromPresented}
     />
     <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentID} />
     <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} {revealHiddenCard} />
