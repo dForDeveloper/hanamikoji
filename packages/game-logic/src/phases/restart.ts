@@ -30,7 +30,8 @@ export function readyUp({
 
 function setGameStateForNextRound({ G, random }: { G: GameState; random: RandomAPI }) {
   const { deck, unusedItemCard, player0Hand, player1Hand } = randomizeDeckAndHands(random);
-  G.secret = { deck, unusedItemCard };
+  G.deck = deck;
+  G.unusedItemCard = unusedItemCard;
   G.geisha = {
     [Color.PURPLE]: { ...G.geisha[Color.PURPLE], playerItemCards: { 0: [], 1: [] } },
     [Color.RED]: { ...G.geisha[Color.RED], playerItemCards: { 0: [], 1: [] } },

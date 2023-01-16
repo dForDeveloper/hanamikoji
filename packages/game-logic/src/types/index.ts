@@ -29,6 +29,7 @@ export enum Color {
   ORANGE = 'orange',
   GREEN = 'green',
   PINK = 'pink',
+  NULL = '',
 }
 
 export interface GeishaCard {
@@ -41,11 +42,6 @@ export interface GeishaCard {
 export interface ItemCard {
   charmPoints: number;
   color: Color;
-}
-
-export interface Secret {
-  deck: ItemCard[];
-  unusedItemCard: ItemCard;
 }
 
 export interface Action {
@@ -61,8 +57,9 @@ export interface Player {
 }
 
 export interface GameState {
-  secret: Secret;
-  geisha: Record<Color, GeishaCard>;
+  deck: ItemCard[];
+  unusedItemCard: ItemCard;
+  geisha: Record<string, GeishaCard>;
   players: Record<string, Player>;
   currentAction: string | null;
   presentedCards: ItemCard[];

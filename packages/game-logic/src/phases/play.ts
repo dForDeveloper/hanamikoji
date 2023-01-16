@@ -4,7 +4,7 @@ import { EventsAPI } from 'boardgame.io/dist/types/src/plugins/events/events';
 import { GameState, ItemCard, MoveResult, Stage } from '../types';
 
 export function endPlayPhaseIf({ G }: { G: GameState }): boolean | void | { next: string } {
-  const isDeckEmpty = G.secret.deck.length === 0;
+  const isDeckEmpty = G.deck.length === 0;
   const arePlayersEmptyHanded = G.players[0].hand.length + G.players[1].hand.length === 0;
   const hasNoCurrentAction = G.currentAction === null;
   if (isDeckEmpty && arePlayersEmptyHanded && hasNoCurrentAction) return true;
@@ -12,10 +12,10 @@ export function endPlayPhaseIf({ G }: { G: GameState }): boolean | void | { next
 
 export function draw({ G, ctx, events }: { G: GameState; ctx: Ctx; events: EventsAPI }): MoveResult {
   const currentPlayer = ctx.currentPlayer;
-  if (!G.secret.deck.length) {
+  if (!G.deck.length) {
     return INVALID_MOVE;
   }
-  const card = G.secret.deck.pop()!;
+  const card = G.deck.pop()!;
   G.players[currentPlayer].hand.push(card);
   events.endStage();
 }
