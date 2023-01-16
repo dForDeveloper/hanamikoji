@@ -66,7 +66,6 @@ export interface GameState {
   players: Record<string, Player>;
   currentAction: string | null;
   presentedCards: ItemCard[];
-  presentedPairs: ItemCard[][];
   startingPlayerID: string;
   opponentChoice: string;
 }

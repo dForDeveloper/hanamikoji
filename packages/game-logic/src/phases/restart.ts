@@ -64,7 +64,6 @@ function setGameStateForNextRound({ G, random }: { G: GameState; random: RandomA
   };
   G.currentAction = null;
   G.presentedCards = [];
-  G.presentedPairs = [];
   G.opponentChoice = '';
 }
 

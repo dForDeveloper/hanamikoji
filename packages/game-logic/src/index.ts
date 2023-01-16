@@ -167,7 +167,6 @@ function setupGame(random: RandomAPI): GameState {
     },
     currentAction: null,
     presentedCards: [],
-    presentedPairs: [],
     startingPlayerID: '0',
     opponentChoice: '',
   };

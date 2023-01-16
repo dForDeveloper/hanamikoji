@@ -71,14 +71,8 @@
     }
   }
 
-  function getPresentedCards(G: GameState, currentAction: string): ItemCard[] {
-    if (currentAction === '2') {
-      return G.presentedCards;
-    } else if (currentAction === '3') {
-      return G.presentedPairs.flat();
-    } else {
-      throw new Error('Presented cards should not exist');
-    }
+  function getPresentedCards(G: GameState): ItemCard[] {
+    return G.presentedCards;
   }
 
   function getOpponentChoice(G: GameState): string {
@@ -126,7 +120,7 @@
 
 {#if playerStage === Stage.ACKNOWLEDGE_CHOICE || opponentStage === Stage.ACKNOWLEDGE_CHOICE}
   <AcknowledgeChoice
-    presentedCards={getPresentedCards(G, currentAction)}
+    presentedCards={getPresentedCards(G)}
     opponentChoice={getOpponentChoice(G)}
     {playerStage}
     {opponentStage}
@@ -161,12 +155,11 @@
         <SelectedCardAreaActivePlayer {currentAction} {selectedCards} />
       {:else if playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
         <PresentedCardAreaActivePlayer
-          {G}
+          presentedCards={getPresentedCards(G)}
           {currentAction}
           {selectedPresentedIndex}
           {selectFromPresented}
           {deselectFromPresented}
-          {getPresentedCards}
         />
       {:else if opponentStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
         <SelectedCardAreaNonactivePlayer {currentAction} />
