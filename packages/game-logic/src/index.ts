@@ -208,7 +208,7 @@ function stripSecrets({ G, playerID }: { G: GameState; playerID: string | null }
 }
 
 function stripItemCards(itemCards: ItemCard[]) {
-  return itemCards.map((card) => {
+  return itemCards.map(() => {
     return { charmPoints: 0, color: Color.NULL };
   });
 }
