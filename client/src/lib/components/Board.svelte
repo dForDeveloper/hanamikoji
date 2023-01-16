@@ -3,7 +3,7 @@
   import GeishaCardArea from '$lib/components/GeishaCardArea.svelte';
   import Hand from '$lib/components/Hand.svelte';
   import Opponent from '$lib/components/Opponent.svelte';
-  import SharedPlayerInterface from '$lib/components/SharedPlayerInterface.svelte';
+  import SharedInterface from '$lib/components/SharedInterface.svelte';
   import { onDestroy } from 'svelte';
   import { Stage } from 'game-logic';
   import type { GameState, GeishaCard, Player } from 'game-logic';
@@ -118,7 +118,7 @@
 {#if G && ctx}
   <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito bg-purple-100">
     <Opponent player={getPlayer(G, opponentID)} />
-    <SharedPlayerInterface
+    <SharedInterface
       {G}
       {playerID}
       {opponentID}
