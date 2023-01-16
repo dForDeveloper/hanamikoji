@@ -4,7 +4,7 @@ import { EventsAPI } from 'boardgame.io/dist/types/src/plugins/events/events';
 import { GameState, ItemCard, MoveResult, Stage } from '../types';
 
 export function endPlayPhaseIf({ G }: { G: GameState }): boolean | void | { next: string } {
-  const isDeckEmpty = G.secret.deck.length === 0;
+  const isDeckEmpty = G.deck.length === 0;
   const arePlayersEmptyHanded = G.players[0].hand.length + G.players[1].hand.length === 0;
   const hasNoCurrentAction = G.currentAction === null;
   if (isDeckEmpty && arePlayersEmptyHanded && hasNoCurrentAction) return true;
@@ -12,10 +12,10 @@ export function endPlayPhaseIf({ G }: { G: GameState }): boolean | void | { next
 
 export function draw({ G, ctx, events }: { G: GameState; ctx: Ctx; events: EventsAPI }): MoveResult {
   const currentPlayer = ctx.currentPlayer;
-  if (!G.secret.deck.length) {
+  if (!G.deck.length) {
     return INVALID_MOVE;
   }
-  const card = G.secret.deck.pop()!;
+  const card = G.deck.pop()!;
   G.players[currentPlayer].hand.push(card);
   events.endStage();
 }
@@ -77,17 +77,8 @@ export function selectCardsAsCurrent(
       events.endTurn();
       break;
     case '2':
-      G.presentedCards = selectedCards;
-      events.setActivePlayers({
-        currentPlayer: Stage.NULL,
-        others: Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER,
-      });
-      break;
     case '3':
-      G.presentedPairs = [
-        [selectedCards.at(0)!, selectedCards.at(1)!],
-        [selectedCards.at(2)!, selectedCards.at(3)!],
-      ];
+      G.presentedCards = selectedCards;
       events.setActivePlayers({
         currentPlayer: Stage.NULL,
         others: Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER,
@@ -140,15 +131,29 @@ export function acknowledgeOpponentChoice({
     });
     G.presentedCards = [];
   } else if (currentAction === '3') {
-    const unselectedIndex = opponentChoice === '0' ? '1' : '0';
-    G.presentedPairs.forEach((pair, i) => {
-      if (i === Number(opponentChoice)) {
-        pair.forEach((card) => G.geisha[card.color].playerItemCards[choosingPlayer].push(card));
-      } else if (i === Number(unselectedIndex)) {
-        pair.forEach((card) => G.geisha[card.color].playerItemCards[presentingPlayer].push(card));
-      }
-    });
-    G.presentedPairs = [];
+    if (G.presentedCards.length !== 4) {
+      return INVALID_MOVE;
+    }
+
+    const choosingPlayerCards: ItemCard[] = [];
+    const presentingPlayerCards: ItemCard[] = [];
+
+    if (opponentChoice === '0') {
+      choosingPlayerCards.push(G.presentedCards[0]);
+      choosingPlayerCards.push(G.presentedCards[1]);
+      presentingPlayerCards.push(G.presentedCards[2]);
+      presentingPlayerCards.push(G.presentedCards[3]);
+    } else if (opponentChoice === '1') {
+      presentingPlayerCards.push(G.presentedCards[0]);
+      presentingPlayerCards.push(G.presentedCards[1]);
+      choosingPlayerCards.push(G.presentedCards[2]);
+      choosingPlayerCards.push(G.presentedCards[3]);
+    }
+
+    choosingPlayerCards.forEach((card) => G.geisha[card.color].playerItemCards[choosingPlayer].push(card));
+    presentingPlayerCards.forEach((card) => G.geisha[card.color].playerItemCards[presentingPlayer].push(card));
+
+    G.presentedCards = [];
   } else {
     return INVALID_MOVE;
   }

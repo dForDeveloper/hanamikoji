@@ -1,15 +1,26 @@
 import { Ctx } from 'boardgame.io';
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { EventsAPI } from 'boardgame.io/dist/types/src/plugins/events/events';
-import { GameState, MoveResult, Stage } from '../types';
+import { Action, GameState, MoveResult, Stage } from '../types';
 
 export function endRevealPhaseIf({ G }: { G: GameState }): boolean | void | { next: string } {
   const hasPlayer0Revealed = G.players[0].actions[0].savedCard === null;
   const hasPlayer1Revealed = G.players[1].actions[0].savedCard === null;
-  if (hasPlayer0Revealed && hasPlayer1Revealed) return true;
+  const isNoRevealedCardToAcknowledge = G.revealedCard === null;
+  if (hasPlayer0Revealed && hasPlayer1Revealed && isNoRevealedCardToAcknowledge) return true;
 }
 
-export function reveal({ events }: { events: EventsAPI }): MoveResult {
+export function reveal({ G, ctx, events }: { G: GameState; ctx: Ctx; events: EventsAPI }): MoveResult {
+  const currentPlayer: string = ctx.currentPlayer;
+  const currentPlayersAction0: Action = G.players[currentPlayer].actions[0];
+
+  if (!currentPlayersAction0.savedCard) {
+    return INVALID_MOVE;
+  }
+
+  G.revealedCard = currentPlayersAction0.savedCard;
+  G.players[currentPlayer].actions[0].savedCard = null;
+
   events.setActivePlayers({
     currentPlayer: Stage.NULL,
     others: Stage.ACKNOWLEDGE_REVEAL,
@@ -17,12 +28,10 @@ export function reveal({ events }: { events: EventsAPI }): MoveResult {
 }
 
 export function acknowledgeReveal({ G, ctx, events }: { G: GameState; ctx: Ctx; events: EventsAPI }): MoveResult {
-  const { savedCard } = G.players[ctx.currentPlayer].actions[0];
-  if (savedCard !== null && savedCard !== undefined) {
-    G.geisha[savedCard.color].playerItemCards[ctx.currentPlayer].push(savedCard);
-    G.players[ctx.currentPlayer].actions[0].savedCard = null;
-    events.endTurn();
-  } else {
+  if (!G.revealedCard) {
     return INVALID_MOVE;
   }
+  G.geisha[G.revealedCard.color].playerItemCards[ctx.currentPlayer].push(G.revealedCard);
+  G.revealedCard = null;
+  events.endTurn();
 }

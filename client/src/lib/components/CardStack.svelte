@@ -6,7 +6,7 @@
   export let count: number;
   export let isUpsideDown = false;
 
-  function getParentClasses(count: number, isUpsideDown: boolean): string {
+  function composeParentClasses(count: number, isUpsideDown: boolean): string {
     let cssClasses = 'relative w-[13.31vh] pt-2';
     if (count === 1) {
       cssClasses = cssClasses + ' flex justify-center';
@@ -17,7 +17,7 @@
     return cssClasses;
   }
 
-  function getChildClasses(count: number, index: number): string {
+  function composeChildClasses(count: number, index: number): string {
     const defaultClasses = 'absolute rounded-xl';
     const zIndex = ' z-' + ((index + 1) * 10).toString();
     return defaultClasses + zIndex + getAbsolutePositions(count)[index];
@@ -41,9 +41,9 @@
   }
 </script>
 
-<div class={getParentClasses(count, isUpsideDown)}>
+<div class={composeParentClasses(count, isUpsideDown)}>
   {#each Array(count) as _, i}
-    <div class={getChildClasses(count, i)}>
+    <div class={composeChildClasses(count, i)}>
       <Card type="item" {color} {isUpsideDown} />
     </div>
   {/each}

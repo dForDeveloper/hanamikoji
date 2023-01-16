@@ -6,7 +6,6 @@
 
   export let player: Player;
   export let playerStage: Stage;
-  export let opponentStage: Stage;
   export let selectAction: (actionIndex: string) => void;
   export let revealHiddenCard: () => void;
 </script>
@@ -27,7 +26,7 @@
           <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
         </button>
       {/if}
-      {#if action.savedCard && opponentStage !== Stage.ACKNOWLEDGE_REVEAL}
+      {#if action.savedCard}
         {#if playerStage === 'reveal'}
           <button on:click={() => revealHiddenCard()} class="h-[16.2vh] w-[11.53vh] absolute hover:cursor-pointer">
             <Card type="item" color={action.savedCard.color} isHoverable={true} />

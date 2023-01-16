@@ -8,7 +8,7 @@ import {
   selectCardsAsOpposing,
 } from './phases/play';
 import { acknowledgeReveal, endRevealPhaseIf, reveal } from './phases/reveal';
-import { getDeckAndHands, readyUp } from './phases/restart';
+import { randomizeDeckAndHands, readyUp } from './phases/restart';
 import { calculateScore } from './phases/score';
 import { RandomAPI } from 'boardgame.io/dist/types/src/plugins/random/random';
 import type { Game } from 'boardgame.io';
@@ -17,6 +17,7 @@ export const Hanamikoji: Game<GameState> = {
   name: 'hanamikoji',
   maxPlayers: 2,
   setup: ({ random }) => setupGame(random),
+  playerView: stripSecrets,
   phases: {
     [Phase.PLAY]: {
       start: true,
@@ -79,26 +80,20 @@ export const Hanamikoji: Game<GameState> = {
         activePlayers: { all: Stage.PREPARE_NEXT_ROUND },
         stages: {
           [Stage.PREPARE_NEXT_ROUND]: {
-            moves: {
-              readyUp: {
-                move: readyUp,
-                client: false,
-              },
-            },
+            moves: { readyUp: readyUp },
           },
           [Stage.READY]: {},
         },
       },
     },
   },
-
-  // playerView: PlayerView.STRIP_SECRETS,
 };
 
 function setupGame(random: RandomAPI): GameState {
-  const { deck, unusedItemCard, player0Hand, player1Hand } = getDeckAndHands(random);
+  const { deck, unusedItemCard, player0Hand, player1Hand } = randomizeDeckAndHands(random);
   return {
-    secret: { deck, unusedItemCard },
+    deck,
+    unusedItemCard,
     geisha: {
       [Color.PURPLE]: {
         color: Color.PURPLE,
@@ -167,10 +162,55 @@ function setupGame(random: RandomAPI): GameState {
     },
     currentAction: null,
     presentedCards: [],
-    presentedPairs: [],
     startingPlayerID: '0',
     opponentChoice: '',
+    revealedCard: null,
   };
+}
+
+function stripSecrets({ G, playerID }: { G: GameState; playerID: string | null }): GameState {
+  if (!playerID) {
+    throw new Error('Cannot strip secrets from player view');
+  }
+  const opponentPlayerID = playerID === '0' ? '1' : '0';
+  const opponent = G.players[opponentPlayerID];
+  return {
+    deck: G.deck ? stripItemCards(G.deck) : [],
+    unusedItemCard: { charmPoints: 0, color: Color.NULL },
+    geisha: G.geisha,
+    players: {
+      [playerID]: G.players[playerID],
+      [opponentPlayerID]: {
+        hand: opponent.hand ? stripItemCards(opponent.hand) : [],
+        actions: {
+          0: {
+            enabled: opponent.actions[0].enabled,
+            savedCard: opponent.actions[0].savedCard ? { charmPoints: 0, color: Color.NULL } : null,
+          },
+          1: {
+            enabled: opponent.actions[1].enabled,
+            discardedCards: opponent.actions[1].discardedCards
+              ? stripItemCards(opponent.actions[1].discardedCards)
+              : [],
+          },
+          2: { enabled: opponent.actions[2].enabled },
+          3: { enabled: opponent.actions[3].enabled },
+        },
+        score: opponent.score,
+      },
+    },
+    currentAction: G.currentAction,
+    presentedCards: G.presentedCards,
+    startingPlayerID: G.startingPlayerID,
+    opponentChoice: G.opponentChoice,
+    revealedCard: G.revealedCard,
+  };
+}
+
+function stripItemCards(itemCards: ItemCard[]) {
+  return itemCards.map(() => {
+    return { charmPoints: 0, color: Color.NULL };
+  });
 }
 
 export { Action, Color, GameState, GeishaCard, ItemCard, Player, Stage };
