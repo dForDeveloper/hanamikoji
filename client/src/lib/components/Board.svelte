@@ -11,10 +11,12 @@
   import type { SelectedCard } from '$lib/types';
 
   export let client: any;
+  const matchID: string = client.matchID;
   const playerID: string = client.playerID;
   const opponentID = playerID === '0' ? '1' : '0';
   let G: GameState;
   let ctx: Ctx;
+  let hasGameStarted = false;
   let playerStage: Stage;
   let opponentStage: Stage;
   let currentAction: string;
@@ -26,8 +28,9 @@
     if (gameState && gameState.G && gameState.ctx) {
       G = gameState.G;
       ctx = gameState.ctx;
-      setCurrentAction(G);
+      setHasGameStarted();
       setPlayerStages(ctx);
+      setCurrentAction(G);
       setSelectedCardsFromHand([null, null, null, null]);
       setSelectedFromPresented('');
       setWinner(ctx);
@@ -43,8 +46,16 @@
     client.stop();
   });
 
-  function setCurrentAction(G: GameState): void {
-    currentAction = G.currentAction ? G.currentAction : '';
+  function setHasGameStarted(): void {
+    if (!hasGameStarted) {
+      const connectedPlayers = client.matchData.filter((player: { id: number; name: string; isConnected: boolean }) => {
+        return player.isConnected;
+      });
+
+      if (connectedPlayers.length === 2) {
+        hasGameStarted = true;
+      }
+    }
   }
 
   function setPlayerStages(ctx: Ctx): void {
@@ -59,6 +70,10 @@
     } else {
       opponentStage = Stage.NULL;
     }
+  }
+
+  function setCurrentAction(G: GameState): void {
+    currentAction = G.currentAction ? G.currentAction : '';
   }
 
   function setSelectedCardsFromHand(updatedSelectedCards: SelectedCard[]): void {
@@ -129,6 +144,8 @@
     <Opponent player={getPlayer(G, opponentID)} />
     <SharedInterface
       {G}
+      {hasGameStarted}
+      {matchID}
       {playerID}
       {opponentID}
       {playerStage}
@@ -150,6 +167,13 @@
     />
     <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentID} />
     <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} {revealHiddenCard} />
-    <Hand player={getPlayer(G, playerID)} {playerStage} {selectedCards} {currentAction} {setSelectedCardsFromHand} />
+    <Hand
+      player={getPlayer(G, playerID)}
+      {hasGameStarted}
+      {playerStage}
+      {selectedCards}
+      {currentAction}
+      {setSelectedCardsFromHand}
+    />
   </main>
 {/if}

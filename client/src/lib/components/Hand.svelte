@@ -5,6 +5,7 @@
   import type { SelectedCard } from '$lib/types';
 
   export let player: Player;
+  export let hasGameStarted: boolean;
   export let playerStage: Stage;
   export let selectedCards: SelectedCard[];
   export let currentAction: string | null;
@@ -46,7 +47,7 @@
 
 <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
   {#each player.hand as card, index}
-    {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
+    {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER && hasGameStarted}
       {#if getIsSelectedFromHand(selectedCards, index)}
         <button on:click={() => deselectCardFromHand(selectedCards, index)} class="h-[16.2vh] w-[11.53vh]">
           <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
@@ -56,10 +57,14 @@
           <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
         </button>
       {/if}
-    {:else}
+    {:else if hasGameStarted}
       <button disabled class="h-[16.2vh] w-[11.53vh]">
         <Card type="item" color={card.color} isSelected={false} isHoverable={false} />
       </button>
+    {:else}
+      <div class="h-[16.2vh] w-[11.53vh]">
+        <Card type="back" />
+      </div>
     {/if}
   {/each}
 </section>
