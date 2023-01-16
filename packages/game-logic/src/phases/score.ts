@@ -22,7 +22,7 @@ export function calculateScore({ G, events }: { G: GameState; events: EventsAPI 
     }
   });
 
-  const winner = getWinner(G);
+  const winner = findWinner(G);
   if (winner !== null) {
     events.endGame({ winner });
   } else {
@@ -30,7 +30,7 @@ export function calculateScore({ G, events }: { G: GameState; events: EventsAPI 
   }
 }
 
-function getWinner(G: GameState): string | null {
+function findWinner(G: GameState): string | null {
   const player0score = G.players[0].score;
   const player1score = G.players[1].score;
   const isPlayer0Victory =

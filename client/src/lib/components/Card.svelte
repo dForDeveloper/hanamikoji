@@ -61,7 +61,7 @@
     [Color.PINK]: 'pink item card - 5 points',
   };
 
-  function getVictoryMarkerClasses(victoryMarkerDirection: number | null): string {
+  function composeVictoryMarkerClasses(victoryMarkerDirection: number | null): string {
     let cssClasses = 'absolute z-10 h-[4vh] w-[4vh] shadow-sm shadow-black rounded-full';
     if (victoryMarkerDirection === -1) {
       return cssClasses + ' top-0';
@@ -76,7 +76,7 @@
     return isSelected ? `selected ${colorToItemAlt[color]}` : colorToItemAlt[color];
   }
 
-  function getCssClasses() {
+  function composeCssClasses() {
     let cssClasses = 'block h-[16.2vh] w-[11.53vh] object-center rounded-xl shadow-black w-full';
     if (isSelected) {
       if (isTranslatedDown) {
@@ -109,7 +109,7 @@
       srcset="/images/1080/victory-marker.webp 44w, /images/1440/victory-marker.webp 58w, /images/4k/victory-marker.webp 90w"
       sizes="(max-width: 1920px) 44px, (max-width: 2560px) 58px, (max-width: 3840px) 90px"
       alt="victory marker"
-      class={getVictoryMarkerClasses(victoryMarkerDirection)}
+      class={composeVictoryMarkerClasses(victoryMarkerDirection)}
     />
   </div>
 {:else if type === 'item'}
@@ -117,14 +117,14 @@
     srcset={colorToItemSource[color]}
     sizes="(max-width: 1920px) 125px, (max-width: 2560px) 167px, (max-width: 3840px) 258px"
     alt={getItemCardAlt(color)}
-    class={getCssClasses()}
+    class={composeCssClasses()}
   />
 {:else if type === 'back'}
   <img
     srcset="/images/1080/item-back.webp 125w, /images/1440/item-back.webp 167w, /images/4k/item-back.webp 258w"
     sizes="(max-width: 1920px) 125px, (max-width: 2560px) 167px, (max-width: 3840px) 258px"
     alt={backAlt}
-    class={getCssClasses()}
+    class={composeCssClasses()}
   />
 {:else if type === 'empty'}
   <div class="h-[16.2vh] w-[11.53vh] border-2 border-gray-600 border-dashed rounded-xl" />

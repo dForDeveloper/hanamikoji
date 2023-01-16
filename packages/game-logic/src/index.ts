@@ -8,7 +8,7 @@ import {
   selectCardsAsOpposing,
 } from './phases/play';
 import { acknowledgeReveal, endRevealPhaseIf, reveal } from './phases/reveal';
-import { getDeckAndHands, readyUp } from './phases/restart';
+import { randomizeDeckAndHands, readyUp } from './phases/restart';
 import { calculateScore } from './phases/score';
 import { RandomAPI } from 'boardgame.io/dist/types/src/plugins/random/random';
 import type { Game } from 'boardgame.io';
@@ -96,7 +96,7 @@ export const Hanamikoji: Game<GameState> = {
 };
 
 function setupGame(random: RandomAPI): GameState {
-  const { deck, unusedItemCard, player0Hand, player1Hand } = getDeckAndHands(random);
+  const { deck, unusedItemCard, player0Hand, player1Hand } = randomizeDeckAndHands(random);
   return {
     secret: { deck, unusedItemCard },
     geisha: {

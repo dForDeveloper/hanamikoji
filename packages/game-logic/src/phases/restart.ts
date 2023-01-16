@@ -29,7 +29,7 @@ export function readyUp({
 }
 
 function setGameStateForNextRound({ G, random }: { G: GameState; random: RandomAPI }) {
-  const { deck, unusedItemCard, player0Hand, player1Hand } = getDeckAndHands(random);
+  const { deck, unusedItemCard, player0Hand, player1Hand } = randomizeDeckAndHands(random);
   G.secret = { deck, unusedItemCard };
   G.geisha = {
     [Color.PURPLE]: { ...G.geisha[Color.PURPLE], playerItemCards: { 0: [], 1: [] } },
@@ -67,7 +67,7 @@ function setGameStateForNextRound({ G, random }: { G: GameState; random: RandomA
   G.opponentChoice = '';
 }
 
-export function getDeckAndHands(random: RandomAPI): DeckAndHands {
+export function randomizeDeckAndHands(random: RandomAPI): DeckAndHands {
   const stackedDeck = [
     ...Array(2).fill({ charmPoints: 2, color: Color.PURPLE }),
     ...Array(2).fill({ charmPoints: 2, color: Color.RED }),
