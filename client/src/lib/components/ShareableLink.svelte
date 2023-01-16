@@ -29,17 +29,9 @@
         class="bg-gray-300 hover:bg-gray-400 grid inline h-10 rounded-xl p-2"
       >
         {#if !isCopied}
-          <img
-            src="/images/content-copy.svg"
-            alt="copy"
-            class="h-6 inline place-items-center"
-          />
+          <img src="/images/content-copy.svg" alt="copy" class="h-6 inline place-items-center" />
         {:else}
-          <img
-            src="/images/check.svg"
-            alt="copied"
-            class="h-6 inline place-items-center"
-          />
+          <img src="/images/check.svg" alt="copied" class="h-6 inline place-items-center" />
         {/if}
       </button>
     </p>
