@@ -31,8 +31,14 @@
       setHasGameStarted();
       setPlayerStages(ctx);
       setCurrentAction(G);
-      setSelectedCardsFromHand([null, null, null, null]);
-      setSelectedFromPresented('');
+
+      if (playerStage !== Stage.SELECT_CARDS_AS_ACTIVE_PLAYER) {
+        setSelectedCardsFromHand([null, null, null, null]);
+      }
+      if (playerStage !== Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER) {
+        setSelectedFromPresented('');
+      }
+
       setWinner(ctx);
     } else {
       client.getState();
