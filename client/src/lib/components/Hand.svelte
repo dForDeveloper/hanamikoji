@@ -45,26 +45,24 @@
   }
 </script>
 
-<section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
-  {#each player.hand as card, index}
-    {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER && hasGameStarted}
-      {#if getIsSelectedFromHand(selectedCards, index)}
-        <button on:click={() => deselectCardFromHand(selectedCards, index)} class="h-[16.2vh] w-[11.53vh]">
-          <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
-        </button>
+{#if hasGameStarted}
+  <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
+    {#each player.hand as card, index}
+      {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
+        {#if getIsSelectedFromHand(selectedCards, index)}
+          <button on:click={() => deselectCardFromHand(selectedCards, index)} class="h-[16.2vh] w-[11.53vh]">
+            <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
+          </button>
+        {:else}
+          <button on:click={() => selectCardFromHand({ ...card, index }, currentAction)} class="h-[16.2vh] w-[11.53vh]">
+            <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
+          </button>
+        {/if}
       {:else}
-        <button on:click={() => selectCardFromHand({ ...card, index }, currentAction)} class="h-[16.2vh] w-[11.53vh]">
-          <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
+        <button disabled class="h-[16.2vh] w-[11.53vh]">
+          <Card type="item" color={card.color} isSelected={false} isHoverable={false} />
         </button>
       {/if}
-    {:else if hasGameStarted}
-      <button disabled class="h-[16.2vh] w-[11.53vh]">
-        <Card type="item" color={card.color} isSelected={false} isHoverable={false} />
-      </button>
-    {:else}
-      <div class="h-[16.2vh] w-[11.53vh]">
-        <Card type="back" />
-      </div>
-    {/if}
-  {/each}
-</section>
+    {/each}
+  </section>
+{/if}
