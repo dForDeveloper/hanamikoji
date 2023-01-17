@@ -27,6 +27,6 @@
   }
 </script>
 
-<main class="grid place-items-center h-screen">
+<main class="grid justify-center h-screen bg-purple-100 text-black/[.87]">
   <NameForm buttonText={'New Match'} {getIsDisabled} {handleClick} name={player.name} />
 </main>
