@@ -2,7 +2,7 @@ import type { Player } from '$lib/types';
 
 const LOCAL_STORAGE_KEY = 'hanamikojiPlayerData';
 
-export const getPlayerData = (): Player => {
+export const maybeGetPlayerData = (): Player => {
   const item = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (item) {
     return JSON.parse(item);
