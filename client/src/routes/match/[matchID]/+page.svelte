@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { getPlayerData, setPlayerData } from '$lib/local-storage';
+  import { maybeGetPlayerData, setPlayerData } from '$lib/local-storage';
   import Board from '$lib/components/Board.svelte';
   import { Client } from 'boardgame.io/client';
   import { Hanamikoji } from 'game-logic';
-  import NameForm from '$lib/components/NameForm.svelte';
+  import Loading from '$lib/components/Loading.svelte';
   import { SocketIO } from 'boardgame.io/multiplayer';
   import { error } from '@sveltejs/kit';
   import { invalidateAll } from '$app/navigation';
@@ -17,28 +17,23 @@
   let startClientPromise: Promise<boolean> = startClient();
 
   async function startClient(): Promise<boolean> {
-    const hasPlayerSelectedName = player.name.length > 0;
-    if (!hasPlayerSelectedName) {
-      player = getPlayerData();
+    player = maybeGetPlayerData();
 
-      const isPlayerDataInLocalStorage = player.name.length > 0;
-      if (!isPlayerDataInLocalStorage) {
-        return false;
-      }
+    if (!player.name) {
+      player = setPlayerData({ name: crypto.randomUUID(), credentials: '' });
     }
 
-    const playerNames: string[] = data.match.players
+    const existingPlayerNames: string[] = data.match.players
       .filter((matchPlayer) => matchPlayer.name)
       .map((matchPlayer) => matchPlayer.name!);
 
-    // TODO: handle case where joining player has the same name in local storage as the existing player
-    const hasAlreadyJoined: boolean = playerNames.includes(player.name);
-    const isMatchFull: boolean = playerNames.length === 2;
+    const hasAlreadyJoined: boolean = existingPlayerNames.includes(player.name);
+    const isMatchFull: boolean = existingPlayerNames.length === 2;
     let playerID = '';
 
     if (!hasAlreadyJoined) {
       if (!isMatchFull) {
-        playerID = getPlayerIdOfNewPlayer(playerNames.length);
+        playerID = getPlayerIdOfNewPlayer(existingPlayerNames.length);
         await joinMatch(playerID);
       } else {
         // TODO: test this case
@@ -87,36 +82,18 @@
       throw new Error('Error joining match');
     }
   }
-
-  function handleNameFormSubmit(name: string): void {
-    player = { ...player, name };
-    startClientPromise = startClient();
-  }
-
-  function getIsNameFormDisabled(name: string): boolean {
-    if (!name) return true;
-    const maybePlayer = data.match.players.find((matchPlayer) => {
-      return matchPlayer.name === name;
-    });
-    return maybePlayer !== undefined;
-  }
 </script>
 
 {#await startClientPromise}
-  <main class="grid place-items-center h-screen">
-    <p>joining match...</p>
+  <main class="grid place-items-center h-screen bg-purple-100">
+    <Loading size="150px" color="#c4b5fd" strokeWidth={5} />
   </main>
 {:then success}
   {#if success}
     <Board {client} />
   {:else}
-    <main class="grid place-items-center h-screen">
-      <NameForm
-        buttonText={'Join Match'}
-        getIsDisabled={getIsNameFormDisabled}
-        handleClick={handleNameFormSubmit}
-        name={player.name}
-      />
+    <main class="grid place-items-center h-screen bg-purple-100 text-black/[.87]">
+      <p>error</p>
     </main>
   {/if}
 {/await}
