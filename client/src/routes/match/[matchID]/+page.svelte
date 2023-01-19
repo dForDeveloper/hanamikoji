@@ -13,7 +13,7 @@
 
   export let data: { matchID: string; match: LobbyAPI.Match };
   let player: Player = { name: '', credentials: '' };
-  let client: any;
+  let client: ReturnType<typeof Client>;
   let connectionAttempt: Promise<boolean> = startClient();
 
   async function startClient(): Promise<boolean> {

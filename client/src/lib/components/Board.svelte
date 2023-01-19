@@ -7,12 +7,14 @@
   import { onDestroy } from 'svelte';
   import { Stage } from 'game-logic';
   import type { GameState, GeishaCard, Player } from 'game-logic';
+  import type { Client } from 'boardgame.io/client';
+  import type { ClientState } from 'boardgame.io/dist/types/src/client/client';
   import type { Ctx } from 'boardgame.io';
   import type { SelectedCard } from '$lib/types';
 
-  export let client: any;
+  export let client: ReturnType<typeof Client>;
   const matchID: string = client.matchID;
-  const playerID: string = client.playerID;
+  const playerID: string = client.playerID as string;
   const opponentID = playerID === '0' ? '1' : '0';
   let G: GameState;
   let ctx: Ctx;
@@ -24,7 +26,7 @@
   let selectedFromPresented = '';
   let winnerID: string;
 
-  const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
+  const unsubscribe = client.subscribe((gameState: ClientState): void => {
     if (gameState && gameState.G && gameState.ctx) {
       G = gameState.G;
       ctx = gameState.ctx;
@@ -54,9 +56,11 @@
 
   function setHasGameStarted(): void {
     if (!hasGameStarted) {
-      const connectedPlayers = client.matchData.filter((player: { id: number; name: string; isConnected: boolean }) => {
-        return player.isConnected;
-      });
+      const connectedPlayers = client.matchData!.filter(
+        (player: { id: number; name?: string; isConnected?: boolean }) => {
+          return player.isConnected;
+        },
+      );
 
       if (connectedPlayers.length === 2) {
         hasGameStarted = true;
