@@ -184,5 +184,10 @@
     </section>
   {/if}
 {:else}
-  <ShareableLink {matchID} />
+  <section class="grid grid-rows-[1fr_16.2vh_1fr]">
+    <ShareableLink {matchID} />
+    <div class="flex flex-row justify-center space-x-2">
+      <Deck handleClick={() => false} isDisabled={true} />
+    </div>
+  </section>
 {/if}

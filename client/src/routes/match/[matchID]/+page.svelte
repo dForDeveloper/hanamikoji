@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { getPlayerData, setPlayerData } from '$lib/local-storage';
+  import { maybeGetPlayerData, setPlayerData } from '$lib/local-storage';
   import Board from '$lib/components/Board.svelte';
   import { Client } from 'boardgame.io/client';
+  import ErrorPage from '$lib/components/ErrorPage.svelte';
   import { Hanamikoji } from 'game-logic';
-  import NameForm from '$lib/components/NameForm.svelte';
+  import Loading from '$lib/components/Loading.svelte';
   import { SocketIO } from 'boardgame.io/multiplayer';
-  import { error } from '@sveltejs/kit';
   import { invalidateAll } from '$app/navigation';
   import { lobby } from '$lib/stores';
   import type { LobbyAPI } from 'boardgame.io';
@@ -13,36 +13,30 @@
 
   export let data: { matchID: string; match: LobbyAPI.Match };
   let player: Player = { name: '', credentials: '' };
-  let client: any;
-  let startClientPromise: Promise<boolean> = startClient();
+  let client: ReturnType<typeof Client>;
+  let connectionAttempt: Promise<boolean> = startClient();
 
   async function startClient(): Promise<boolean> {
-    const hasPlayerSelectedName = player.name.length > 0;
-    if (!hasPlayerSelectedName) {
-      player = getPlayerData();
+    player = maybeGetPlayerData();
 
-      const isPlayerDataInLocalStorage = player.name.length > 0;
-      if (!isPlayerDataInLocalStorage) {
-        return false;
-      }
+    if (!player.name) {
+      player = setPlayerData({ name: crypto.randomUUID(), credentials: '' });
     }
 
-    const playerNames: string[] = data.match.players
+    const existingPlayerNames: string[] = data.match.players
       .filter((matchPlayer) => matchPlayer.name)
       .map((matchPlayer) => matchPlayer.name!);
 
-    // TODO: handle case where joining player has the same name in local storage as the existing player
-    const hasAlreadyJoined: boolean = playerNames.includes(player.name);
-    const isMatchFull: boolean = playerNames.length === 2;
+    const hasAlreadyJoined: boolean = existingPlayerNames.includes(player.name);
+    const isMatchFull: boolean = existingPlayerNames.length === 2;
     let playerID = '';
 
     if (!hasAlreadyJoined) {
       if (!isMatchFull) {
-        playerID = getPlayerIdOfNewPlayer(playerNames.length);
+        playerID = getPlayerIdOfNewPlayer(existingPlayerNames.length);
         await joinMatch(playerID);
       } else {
-        // TODO: test this case
-        throw error(403, { message: 'Cannot join a full match' });
+        throw new Error('Match is full');
       }
     } else {
       playerID = getPlayerIdOfExistingPlayer();
@@ -68,11 +62,7 @@
 
   function getPlayerIdOfExistingPlayer(): string {
     const matchPlayer = data.match.players.find((matchPlayer) => matchPlayer.name === player.name);
-    if (matchPlayer) {
-      return matchPlayer.id.toString();
-    } else {
-      throw new Error('Error finding player');
-    }
+    return matchPlayer!.id.toString();
   }
 
   async function joinMatch(playerID: string): Promise<void> {
@@ -87,36 +77,14 @@
       throw new Error('Error joining match');
     }
   }
-
-  function handleNameFormSubmit(name: string): void {
-    player = { ...player, name };
-    startClientPromise = startClient();
-  }
-
-  function getIsNameFormDisabled(name: string): boolean {
-    if (!name) return true;
-    const maybePlayer = data.match.players.find((matchPlayer) => {
-      return matchPlayer.name === name;
-    });
-    return maybePlayer !== undefined;
-  }
 </script>
 
-{#await startClientPromise}
-  <main class="grid place-items-center h-screen">
-    <p>joining match...</p>
+{#await connectionAttempt}
+  <main class="grid place-items-center h-screen bg-purple-100">
+    <Loading size="150px" color="#c4b5fd" strokeWidth={5} />
   </main>
-{:then success}
-  {#if success}
-    <Board {client} />
-  {:else}
-    <main class="grid place-items-center h-screen">
-      <NameForm
-        buttonText={'Join Match'}
-        getIsDisabled={getIsNameFormDisabled}
-        handleClick={handleNameFormSubmit}
-        name={player.name}
-      />
-    </main>
-  {/if}
+{:then}
+  <Board {client} />
+{:catch error}
+  <ErrorPage status={403} errorMessage={error.message} />
 {/await}

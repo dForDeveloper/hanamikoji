@@ -7,12 +7,14 @@
   import { onDestroy } from 'svelte';
   import { Stage } from 'game-logic';
   import type { GameState, GeishaCard, Player } from 'game-logic';
+  import type { Client } from 'boardgame.io/client';
+  import type { ClientState } from 'boardgame.io/dist/types/src/client/client';
   import type { Ctx } from 'boardgame.io';
   import type { SelectedCard } from '$lib/types';
 
-  export let client: any;
+  export let client: ReturnType<typeof Client>;
   const matchID: string = client.matchID;
-  const playerID: string = client.playerID;
+  const playerID: string = client.playerID as string;
   const opponentID = playerID === '0' ? '1' : '0';
   let G: GameState;
   let ctx: Ctx;
@@ -24,15 +26,21 @@
   let selectedFromPresented = '';
   let winnerID: string;
 
-  const unsubscribe = client.subscribe((gameState: { G: GameState; ctx: Ctx }) => {
+  const unsubscribe = client.subscribe((gameState: ClientState): void => {
     if (gameState && gameState.G && gameState.ctx) {
       G = gameState.G;
       ctx = gameState.ctx;
       setHasGameStarted();
       setPlayerStages(ctx);
       setCurrentAction(G);
-      setSelectedCardsFromHand([null, null, null, null]);
-      setSelectedFromPresented('');
+
+      if (playerStage !== Stage.SELECT_CARDS_AS_ACTIVE_PLAYER) {
+        setSelectedCardsFromHand([null, null, null, null]);
+      }
+      if (playerStage !== Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER) {
+        setSelectedFromPresented('');
+      }
+
       setWinner(ctx);
     } else {
       client.getState();
@@ -48,9 +56,11 @@
 
   function setHasGameStarted(): void {
     if (!hasGameStarted) {
-      const connectedPlayers = client.matchData.filter((player: { id: number; name: string; isConnected: boolean }) => {
-        return player.isConnected;
-      });
+      const connectedPlayers = client.matchData!.filter(
+        (player: { id: number; name?: string; isConnected?: boolean }) => {
+          return player.isConnected;
+        },
+      );
 
       if (connectedPlayers.length === 2) {
         hasGameStarted = true;
@@ -140,8 +150,10 @@
 </script>
 
 {#if G && ctx}
-  <main class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito bg-purple-100">
-    <Opponent player={getPlayer(G, opponentID)} />
+  <main
+    class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito bg-purple-100 text-black/[.87]"
+  >
+    <Opponent player={getPlayer(G, opponentID)} {hasGameStarted} />
     <SharedInterface
       {G}
       {hasGameStarted}

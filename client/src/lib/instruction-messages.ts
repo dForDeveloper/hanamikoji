@@ -15,7 +15,7 @@ export const getInstructions = (currentAction: string, playerStage: Stage, oppon
           case '1':
             return ['Waiting for your opponent to discard 2 cards.'];
           case '2':
-            return ['Waiting for your opponent to reveal three cards.'];
+            return ['Waiting for your opponent to reveal 3 cards.'];
           case '3':
             return ['Waiting for your opponent to reveal 2 sets of cards.'];
           default:
@@ -48,24 +48,24 @@ export const getInstructions = (currentAction: string, playerStage: Stage, oppon
             return [
               'Choose 1 card from your hand.',
               'This card will be hidden from your opponent.',
-              'At the end of the round you will reveal and score this card.',
+              'At the end of the round you will reveal and play this card.',
             ];
           case '1':
             return [
               'Choose 2 cards from your hand.',
-              "These cards will be hidden from your opponent and won't be scored this round.",
+              "These cards will be hidden from your opponent and won't be played this round.",
             ];
           case '2':
             return [
               'Choose 3 cards from your hand to reveal to your opponent.',
-              'They will choose one of the cards to score.',
-              'You will score the remaining two cards.',
+              'They will choose one of the cards to play.',
+              'You will play the remaining two cards.',
             ];
           case '3':
             return [
               'Choose 4 cards from your hand separated into two sets of two to reveal to your opponent.',
-              'They will choose one set to score.',
-              'You will score the remaining set.',
+              'They will choose one set to play.',
+              'You will play the remaining set.',
             ];
           default:
             return NO_MESSAGE;
@@ -75,14 +75,14 @@ export const getInstructions = (currentAction: string, playerStage: Stage, oppon
           case '2':
             return [
               'Your opponent revealed these cards.',
-              'Choose one of them to score for yourself.',
-              'They will score the remaining cards.',
+              'Choose one of them to play.',
+              'They will play the remaining cards.',
             ];
           case '3':
             return [
               'Your opponent revealed these sets of cards',
-              'Choose one to score for yourself.',
-              'They will score the remaining set.',
+              'Choose one set to play.',
+              'They will play the remaining set.',
             ];
           default:
             return NO_MESSAGE;

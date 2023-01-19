@@ -25,6 +25,7 @@
       '/images/1080/green-geisha.webp 144w, /images/1440/green-geisha.webp 192w, /images/4k/green-geisha.webp 298w',
     [Color.PINK]:
       '/images/1080/pink-geisha.webp 144w, /images/1440/pink-geisha.webp 192w, /images/4k/pink-geisha.webp 298w',
+    [Color.NULL]: '',
   };
 
   const colorToGeishaAlt = {
@@ -35,6 +36,7 @@
     [Color.ORANGE]: 'orange geisha card - 3 points',
     [Color.GREEN]: 'green geisha card - 4 points',
     [Color.PINK]: 'pink geisha card - 5 points',
+    [Color.NULL]: '',
   };
 
   const colorToItemSource = {
@@ -49,6 +51,7 @@
     [Color.GREEN]:
       '/images/1080/green-item.webp 125w, /images/1440/green-item.webp 167w, /images/4k/green-item.webp 258w',
     [Color.PINK]: '/images/1080/pink-item.webp 125w, /images/1440/pink-item.webp 167w, /images/4k/pink-item.webp 258w',
+    [Color.NULL]: '',
   };
 
   const colorToItemAlt = {
@@ -59,6 +62,7 @@
     [Color.ORANGE]: 'orange item card - 3 points',
     [Color.GREEN]: 'green item card - 4 points',
     [Color.PINK]: 'pink item card - 5 points',
+    [Color.NULL]: '',
   };
 
   function composeVictoryMarkerClasses(victoryMarkerDirection: number | null): string {
