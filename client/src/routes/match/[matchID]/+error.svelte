@@ -1,7 +1,6 @@
 <script>
+  import ErrorPage from '$lib/components/ErrorPage.svelte';
   import { page } from '$app/stores';
 </script>
 
-<h1>{$page.status}: {$page.error.message}</h1>
-
-<a href="/">Go back to home page</a>
+<ErrorPage status={$page.status} errorMessage={$page.error ? $page.error.message : 'An error occurred'} />
