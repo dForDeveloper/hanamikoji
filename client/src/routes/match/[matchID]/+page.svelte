@@ -2,10 +2,10 @@
   import { maybeGetPlayerData, setPlayerData } from '$lib/local-storage';
   import Board from '$lib/components/Board.svelte';
   import { Client } from 'boardgame.io/client';
+  import ErrorPage from '$lib/components/ErrorPage.svelte';
   import { Hanamikoji } from 'game-logic';
   import Loading from '$lib/components/Loading.svelte';
   import { SocketIO } from 'boardgame.io/multiplayer';
-  import { error } from '@sveltejs/kit';
   import { invalidateAll } from '$app/navigation';
   import { lobby } from '$lib/stores';
   import type { LobbyAPI } from 'boardgame.io';
@@ -14,7 +14,7 @@
   export let data: { matchID: string; match: LobbyAPI.Match };
   let player: Player = { name: '', credentials: '' };
   let client: any;
-  let startClientPromise: Promise<boolean> = startClient();
+  let connectionAttempt: Promise<boolean> = startClient();
 
   async function startClient(): Promise<boolean> {
     player = maybeGetPlayerData();
@@ -36,8 +36,7 @@
         playerID = getPlayerIdOfNewPlayer(existingPlayerNames.length);
         await joinMatch(playerID);
       } else {
-        // TODO: test this case
-        throw error(403, { message: 'Cannot join a full match' });
+        throw new Error('Match is full');
       }
     } else {
       playerID = getPlayerIdOfExistingPlayer();
@@ -63,11 +62,7 @@
 
   function getPlayerIdOfExistingPlayer(): string {
     const matchPlayer = data.match.players.find((matchPlayer) => matchPlayer.name === player.name);
-    if (matchPlayer) {
-      return matchPlayer.id.toString();
-    } else {
-      throw new Error('Error finding player');
-    }
+    return matchPlayer!.id.toString();
   }
 
   async function joinMatch(playerID: string): Promise<void> {
@@ -84,16 +79,12 @@
   }
 </script>
 
-{#await startClientPromise}
+{#await connectionAttempt}
   <main class="grid place-items-center h-screen bg-purple-100">
     <Loading size="150px" color="#c4b5fd" strokeWidth={5} />
   </main>
-{:then success}
-  {#if success}
-    <Board {client} />
-  {:else}
-    <main class="grid place-items-center h-screen bg-purple-100 text-black/[.87]">
-      <p>error</p>
-    </main>
-  {/if}
+{:then}
+  <Board {client} />
+{:catch error}
+  <ErrorPage status={403} errorMessage={error.message} />
 {/await}
