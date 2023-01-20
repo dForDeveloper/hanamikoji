@@ -44,14 +44,14 @@
       <span>create match</span>
     {/if}
   </button>
-  <h2 class="text-3xl pt-12">How to play</h2>
+  <h2 class="text-3xl pt-12">How to Play</h2>
   <section class="max-w-prose pb-2">
     <h3 class="text-2xl">Summary:</h3>
     <div class="flex flex-col gap-2 pt-1">
-      <p>The objective of the game is to win the favor of 4 Geisha or to have 11 Charm Points. (out of a maximum of 7 Geisha and 21 Charm Points)</p>
+      <p>The object of the game is to win the favor of 4 Geisha or to have 11 Charm Points. (There is a maximum of 7 Geisha and 21 Charm Points.)</p>
       <p>You and your opponent take turns performing actions in order to play Item Cards.</p>
       <p>At the end of a round, for each Geisha, if you have more Item Cards of the corresponding type than your opponent, you win the Geisha's favor and gain Charm Points equal to the number on the Geisha Card.</p>
-      <p>The game continues until either player achieves a winning score at the end of a round.</p>
+      <p>The game continues until one player achieves a winning score at the end of a round.</p>
     </div>
   </section>
   <section class="max-w-prose pb-2">
