@@ -65,19 +65,29 @@
   </section>
   <section class="max-w-prose pb-2">
     <h3 class="text-2xl">Card Details:</h3>
-    <p>Giesha Card</p>
-    <Card type="geisha" color={Color.BLUE} />
-    <p>The number 3 on the Geisha Card means if you win this Geisha's favor, you get 3 Charm Points.</p>
-    <p>Item Card</p>
-    <Card type="item" color={Color.BLUE} />
-    <p>
-      This is the blue Geisha Card and the corresponding blue Item Card. The Item Cards for each Geisha share the
-      Geisha's color and number.
-    </p>
-    <p>
-      The number on the Item Card also represents how many of that card are in the deck e.g. there are 3 blue Item Cards
-      in the deck.
-    </p>
+    <div class="flex flex-col gap-6 pt-1">
+      <div class="grid grid-cols-[13.31vh_1fr]">
+        <h4 class="justify-self-center">Giesha Card</h4>
+        <div class="row-start-2">
+          <Card type="geisha" color={Color.BLUE} isVictoryMarkerVisible={false} />
+        </div>
+        <div class="pl-6 row-start-2">
+          <p>The number on the Geisha Card represents how many Charm Points it's worth.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-[13.31vh_1fr]">
+        <div class="grid w-[11.53vh]">
+          <h4 class="justify-self-center">Item Card</h4>
+        </div>
+        <div class="row-start-2">
+          <Card type="item" color={Color.BLUE} />
+        </div>
+        <div class="flex flex-col gap-2 pl-6 row-start-2">
+          <p>The number on the Item Card represents how many of that card are in the game.</p>
+          <p>Each Geisha's corresponding Item Cards share its number and color. The item depicted in the card arts also match.</p>
+        </div>
+      </div>
+    </div>
   </section>
   <section class="max-w-prose pb-2">
     <h3 class="text-2xl">Game Setup:</h3>
