@@ -127,7 +127,7 @@
           {/each}
         {:else}
           {#each getInstructions(currentAction, playerStage, opponentStage) as instruction}
-            <p class="text-3xl my-6">{instruction}</p>
+            <p class="my-3 2xl:text-2xl fhd:text-3xl fhd:my-6">{instruction}</p>
           {/each}
         {/if}
       </div>
