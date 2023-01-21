@@ -1,15 +1,21 @@
 <script lang="ts">
-  export let buttonText: string;
   export let extraClasses = '';
-  export let handleClick: () => void;
   export let isSecondary = false;
+  export let isWide = false;
+  export let handleClick: () => void;
+  export let getIsDisabled: () => boolean = () => false;
 
   function composeCssClasses(): string {
-    let cssClasses =  `rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 ${extraClasses}`;
+    let cssClasses =  `rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 text-lg h-10 fhd:h-12 fhd:text-xl ${extraClasses}`;
     if (isSecondary) {
       cssClasses = cssClasses + ' bg-pink-200';
     } else {
       cssClasses = cssClasses + ' bg-violet-300';
+    }
+    if (isWide) {
+      cssClasses = cssClasses + ' w-36 fhd:w-40';
+    } else {
+      cssClasses = cssClasses + ' w-28 fhd:w-32';
     }
     return cssClasses;
   }
@@ -17,7 +23,8 @@
 
 <button
   on:click={() => handleClick()}
-  class={`${composeCssClasses()} h-10 w-28 text-lg fhd:h-12 fhd:w-32 fhd:text-xl`}
+  disabled={getIsDisabled()}
+  class={composeCssClasses()}
 >
-  {buttonText}
+  <slot />
 </button>

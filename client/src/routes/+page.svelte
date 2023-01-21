@@ -1,5 +1,6 @@
 <script lang="ts">
   import { maybeGetPlayerData, setPlayerData } from '$lib/local-storage';
+  import Button from '$lib/components/Button.svelte';
   import Card from '$lib/components/Card.svelte';
   import { Color } from 'game-logic';
   import Loading from '$lib/components/Loading.svelte';
@@ -37,17 +38,13 @@
     In Hanamikoji, two players compete to earn the favor of seven Geisha by collecting the performance items the Geisha
     desire.
   </p>
-  <button
-    on:click={() => startMatch()}
-    disabled={isLoading}
-    class="bg-violet-300 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:cursor-wait h-10 w-36 text-lg fhd:h-12 fhd:w-40 fhd:text-xl"
-  >
+  <Button handleClick={startMatch} getIsDisabled={() => isLoading} isWide={true}>
     {#if isLoading}
       <Loading size="28px" color="rgba(0,0,0,0.5)" strokeWidth={9} />
     {:else}
       <span>create match</span>
     {/if}
-  </button>
+  </Button>
   <h2 class="text-3xl pt-12">How to Play</h2>
   <section class="max-w-prose pb-2">
     <h3 class="text-2xl">Summary:</h3>

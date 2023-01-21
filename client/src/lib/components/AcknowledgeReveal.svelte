@@ -25,7 +25,7 @@
       <p class="text-3xl my-6">{instruction}</p>
     {/each}
     {#if playerStage === Stage.ACKNOWLEDGE_REVEAL}
-      <Button buttonText="accept" handleClick={acknowledgeReveal} extraClasses="place-self-center" />
+      <Button handleClick={acknowledgeReveal} extraClasses="place-self-center">accept</Button>
     {/if}
   </div>
   <div class="flex flex-row justify-center space-x-2 pt-2">

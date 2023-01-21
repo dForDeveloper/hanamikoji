@@ -148,14 +148,14 @@
         {:else if opponentStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
           <PresentedCardAreaNonactivePlayer {G} {currentAction} {getPresentedCards} />
         {:else if playerStage === Stage.CALCULATE && !winnerID}
-          <Button buttonText="calculate" handleClick={calculateScore} extraClasses="self-center" />
+          <Button handleClick={calculateScore} extraClasses="self-center">calculate</Button>
         {:else if playerStage === Stage.PREPARE_NEXT_ROUND}
-          <Button buttonText="ready" handleClick={readyUp} extraClasses="self-center" />
+          <Button handleClick={readyUp} extraClasses="self-center">ready</Button>
         {/if}
       </div>
       <div class="flex pt-10 justify-center gap-8">
         {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER && getIsActionUndoable(G, playerID)}
-          <Button buttonText="undo" handleClick={undoAction} isSecondary={true} />
+          <Button handleClick={undoAction} isSecondary={true}>undo</Button>
         {/if}
         {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER || playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
           <button
