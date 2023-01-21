@@ -45,13 +45,13 @@
   <div class="flex flex-row justify-center space-x-2 items-end pb-2">
     {#if playerStage === Stage.ACKNOWLEDGE_CHOICE}
       {#each getChoosingPlayerCardsToAcknowledge(currentAction, opponentChoice, presentedCards) as card}
-        <div class="h-[16.2vh] w-[11.53vh]">
+        <div class="h-item-card w-item-card">
           <Card type="item" color={card.color} />
         </div>
       {/each}
     {:else if opponentStage === Stage.ACKNOWLEDGE_CHOICE}
       {#each getCurrentPlayerCardsToAcknowledge(currentAction, opponentChoice, presentedCards) as card}
-        <div class="h-[16.2vh] w-[11.53vh]">
+        <div class="h-item-card w-item-card">
           <Card type="item" color={card.color} />
         </div>
       {/each}
@@ -68,13 +68,13 @@
   <div class="flex flex-row justify-center space-x-2 pt-2">
     {#if playerStage === Stage.ACKNOWLEDGE_CHOICE}
       {#each getCurrentPlayerCardsToAcknowledge(currentAction, opponentChoice, presentedCards) as card}
-        <div class="h-[16.2vh] w-[11.53vh]">
+        <div class="h-item-card w-item-card">
           <Card type="item" color={card.color} />
         </div>
       {/each}
     {:else if opponentStage === Stage.ACKNOWLEDGE_CHOICE}
       {#each getChoosingPlayerCardsToAcknowledge(currentAction, opponentChoice, presentedCards) as card}
-        <div class="h-[16.2vh] w-[11.53vh]">
+        <div class="h-item-card w-item-card">
           <Card type="item" color={card.color} />
         </div>
       {/each}

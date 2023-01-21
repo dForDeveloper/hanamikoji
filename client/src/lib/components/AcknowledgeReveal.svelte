@@ -15,7 +15,7 @@
 <section aria-label="game-interface" class="grid grid-rows-[1fr_20vh_1fr]">
   <div class="flex flex-row justify-center space-x-2 items-end pb-2">
     {#if playerStage === Stage.ACKNOWLEDGE_REVEAL}
-      <div class="h-[16.2vh] w-[11.53vh]">
+      <div class="h-item-card w-item-card">
         <Card type="item" color={revealedCard.color} />
       </div>
     {/if}
@@ -30,7 +30,7 @@
   </div>
   <div class="flex flex-row justify-center space-x-2 pt-2">
     {#if opponentStage === Stage.ACKNOWLEDGE_REVEAL}
-      <div class="h-[16.2vh] w-[11.53vh]">
+      <div class="h-item-card w-item-card">
         <Card type="item" color={revealedCard.color} />
       </div>
     {/if}

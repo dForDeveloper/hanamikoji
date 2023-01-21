@@ -82,7 +82,7 @@
         </div>
       </div>
       <div class="grid grid-cols-[13.31vh_1fr]">
-        <div class="grid w-[11.53vh]">
+        <div class="grid w-item-card">
           <h4 class="justify-self-center">Item Card</h4>
         </div>
         <div class="row-start-2">

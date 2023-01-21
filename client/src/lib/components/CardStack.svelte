@@ -7,7 +7,7 @@
   export let isUpsideDown = false;
 
   function composeParentClasses(count: number, isUpsideDown: boolean): string {
-    let cssClasses = 'relative w-[13.31vh] pt-2';
+    let cssClasses = 'relative w-geisha-card pt-2';
     if (count === 1) {
       cssClasses = cssClasses + ' flex justify-center';
     }

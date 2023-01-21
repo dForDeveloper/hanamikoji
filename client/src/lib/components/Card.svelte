@@ -81,7 +81,7 @@
   }
 
   function composeCssClasses() {
-    let cssClasses = 'block h-[16.2vh] w-[11.53vh] object-center shadow-black xl:rounded-lg fhd:rounded-xl';
+    let cssClasses = 'block object-center shadow-black h-item-card w-item-card xl:rounded-lg fhd:rounded-xl';
     if (isSelected) {
       if (isTranslatedDown) {
         cssClasses = cssClasses + ' translate-y-6';
@@ -102,12 +102,12 @@
 </script>
 
 {#if type === 'geisha'}
-  <div class="relative h-[20vh] w-[13.31vh] grid place-items-center">
+  <div class="relative h-geisha-card w-geisha-card grid place-items-center">
     <img
       srcset={colorToGeishaSource[color]}
       sizes="(max-width: 1920px) 144px, (max-width: 2560px) 192px, (max-width: 3840px) 298px"
       alt={colorToGeishaAlt[color]}
-      class="block h-[20vh] w-[13.31vh] object-fill object-center shadow-sm shadow-black xl:rounded-lg fhd:rounded-xl mbp14:rounded-2xl"
+      class="block h-geisha-card w-geisha-card object-fill object-center shadow-sm shadow-black rounded-md xl:rounded-lg fhd:rounded-xl min-[3000px]:rounded-2xl"
     />
     <img
       srcset="/images/1080/victory-marker.webp 44w, /images/1440/victory-marker.webp 58w, /images/4k/victory-marker.webp 90w"
@@ -131,5 +131,5 @@
     class={composeCssClasses()}
   />
 {:else if type === 'empty'}
-  <div class="h-[16.2vh] w-[11.53vh] border-2 border-gray-600 border-dashed xl:rounded-lg fhd:rounded-xl" />
+  <div class="h-item-card w-item-card border-2 border-gray-600 border-dashed xl:rounded-lg fhd:rounded-xl" />
 {/if}

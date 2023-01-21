@@ -24,11 +24,11 @@
 {#if currentAction === '2'}
   {#each presentedCards as card, i}
     {#if selectedFromPresented === i.toString()}
-      <button on:click={() => deselectFromPresented()} class="h-[16.2vh] w-[11.53vh]">
+      <button on:click={() => deselectFromPresented()} class="h-item-card w-item-card">
         <Card type="item" color={card.color} isSelected={true} isHoverable={true} isTranslatedDown={true} />
       </button>
     {:else}
-      <button on:click={() => selectFromPresented(currentAction, i)} class="h-[16.2vh] w-[11.53vh]">
+      <button on:click={() => selectFromPresented(currentAction, i)} class="h-item-card w-item-card">
         <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
       </button>
     {/if}
@@ -36,14 +36,14 @@
 {:else if currentAction === '3'}
   {#each presentedCards as card, i}
     {#if currentAction === '3' && i === 2}
-      <div class="h-[16.2vh] w-[11.53vh]" />
+      <div class="h-item-card w-item-card" />
     {/if}
     {#if (i <= 1 && selectedFromPresented === '0') || (i >= 2 && selectedFromPresented === '1')}
-      <button on:click={() => deselectFromPresented()} class="h-[16.2vh] w-[11.53vh]">
+      <button on:click={() => deselectFromPresented()} class="h-item-card w-item-card">
         <Card type="item" color={card.color} isSelected={true} isHoverable={true} isTranslatedDown={true} />
       </button>
     {:else}
-      <button on:click={() => selectFromPresented(currentAction, i)} class="h-[16.2vh] w-[11.53vh]">
+      <button on:click={() => selectFromPresented(currentAction, i)} class="h-item-card w-item-card">
         <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
       </button>
     {/if}

@@ -9,3 +9,21 @@
     font-display: swap;
   }
 }
+
+@layer components {
+  .h-item-card {
+    @apply h-[16.2vh];
+  }
+
+  .w-item-card {
+    @apply w-[11.53vh];
+  }
+
+  .h-geisha-card {
+    @apply h-[20vh];
+  }
+
+  .w-geisha-card {
+    @apply w-[13.31vh];
+  }
+}
