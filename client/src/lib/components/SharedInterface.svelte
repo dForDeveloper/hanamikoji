@@ -85,8 +85,8 @@
     const playerScore = getPlayer(G, playerID).score;
     const opponentScore = getPlayer(G, opponentID).score;
     const messages = [
-      `You have ${playerScore.charmPoints} points and ${playerScore.geishaCount} geisha.`,
-      `They have ${opponentScore.charmPoints} points and ${opponentScore.geishaCount} geisha.`,
+      `You have ${playerScore.charmPoints} points and ${playerScore.geishaCount} Geisha.`,
+      `They have ${opponentScore.charmPoints} points and ${opponentScore.geishaCount} Geisha.`,
     ];
     if (winnerID === playerID) {
       messages.push('You win! 🎉');

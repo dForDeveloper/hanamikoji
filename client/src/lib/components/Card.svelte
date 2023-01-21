@@ -81,7 +81,7 @@
   }
 
   function composeCssClasses() {
-    let cssClasses = 'block h-[16.2vh] w-[11.53vh] object-center rounded-xl shadow-black w-full';
+    let cssClasses = 'block h-[16.2vh] w-[11.53vh] object-center rounded-xl shadow-black';
     if (isSelected) {
       if (isTranslatedDown) {
         cssClasses = cssClasses + ' translate-y-6';
