@@ -7,7 +7,6 @@
   export let isHoverable = false;
   export let isTranslatedDown = false;
   export let isUpsideDown = false;
-  export let isVictoryMarkerVisible = true;
   export let victoryMarkerDirection = 0;
   export let backAlt = 'back side of an item card';
 
@@ -110,14 +109,12 @@
       alt={colorToGeishaAlt[color]}
       class="block h-[20vh] w-[13.31vh] object-fill object-center rounded-xl shadow-sm shadow-black"
     />
-    {#if isVictoryMarkerVisible}
-      <img
-        srcset="/images/1080/victory-marker.webp 44w, /images/1440/victory-marker.webp 58w, /images/4k/victory-marker.webp 90w"
-        sizes="(max-width: 1920px) 44px, (max-width: 2560px) 58px, (max-width: 3840px) 90px"
-        alt="victory marker"
-        class={composeVictoryMarkerClasses(victoryMarkerDirection)}
-      />
-    {/if}
+    <img
+      srcset="/images/1080/victory-marker.webp 44w, /images/1440/victory-marker.webp 58w, /images/4k/victory-marker.webp 90w"
+      sizes="(max-width: 1920px) 44px, (max-width: 2560px) 58px, (max-width: 3840px) 90px"
+      alt="victory marker"
+      class={composeVictoryMarkerClasses(victoryMarkerDirection)}
+    />
   </div>
 {:else if type === 'item'}
   <img

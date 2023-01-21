@@ -7,6 +7,7 @@
   import { lobby } from '$lib/stores';
   import { onMount } from 'svelte';
   import type { Player } from '$lib/types';
+  import ActionMarker from '$lib/components/ActionMarker.svelte';
 
   let player: Player = { name: '', credentials: '' };
   let isLoading = false;
@@ -33,7 +34,7 @@
 <main class="bg-purple-100 font-nunito text-black/[.87] flex flex-col items-center gap-10 pt-10 pb-60">
   <h1 class="text-4xl">Welcome to Hanamikoji</h1>
   <p class="max-w-prose">
-    In Hanamikoji, two players compete to earn the favor of seven Geisha by collected the performance items the Geisha
+    In Hanamikoji, two players compete to earn the favor of seven Geisha by collecting the performance items the Geisha
     desire.
   </p>
   <button
@@ -67,12 +68,15 @@
     <h3 class="text-2xl">Card Details:</h3>
     <div class="flex flex-col gap-6 pt-1">
       <div class="grid grid-cols-[13.31vh_1fr]">
-        <h4 class="justify-self-center">Giesha Card</h4>
+        <h4 class="justify-self-center">Geisha Card</h4>
         <div class="row-start-2">
-          <Card type="geisha" color={Color.BLUE} isVictoryMarkerVisible={false} />
+          <Card type="geisha" color={Color.BLUE} />
         </div>
-        <div class="pl-6 row-start-2">
+        <div class="flex flex-col gap-2 pl-6 row-start-2">
           <p>The number on the Geisha Card represents how many Charm Points it's worth.</p>
+          <p>The circular token in the center of the Geisha Card is a Victory Marker.</p>
+          <p>The Victory Marker begins in the neutral center position and represents which way the Geisha's favor leans.</p>
+          <p>In the scoring phase, the Victory Marker can move either to the top or to the bottom of the card representing that either your opponent or you have won the Geisha's favor.</p>
         </div>
       </div>
       <div class="grid grid-cols-[13.31vh_1fr]">
@@ -84,7 +88,7 @@
         </div>
         <div class="flex flex-col gap-2 pl-6 row-start-2">
           <p>The number on the Item Card represents how many of that card are in the game.</p>
-          <p>Each Geisha's corresponding Item Cards share its number and color. The item depicted in the card arts also match.</p>
+          <p>Each Geisha's corresponding Item Cards share the Geisha's number and color. The item depicted in the card arts also match.</p>
         </div>
       </div>
     </div>
@@ -114,35 +118,47 @@
   </section>
   <secion class="max-w-prose pb-2">
     <h3 class="text-2xl">Actions:</h3>
-    <div class="flex flex-col gap-4 pt-1">
-      <div>
-        <h4>Action 1</h4>
-        <ul class="pl-4 leading-relaxed">
-          <li>Choose 1 card from your hand.</li>
-          <li>This card will be hidden from your opponent.</li>
+    <div class="flex flex-col gap-6 pt-1">
+      <div class="grid grid-cols-[8vh_1fr]">
+        <h4 class="justify-self-center">Action 1</h4>
+        <div class="row-start-2">
+          <ActionMarker index={1} isEnabled={true} isHoverable={false} />
+        </div>
+        <ul class="pl-6 row-start-2">
+          <li class="pb-2">Choose 1 card from your hand.</li>
+          <li class="pb-2">This card will be hidden from your opponent.</li>
           <li>At the end of the round you will reveal and play this card.</li>
         </ul>
       </div>
-      <div>
-        <h4>Action 2</h4>
-        <ul class="pl-4 leading-relaxed">
-          <li>Choose 2 cards from your hand.</li>
+      <div class="grid grid-cols-[8vh_1fr]">
+        <h4 class="justify-self-center">Action 2</h4>
+        <div class="row-start-2">
+          <ActionMarker index={2} isEnabled={true} isHoverable={false} />
+        </div>
+        <ul class="pl-6 row-start-2">
+          <li class="pb-2">Choose 2 cards from your hand.</li>
           <li>These cards will be hidden from your opponent and won't be played this round.</li>
         </ul>
       </div>
-      <div>
-        <h4>Action 3</h4>
-        <ul class="pl-4 leading-relaxed">
-          <li>Choose 3 cards from your hand to reveal to your opponent.</li>
-          <li>They will choose one of the cards to play.</li>
+      <div class="grid grid-cols-[8vh_1fr]">
+        <h4 class="justify-self-center">Action 3</h4>
+        <div class="row-start-2">
+          <ActionMarker index={3} isEnabled={true} isHoverable={false} />
+        </div>
+        <ul class="pl-6 row-start-2">
+          <li class="pb-2">Choose 3 cards from your hand to reveal to your opponent.</li>
+          <li class="pb-2">They will choose one of the cards to play.</li>
           <li>You will play the remaining two cards.</li>
         </ul>
       </div>
-      <div>
-        <h4>Action 4</h4>
-        <ul class="pl-4 leading-relaxed">
-          <li>Choose 4 cards from your hand separated into two sets of two to reveal to your opponent.</li>
-          <li>They will choose one set to play.</li>
+      <div class="grid grid-cols-[8vh_1fr]">
+        <h4 class="justify-self-center">Action 4</h4>
+        <div class="row-start-2">
+          <ActionMarker index={4} isEnabled={true} isHoverable={false} />
+        </div>
+        <ul class="pl-6 row-start-2">
+          <li class="pb-2">Choose 4 cards from your hand separated into two sets of two to reveal to your opponent.</li>
+          <li class="pb-2">They will choose one set to play.</li>
           <li>You will play the remaining set.</li>
         </ul>
       </div>
