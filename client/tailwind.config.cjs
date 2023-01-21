@@ -14,7 +14,6 @@ module.exports = {
       xl: '1280px',
       '2xl': '1536px',
       fhd: '1920px',
-      mbp14: '3024px',
     },
   },
   plugins: [],
