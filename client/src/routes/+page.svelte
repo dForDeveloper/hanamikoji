@@ -75,8 +75,13 @@
         <div class="flex flex-col gap-2 pl-6 row-start-2">
           <p>The number on the Geisha Card represents how many Charm Points it's worth.</p>
           <p>The circular token in the center of the Geisha Card is a Victory Marker.</p>
-          <p>The Victory Marker begins in the neutral center position and represents which way the Geisha's favor leans.</p>
-          <p>In the scoring phase, the Victory Marker can move either to the top or to the bottom of the card representing that either your opponent or you have won the Geisha's favor.</p>
+          <p>
+            The Victory Marker begins in the neutral center position and represents which way the Geisha's favor leans.
+          </p>
+          <p>
+            In the scoring phase, the Victory Marker can move either to the top or to the bottom of the card
+            representing that either your opponent or you have won the Geisha's favor.
+          </p>
         </div>
       </div>
       <div class="grid grid-cols-[13.31vh_1fr]">
@@ -88,7 +93,10 @@
         </div>
         <div class="flex flex-col gap-2 pl-6 row-start-2">
           <p>The number on the Item Card represents how many of that card are in the game.</p>
-          <p>Each Geisha's corresponding Item Cards share the Geisha's number and color. The item depicted in the card arts also match.</p>
+          <p>
+            Each Geisha's corresponding Item Cards share the Geisha's number and color. The item depicted in the card
+            arts also match.
+          </p>
         </div>
       </div>
     </div>
