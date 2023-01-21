@@ -3,11 +3,21 @@
   export let extraClasses = '';
   export let handleClick: () => void;
   export let isSecondary = false;
+
+  function composeCssClasses(): string {
+    let cssClasses =  `rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 ${extraClasses}`;
+    if (isSecondary) {
+      cssClasses = cssClasses + ' bg-pink-200';
+    } else {
+      cssClasses = cssClasses + ' bg-violet-300';
+    }
+    return cssClasses;
+  }
 </script>
 
 <button
   on:click={() => handleClick()}
-  class={`text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:bg-gray-300 disabled:shadow-none ${isSecondary ? 'bg-pink-200' : 'bg-violet-300'} ${extraClasses}`}
+  class={`${composeCssClasses()} h-10 w-28 text-lg fhd:h-12 fhd:w-32 fhd:text-xl`}
 >
   {buttonText}
 </button>

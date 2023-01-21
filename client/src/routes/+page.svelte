@@ -40,7 +40,7 @@
   <button
     on:click={() => startMatch()}
     disabled={isLoading}
-    class="bg-violet-300 text-xl h-12 w-40 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:cursor-wait"
+    class="bg-violet-300 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:cursor-wait h-10 w-36 text-lg fhd:h-12 fhd:w-40 fhd:text-xl"
   >
     {#if isLoading}
       <Loading size="28px" color="rgba(0,0,0,0.5)" strokeWidth={9} />

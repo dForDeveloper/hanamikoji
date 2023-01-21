@@ -127,7 +127,7 @@
           {/each}
         {:else}
           {#each getInstructions(currentAction, playerStage, opponentStage) as instruction}
-            <p class="my-3 2xl:text-2xl fhd:text-3xl fhd:my-6">{instruction}</p>
+            <p class="my-3 xl:text-xl 2xl:text-2xl fhd:text-3xl fhd:my-6">{instruction}</p>
           {/each}
         {/if}
       </div>
@@ -161,7 +161,7 @@
           <button
             on:click={() => confirmSelection(selectedCards, selectedFromPresented, playerStage)}
             disabled={getIsConfirmationButtonDisabled(selectedCards, selectedFromPresented, playerStage)}
-            class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:bg-gray-300 disabled:shadow-none"
+            class="bg-violet-300 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:bg-gray-300 disabled:shadow-none h-10 w-28 text-lg fhd:h-12 fhd:w-32 fhd:text-xl"
           >
             confirm
           </button>
