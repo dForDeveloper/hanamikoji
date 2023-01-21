@@ -21,6 +21,7 @@
   }
 </script>
 
+<!-- The confirm button in SharedInterface does not use this component. -->
 <button
   on:click={() => handleClick()}
   disabled={getIsDisabled()}
