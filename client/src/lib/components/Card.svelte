@@ -81,7 +81,7 @@
   }
 
   function composeCssClasses() {
-    let cssClasses = 'block object-center shadow-black h-item-card w-item-card xl:rounded-lg fhd:rounded-xl';
+    let cssClasses = 'block object-center shadow-black h-item-card w-item-card rounded xl:rounded-lg fhd:rounded-xl';
     if (isSelected) {
       if (isTranslatedDown) {
         cssClasses = cssClasses + ' translate-y-6';
@@ -131,5 +131,5 @@
     class={composeCssClasses()}
   />
 {:else if type === 'empty'}
-  <div class="h-item-card w-item-card border-2 border-gray-600 border-dashed xl:rounded-lg fhd:rounded-xl" />
+  <div class="h-item-card w-item-card border-2 border-gray-600 border-dashed rounded xl:rounded-lg fhd:rounded-xl" />
 {/if}

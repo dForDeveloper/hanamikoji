@@ -18,7 +18,7 @@
   }
 
   function composeChildClasses(count: number, index: number): string {
-    const defaultClasses = 'absolute xl:rounded-lg fhd:rounded-xl';
+    const defaultClasses = 'absolute rounded xl:rounded-lg fhd:rounded-xl';
     const zIndex = ' z-' + ((index + 1) * 10).toString();
     return defaultClasses + zIndex + getAbsolutePositions(count)[index];
   }

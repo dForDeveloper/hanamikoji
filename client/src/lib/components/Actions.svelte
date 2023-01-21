@@ -16,13 +16,13 @@
       {#if playerStage === Stage.SELECT_ACTION}
         <button
           on:click={() => selectAction(i.toString())}
-          class="h-[8vh] w-[8vh] shadow-sm shadow-black z-10 xl:rounded 2xl:rounded-md"
+          class="h-[8vh] w-[8vh] shadow-sm shadow-black z-10 rounded 2xl:rounded-md"
           disabled={!action.enabled}
         >
           <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={action.enabled} />
         </button>
       {:else}
-        <button class="h-[8vh] w-[8vh] shadow-sm shadow-black z-10 xl:rounded 2xl:rounded-md" disabled>
+        <button class="h-[8vh] w-[8vh] shadow-sm shadow-black z-10 rounded 2xl:rounded-md" disabled>
           <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
         </button>
       {/if}
