@@ -1,6 +1,7 @@
 <script lang="ts">
   import AcknowledgeChoice from '$lib/components/AcknowledgeChoice.svelte';
   import AcknowledgeReveal from '$lib/components/AcknowledgeReveal.svelte';
+  import Button from '$lib/components/Button.svelte';
   import Deck from '$lib/components/Deck.svelte';
   import PresentedCardAreaActivePlayer from '$lib/components/PresentedCardAreaActivePlayer.svelte';
   import PresentedCardAreaNonactivePlayer from '$lib/components/PresentedCardAreaNonactivePlayer.svelte';
@@ -147,29 +148,14 @@
         {:else if opponentStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
           <PresentedCardAreaNonactivePlayer {G} {currentAction} {getPresentedCards} />
         {:else if playerStage === Stage.CALCULATE && !winnerID}
-          <button
-            on:click={() => calculateScore()}
-            class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 self-center"
-          >
-            calculate
-          </button>
+          <Button buttonText="calculate" handleClick={calculateScore} extraClasses="self-center" />
         {:else if playerStage === Stage.PREPARE_NEXT_ROUND}
-          <button
-            on:click={() => readyUp()}
-            class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 self-center"
-          >
-            ready
-          </button>
+          <Button buttonText="ready" handleClick={readyUp} extraClasses="self-center" />
         {/if}
       </div>
       <div class="flex pt-10 justify-center gap-8">
         {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER && getIsActionUndoable(G, playerID)}
-          <button
-            on:click={() => undoAction()}
-            class="bg-pink-200 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600"
-          >
-            undo
-          </button>
+          <Button buttonText="undo" handleClick={undoAction} isSecondary={true} />
         {/if}
         {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER || playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
           <button

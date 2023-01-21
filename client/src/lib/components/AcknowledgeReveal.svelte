@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Button from '$lib/components/Button.svelte';
   import Card from '$lib/components/Card.svelte';
   import { Stage } from 'game-logic';
   import { getInstructions } from '$lib/instruction-messages';
@@ -24,12 +25,7 @@
       <p class="text-3xl my-6">{instruction}</p>
     {/each}
     {#if playerStage === Stage.ACKNOWLEDGE_REVEAL}
-      <button
-        on:click={() => acknowledgeReveal()}
-        class="bg-violet-300 text-xl h-12 w-32 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 place-self-center"
-      >
-        accept
-      </button>
+      <Button buttonText="accept" handleClick={acknowledgeReveal} extraClasses="place-self-center" />
     {/if}
   </div>
   <div class="flex flex-row justify-center space-x-2 pt-2">
