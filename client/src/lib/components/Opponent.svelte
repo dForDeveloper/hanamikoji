@@ -10,7 +10,7 @@
 <section aria-label="opponent-actions" class="flex flex-row justify-evenly space-x-2">
   {#each Object.values(player.actions) as action, i}
     <div class="relative h-[16.2vh] w-[11.53vh] grid items-start justify-center">
-      <div class="rounded-md h-[8vh] w-[8vh] z-10 shadow-sm shadow-black">
+      <div class="h-[8vh] w-[8vh] z-10 shadow-sm shadow-black xl:rounded-lg 2xl:rounded-md">
         <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
       </div>
       {#if action.savedCard}

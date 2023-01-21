@@ -8,7 +8,7 @@
   }
 
   function composeCssClasses(isEnabled: boolean, isHoverable: boolean): string {
-    let cssClass = 'block object-fill object-center rounded-md h-[8vh] w-[8vh]';
+    let cssClass = 'block object-fill object-center h-[8vh] w-[8vh] xl:rounded 2xl:rounded-md';
     if (!isEnabled) {
       cssClass = cssClass + ' grayscale';
     }

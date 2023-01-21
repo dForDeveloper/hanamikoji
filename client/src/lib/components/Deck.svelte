@@ -5,7 +5,7 @@
   export let isDisabled: boolean;
 </script>
 
-<div class="relative w-[11.53vh] rounded-xl">
+<div class="relative w-[11.53vh] xl:rounded-lg min-[1920px]:rounded-xl">
   <button on:click={handleClick} class={'absolute w-full z-50'} disabled={isDisabled}>
     <Card type="back" isHoverable={!isDisabled} backAlt={'top card of deck'} />
   </button>
