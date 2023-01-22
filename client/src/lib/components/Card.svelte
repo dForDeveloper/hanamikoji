@@ -66,7 +66,7 @@
   };
 
   function composeVictoryMarkerClasses(victoryMarkerDirection: number | null): string {
-    let cssClasses = 'absolute z-10 h-[4vh] w-[4vh] shadow-sm shadow-black rounded-full';
+    let cssClasses = 'absolute z-10 shadow-sm shadow-black rounded-full lg:h-[3.4vh] lg:w-[3.4vh] xl:h-[4vh] xl:w-[4vh]';
     if (victoryMarkerDirection === -1) {
       return cssClasses + ' top-0';
     } else if (victoryMarkerDirection === 1) {
@@ -80,7 +80,7 @@
     return isSelected ? `selected ${colorToItemAlt[color]}` : colorToItemAlt[color];
   }
 
-  function composeCssClasses() {
+  function composeItemCardClasses() {
     let cssClasses = 'block object-center shadow-black h-item-card w-item-card rounded xl:rounded-lg fhd:rounded-xl';
     if (isSelected) {
       if (isTranslatedDown) {
@@ -121,14 +121,14 @@
     srcset={colorToItemSource[color]}
     sizes="(max-width: 1920px) 125px, (max-width: 2560px) 167px, (max-width: 3840px) 258px"
     alt={getItemCardAlt(color)}
-    class={composeCssClasses()}
+    class={composeItemCardClasses()}
   />
 {:else if type === 'back'}
   <img
     srcset="/images/1080/item-back.webp 125w, /images/1440/item-back.webp 167w, /images/4k/item-back.webp 258w"
     sizes="(max-width: 1920px) 125px, (max-width: 2560px) 167px, (max-width: 3840px) 258px"
     alt={backAlt}
-    class={composeCssClasses()}
+    class={composeItemCardClasses()}
   />
 {:else if type === 'empty'}
   <div class="h-item-card w-item-card border-2 border-gray-600 border-dashed rounded xl:rounded-lg fhd:rounded-xl" />
