@@ -12,18 +12,22 @@
 
 @layer components {
   .h-item-card {
-    @apply h-[16.2vh];
+    @apply lg:h-[13.77vh] xl:h-[16.2vh];
   }
 
   .w-item-card {
-    @apply w-[11.53vh];
+    @apply lg:w-[9.8vh] xl:w-[11.53vh];
   }
 
   .h-geisha-card {
-    @apply h-[20vh];
+    @apply lg:h-[17vh] xl:h-[20vh];
   }
 
   .w-geisha-card {
-    @apply w-[13.31vh];
+    @apply lg:w-[11.31vh] xl:w-[13.31vh];
+  }
+
+  .hw-action {
+    @apply lg:h-[6.8vh] lg:w-[6.8vh] xl:h-[8vh] xl:w-[8vh];
   }
 }
