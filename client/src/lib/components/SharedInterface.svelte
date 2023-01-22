@@ -119,7 +119,7 @@
       {acknowledgeReveal}
     />
   {:else}
-    <section aria-label="game-interface" class="grid grid-rows-[1fr_16.2vh_1fr]">
+    <section aria-label="game-interface" class="grid lg:grid-rows-[1fr_13.77vh_1fr] xl:grid-rows-[1fr_16.2vh_1fr]">
       <div aria-label="instruction" class="place-self-center max-w-prose h-full">
         {#if playerStage === Stage.PREPARE_NEXT_ROUND || winnerID}
           {#each getScoreMessages(G, playerID, opponentID, winnerID) as message}
@@ -170,7 +170,7 @@
     </section>
   {/if}
 {:else}
-  <section class="grid grid-rows-[1fr_16.2vh_1fr]">
+  <section class="grid lg:grid-rows-[1fr_13.77vh_1fr] xl:grid-rows-[1fr_16.2vh_1fr]">
     <ShareableLink {matchID} />
     <div class="flex flex-row justify-center space-x-2">
       <Deck handleClick={() => false} isDisabled={true} />
