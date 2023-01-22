@@ -16,13 +16,13 @@
       {#if playerStage === Stage.SELECT_ACTION}
         <button
           on:click={() => selectAction(i.toString())}
-          class="h-[8vh] w-[8vh] shadow-sm shadow-black z-10 rounded 2xl:rounded-md"
+          class="hw-action shadow-sm shadow-black z-10 rounded 2xl:rounded-md"
           disabled={!action.enabled}
         >
           <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={action.enabled} />
         </button>
       {:else}
-        <button class="h-[8vh] w-[8vh] shadow-sm shadow-black z-10 rounded 2xl:rounded-md" disabled>
+        <button class="hw-action shadow-sm shadow-black z-10 rounded 2xl:rounded-md" disabled>
           <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
         </button>
       {/if}
@@ -38,10 +38,10 @@
         {/if}
       {/if}
       {#if action.discardedCards && action.discardedCards.length === 2}
-        <div class="h-item-card w-item-card absolute -translate-x-5">
+        <div class="h-item-card w-item-card absolute lg:-translate-x-2 xl:-translate-x-5">
           <Card type="item" color={action.discardedCards[0].color} />
         </div>
-        <div class="h-item-card w-item-card absolute translate-x-5">
+        <div class="h-item-card w-item-card absolute lg:translate-x-2 xl:translate-x-5">
           <Card type="item" color={action.discardedCards[1].color} />
         </div>
       {/if}
