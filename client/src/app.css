@@ -30,4 +30,8 @@
   .hw-action {
     @apply lg:h-[6.8vh] lg:w-[6.8vh] xl:h-[8vh] xl:w-[8vh];
   }
+
+  .message-text {
+    @apply my-3 text-base xl:text-xl 2xl:text-2xl fhd:text-3xl fhd:my-6;
+  }
 }

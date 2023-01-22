@@ -86,15 +86,15 @@
     const playerScore = getPlayer(G, playerID).score;
     const opponentScore = getPlayer(G, opponentID).score;
     const messages = [
-      `You have ${playerScore.charmPoints} points and ${playerScore.geishaCount} Geisha.`,
-      `They have ${opponentScore.charmPoints} points and ${opponentScore.geishaCount} Geisha.`,
+      `You have ${playerScore.geishaCount} Geisha and ${playerScore.charmPoints} Charm Points.`,
+      `They have ${opponentScore.geishaCount} Geisha and ${opponentScore.charmPoints} Charm Points.`,
     ];
     if (winnerID === playerID) {
       messages.push('You win! 🎉');
     } else if (winnerID === opponentID) {
       messages.push('You lose. 😞');
     } else {
-      messages.push("The game's still on. Ready for another round?");
+      messages.push("Nobody's won yet. Ready for the next round?");
     }
     return messages;
   }
@@ -123,11 +123,11 @@
       <div aria-label="instruction" class="place-self-center max-w-prose h-full">
         {#if playerStage === Stage.PREPARE_NEXT_ROUND || winnerID}
           {#each getScoreMessages(G, playerID, opponentID, winnerID) as message}
-            <p class="text-3xl my-6">{message}</p>
+            <p class="message-text">{message}</p>
           {/each}
         {:else}
           {#each getInstructions(currentAction, playerStage, opponentStage) as instruction}
-            <p class="my-3 xl:text-xl 2xl:text-2xl fhd:text-3xl fhd:my-6">{instruction}</p>
+            <p class="message-text">{instruction}</p>
           {/each}
         {/if}
       </div>

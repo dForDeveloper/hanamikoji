@@ -59,7 +59,7 @@
   </div>
   <div aria-label="instruction" class="flex flex-col place-self-center max-w-prose justify-content-center">
     {#each getInstructions(currentAction, playerStage, opponentStage) as instruction}
-      <p class="text-3xl my-6">{instruction}</p>
+      <p class="message-text">{instruction}</p>
     {/each}
     {#if playerStage === Stage.ACKNOWLEDGE_CHOICE}
       <Button handleClick={acknowledgeChoice} extraClasses="place-self-center">accept</Button>
