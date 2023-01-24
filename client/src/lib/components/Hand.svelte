@@ -46,7 +46,7 @@
 </script>
 
 {#if hasGameStarted}
-  <section aria-label="your-hand" class="flex flex-row justify-center space-x-2 self-end">
+  <section aria-label="your-hand" class="flex flex-row justify-center space-x-2 lg:self-end">
     {#each player.hand as card, index}
       {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
         {#if getIsSelectedFromHand(selectedCards, index)}
