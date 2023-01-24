@@ -7,7 +7,7 @@
   export let hasGameStarted: boolean;
 </script>
 
-<section aria-label="opponent-actions" class="hidden lg:flex flex-row justify-evenly space-x-2">
+<section aria-label="opponent-actions" class="lg:flex flex-row justify-evenly space-x-2">
   {#each Object.values(player.actions) as action, i}
     <div class="relative h-item-card w-item-card grid items-start justify-center">
       <div class="hw-action z-10 shadow-sm shadow-black rounded xl:rounded-lg 2xl:rounded-md">
