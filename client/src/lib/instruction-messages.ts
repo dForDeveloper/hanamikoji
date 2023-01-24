@@ -28,7 +28,7 @@ export const getInstructions = (currentAction: string, playerStage: Stage, oppon
       case 'reveal':
         return ['Waiting for your opponent to reveal their hidden card.'];
       case Stage.ACKNOWLEDGE_REVEAL:
-        return ['Waiting for your opponent to acknowledge your final card.'];
+        return ['Waiting for your opponent to acknowledge the hidden card you revealed.'];
       case Stage.CALCULATE:
         return ['Waiting for your opponent to calculate the score.'];
       case Stage.PREPARE_NEXT_ROUND:
@@ -46,13 +46,12 @@ export const getInstructions = (currentAction: string, playerStage: Stage, oppon
         switch (currentAction) {
           case '0':
             return [
-              'Choose 1 card from your hand.',
-              'This card will be hidden from your opponent.',
+              'Choose 1 card from your hand to hide.',
               'At the end of the round you will reveal and play this card.',
             ];
           case '1':
             return [
-              'Choose 2 cards from your hand.',
+              'Choose 2 cards from your hand to discard.',
               "These cards will be hidden from your opponent and won't be played this round.",
             ];
           case '2':
@@ -63,7 +62,7 @@ export const getInstructions = (currentAction: string, playerStage: Stage, oppon
             ];
           case '3':
             return [
-              'Choose 4 cards from your hand separated into two sets of two to reveal to your opponent.',
+              'Choose 4 cards from your hand separated into two sets to reveal to your opponent.',
               'They will choose one set to play.',
               'You will play the remaining set.',
             ];
@@ -90,7 +89,7 @@ export const getInstructions = (currentAction: string, playerStage: Stage, oppon
       case Stage.ACKNOWLEDGE_CHOICE:
         return ['Your opponent chose this split.'];
       case 'reveal':
-        return ['Reveal your hidden card.'];
+        return ['Reveal your hidden card from Action 1.'];
       case Stage.ACKNOWLEDGE_REVEAL:
         return ['Your opponent revealed their hidden card.'];
       case Stage.CALCULATE:

@@ -130,8 +130,7 @@
           <ActionMarker index={1} isEnabled={true} isHoverable={false} />
         </div>
         <ul class="pl-6 row-start-2">
-          <li class="pb-2">Choose 1 card from your hand.</li>
-          <li class="pb-2">This card will be hidden from your opponent.</li>
+          <li class="pb-2">Choose 1 card from your hand to hide.</li>
           <li>At the end of the round you will reveal and play this card.</li>
         </ul>
       </div>
@@ -141,7 +140,7 @@
           <ActionMarker index={2} isEnabled={true} isHoverable={false} />
         </div>
         <ul class="pl-6 row-start-2">
-          <li class="pb-2">Choose 2 cards from your hand.</li>
+          <li class="pb-2">Choose 2 cards from your hand to discard.</li>
           <li>These cards will be hidden from your opponent and won't be played this round.</li>
         </ul>
       </div>
@@ -162,7 +161,7 @@
           <ActionMarker index={4} isEnabled={true} isHoverable={false} />
         </div>
         <ul class="pl-6 row-start-2">
-          <li class="pb-2">Choose 4 cards from your hand separated into two sets of two to reveal to your opponent.</li>
+          <li class="pb-2">Choose 4 cards from your hand separated into two sets to reveal to your opponent.</li>
           <li class="pb-2">They will choose one set to play.</li>
           <li>You will play the remaining set.</li>
         </ul>
