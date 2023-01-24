@@ -84,9 +84,9 @@
     let cssClasses = 'block object-center shadow-black h-item-card w-item-card rounded xl:rounded-lg fhd:rounded-xl';
     if (isSelected) {
       if (isTranslatedDown) {
-        cssClasses = cssClasses + ' translate-y-6';
+        cssClasses = cssClasses + ' translate-y-4 lg:translate-y-6';
       } else {
-        cssClasses = cssClasses + ' -translate-y-6';
+        cssClasses = cssClasses + ' -translate-y-5 lg:-translate-y-6';
       }
     }
     if (isHoverable) {
