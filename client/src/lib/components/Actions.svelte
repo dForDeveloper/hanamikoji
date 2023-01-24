@@ -38,10 +38,10 @@
         {/if}
       {/if}
       {#if action.discardedCards && action.discardedCards.length === 2}
-        <div class="h-item-card w-item-card absolute lg:-translate-x-2 xl:-translate-x-5">
+        <div class="h-item-card w-item-card absolute -translate-x-3 lg:-translate-x-2 xl:-translate-x-5">
           <Card type="item" color={action.discardedCards[0].color} />
         </div>
-        <div class="h-item-card w-item-card absolute lg:translate-x-2 xl:translate-x-5">
+        <div class="h-item-card w-item-card absolute translate-x-3 lg:translate-x-2 xl:translate-x-5">
           <Card type="item" color={action.discardedCards[1].color} />
         </div>
       {/if}
