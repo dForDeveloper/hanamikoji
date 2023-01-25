@@ -54,7 +54,10 @@
             <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
           </button>
         {:else}
-          <button on:click={() => selectCardFromHand({ ...card, index }, currentAction)} class="h-item-card w-item-card">
+          <button
+            on:click={() => selectCardFromHand({ ...card, index }, currentAction)}
+            class="h-item-card w-item-card"
+          >
             <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
           </button>
         {/if}

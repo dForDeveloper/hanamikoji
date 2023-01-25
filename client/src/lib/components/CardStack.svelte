@@ -32,9 +32,20 @@
       case 3:
         return ['', ' top-[1.3rem] left-1 xl:left-1.5 fhd:left-2', ' top-9 left-2 xl:left-3 fhd:left-4'];
       case 4:
-        return ['', ' top-4 left-[0.2rem] xl:left-1 fhd:left-1.5', ' top-[1.6rem] left-[0.4rem] xl:left-2 fhd:left-3', ' top-9 left-[0.6rem] xl:left-3 fhd:left-[1.125rem]'];
+        return [
+          '',
+          ' top-4 left-[0.2rem] xl:left-1 fhd:left-1.5',
+          ' top-[1.6rem] left-[0.4rem] xl:left-2 fhd:left-3',
+          ' top-9 left-[0.6rem] xl:left-3 fhd:left-[1.125rem]',
+        ];
       case 5:
-        return ['', ' top-[0.9rem] left-0.5 fhd:left-1', ' top-[1.35rem] left-1 fhd:left-2', ' top-[1.8rem] left-1.5 fhd:left-3', ' top-9 left-2 fhd:left-4'];
+        return [
+          '',
+          ' top-[0.9rem] left-0.5 fhd:left-1',
+          ' top-[1.35rem] left-1 fhd:left-2',
+          ' top-[1.8rem] left-1.5 fhd:left-3',
+          ' top-9 left-2 fhd:left-4',
+        ];
       default:
         return [''];
     }

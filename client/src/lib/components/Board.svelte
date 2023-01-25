@@ -153,7 +153,11 @@
 </script>
 
 {#if G && ctx}
-  <main bind:clientWidth={screenWidth} bind:clientHeight={screenHeight} class="h-screen font-nunito bg-purple-100 text-black/[.87] p-2 relative overflow-hidden grid grid-rows-[1fr_3rem] lg:grid-cols-[2fr_3fr] lg:grid-rows-[1fr_4fr_1fr] lg:gap-2">
+  <main
+    bind:clientWidth={screenWidth}
+    bind:clientHeight={screenHeight}
+    class="h-screen font-nunito bg-purple-100 text-black/[.87] p-2 relative overflow-hidden grid grid-rows-[1fr_3rem] lg:grid-cols-[2fr_3fr] lg:grid-rows-[1fr_4fr_1fr] lg:gap-2"
+  >
     {#if screenWidth >= 1024}
       <Opponent player={getPlayer(G, opponentID)} {hasGameStarted} />
       <SharedInterface

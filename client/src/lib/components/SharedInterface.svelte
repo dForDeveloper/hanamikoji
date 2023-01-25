@@ -122,7 +122,10 @@
       {acknowledgeReveal}
     />
   {:else}
-    <section aria-label="game-interface" class="grid grid-rows-[1fr_7.03rem_6rem] lg:grid-rows-[1fr_13.77vh_1fr] xl:grid-rows-[1fr_16.2vh_1fr]">
+    <section
+      aria-label="game-interface"
+      class="grid grid-rows-[1fr_7.03rem_6rem] lg:grid-rows-[1fr_13.77vh_1fr] xl:grid-rows-[1fr_16.2vh_1fr]"
+    >
       <div aria-label="instruction" class="place-self-center h-full max-w-[65%] md:max-w-[75%] lg:max-w-prose">
         {#if playerStage === Stage.PREPARE_NEXT_ROUND || winnerID}
           {#each getScoreMessages(G, playerID, opponentID, winnerID) as message}

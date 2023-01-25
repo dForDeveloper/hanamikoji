@@ -6,7 +6,7 @@
   export let getIsDisabled: () => boolean = () => false;
 
   function composeCssClasses(): string {
-    let cssClasses =  `rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 text-lg h-10 fhd:h-12 fhd:text-xl ${extraClasses}`;
+    let cssClasses = `rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 text-lg h-10 fhd:h-12 fhd:text-xl ${extraClasses}`;
     if (isSecondary) {
       cssClasses = cssClasses + ' bg-pink-200';
     } else {
@@ -22,10 +22,6 @@
 </script>
 
 <!-- The confirm button in SharedInterface does not use this component. -->
-<button
-  on:click={() => handleClick()}
-  disabled={getIsDisabled()}
-  class={composeCssClasses()}
->
+<button on:click={() => handleClick()} disabled={getIsDisabled()} class={composeCssClasses()}>
   <slot />
 </button>
