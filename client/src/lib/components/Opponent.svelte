@@ -29,7 +29,7 @@
     </div>
   {/each}
 </section>
-<section aria-label="opponent-hand" class="hidden lg:flex flex-row justify-center space-x-2">
+<section aria-label="opponent-hand" class="lg:flex flex-row justify-center space-x-2">
   {#if hasGameStarted}
     {#each player.hand as _}
       <div class="h-item-card w-item-card">

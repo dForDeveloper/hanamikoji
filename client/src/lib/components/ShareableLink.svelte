@@ -25,7 +25,7 @@
     <button
       on:click={() => copyLink(baseURL + matchID)}
       disabled={isCopied}
-      class="grid inline p-2 bg-gray-300 hover:bg-gray-400 rounded-md fhd:rounded-xl fhd:h-10"
+      class="grid p-2 bg-gray-300 hover:bg-gray-400 rounded-md fhd:rounded-xl fhd:h-10"
     >
       {#if !isCopied}
         <img src="/images/content-copy.svg" alt="copy" class="inline place-items-center h-4 fhd:h-6" />
