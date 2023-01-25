@@ -66,7 +66,7 @@
   };
 
   function composeVictoryMarkerClasses(victoryMarkerDirection: number | null): string {
-    let cssClasses = 'absolute z-10 shadow-sm shadow-black rounded-full lg:h-[3.4vh] lg:w-[3.4vh] xl:h-[4vh] xl:w-[4vh]';
+    let cssClasses = 'absolute z-10 shadow-sm shadow-black rounded-full h-[4.5vw] w-[4.5vw] lg:h-[3.4vh] lg:w-[3.4vh] xl:h-[4vh] xl:w-[4vh]';
     if (victoryMarkerDirection === -1) {
       return cssClasses + ' top-0';
     } else if (victoryMarkerDirection === 1) {

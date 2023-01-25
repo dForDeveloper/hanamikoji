@@ -13,6 +13,9 @@
   import type { SelectedCard } from '$lib/types';
 
   export let client: ReturnType<typeof Client>;
+  let screenWidth: number;
+  let screenHeight: number;
+  let mobileView = 'Main';
   const matchID: string = client.matchID;
   const playerID: string = client.playerID as string;
   const opponentID = playerID === '0' ? '1' : '0';
@@ -150,42 +153,97 @@
 </script>
 
 {#if G && ctx}
-  <main
-    class="grid grid-cols-[2fr_3fr] grid-rows-[1fr_4fr_1fr] gap-2 h-screen p-2 font-nunito bg-purple-100 text-black/[.87]"
-  >
-    <Opponent player={getPlayer(G, opponentID)} {hasGameStarted} />
-    <SharedInterface
-      {G}
-      {hasGameStarted}
-      {matchID}
-      {playerID}
-      {opponentID}
-      {playerStage}
-      {opponentStage}
-      {currentAction}
-      {selectedCards}
-      {selectedFromPresented}
-      {winnerID}
-      {getPlayer}
-      {drawCard}
-      {undoAction}
-      {selectCardsAsCurrent}
-      {selectCardsAsOpposing}
-      {acknowledgeChoice}
-      {acknowledgeReveal}
-      {calculateScore}
-      {readyUp}
-      {setSelectedFromPresented}
-    />
-    <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentID} />
-    <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} {revealHiddenCard} />
-    <Hand
-      player={getPlayer(G, playerID)}
-      {hasGameStarted}
-      {playerStage}
-      {selectedCards}
-      {currentAction}
-      {setSelectedCardsFromHand}
-    />
+  <main bind:clientWidth={screenWidth} bind:clientHeight={screenHeight} class="h-screen font-nunito bg-purple-100 text-black/[.87] p-2 relative overflow-hidden grid grid-rows-[1fr_3rem] lg:grid-cols-[2fr_3fr] lg:grid-rows-[1fr_4fr_1fr] lg:gap-2">
+    {#if screenWidth >= 1024}
+      <Opponent player={getPlayer(G, opponentID)} {hasGameStarted} />
+      <SharedInterface
+        {G}
+        {hasGameStarted}
+        {matchID}
+        {playerID}
+        {opponentID}
+        {playerStage}
+        {opponentStage}
+        {currentAction}
+        {selectedCards}
+        {selectedFromPresented}
+        {winnerID}
+        {getPlayer}
+        {drawCard}
+        {undoAction}
+        {selectCardsAsCurrent}
+        {selectCardsAsOpposing}
+        {acknowledgeChoice}
+        {acknowledgeReveal}
+        {calculateScore}
+        {selectAction}
+        {revealHiddenCard}
+        {readyUp}
+        {setSelectedFromPresented}
+      />
+      <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentID} />
+      <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} {revealHiddenCard} />
+      <Hand
+        player={getPlayer(G, playerID)}
+        {hasGameStarted}
+        {playerStage}
+        {selectedCards}
+        {currentAction}
+        {setSelectedCardsFromHand}
+      />
+    {:else if screenHeight > screenWidth}
+      <h1 class="text-3xl place-self-center p-2">
+        This experience is designed to be viewed in landscape. Please rotate your device to view the site.
+      </h1>
+    {:else}
+      <select
+        bind:value={mobileView}
+        class="inline-flex cursor-pointer h-12 pl-3 pr-10 text-lg min-h-12 border border-opacity-20 bg-white rounded-lg w-[5.5rem] z-[100] absolute top-2 left-2"
+      >
+        <option disabled>Select View</option>
+        <option selected>Main</option>
+        <option>Geisha</option>
+      </select>
+      {#if mobileView === 'Main'}
+        <SharedInterface
+          {G}
+          {hasGameStarted}
+          {matchID}
+          {playerID}
+          {opponentID}
+          {playerStage}
+          {opponentStage}
+          {currentAction}
+          {selectedCards}
+          {selectedFromPresented}
+          {winnerID}
+          {getPlayer}
+          {drawCard}
+          {undoAction}
+          {selectCardsAsCurrent}
+          {selectCardsAsOpposing}
+          {acknowledgeChoice}
+          {acknowledgeReveal}
+          {calculateScore}
+          {selectAction}
+          {revealHiddenCard}
+          {readyUp}
+          {setSelectedFromPresented}
+        />
+        {#if playerStage === Stage.REVEAL}
+          <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} {revealHiddenCard} />
+        {/if}
+        <Hand
+          player={getPlayer(G, playerID)}
+          {hasGameStarted}
+          {playerStage}
+          {selectedCards}
+          {currentAction}
+          {setSelectedCardsFromHand}
+        />
+      {:else if mobileView === 'Geisha'}
+        <GeishaCardArea geishaCards={getGeishaCards(G)} {playerID} {opponentID} />
+      {/if}
+    {/if}
   </main>
 {/if}

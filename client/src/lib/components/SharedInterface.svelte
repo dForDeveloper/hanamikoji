@@ -1,6 +1,7 @@
 <script lang="ts">
   import AcknowledgeChoice from '$lib/components/AcknowledgeChoice.svelte';
   import AcknowledgeReveal from '$lib/components/AcknowledgeReveal.svelte';
+  import Actions from '$lib/components/Actions.svelte';
   import Button from '$lib/components/Button.svelte';
   import Deck from '$lib/components/Deck.svelte';
   import PresentedCardAreaActivePlayer from '$lib/components/PresentedCardAreaActivePlayer.svelte';
@@ -32,6 +33,8 @@
   export let acknowledgeChoice: () => void;
   export let acknowledgeReveal: () => void;
   export let calculateScore: () => void;
+  export let selectAction: (actionIndex: string) => void;
+  export let revealHiddenCard: () => void;
   export let readyUp: () => void;
   export let setSelectedFromPresented: (updatedPresentedSelection: string) => void;
 
@@ -119,8 +122,8 @@
       {acknowledgeReveal}
     />
   {:else}
-    <section aria-label="game-interface" class="grid lg:grid-rows-[1fr_13.77vh_1fr] xl:grid-rows-[1fr_16.2vh_1fr]">
-      <div aria-label="instruction" class="place-self-center max-w-prose h-full">
+    <section aria-label="game-interface" class="grid grid-rows-[1fr_7.03rem_6rem] lg:grid-rows-[1fr_13.77vh_1fr] xl:grid-rows-[1fr_16.2vh_1fr]">
+      <div aria-label="instruction" class="place-self-center h-full max-w-[65%] md:max-w-[75%] lg:max-w-prose">
         {#if playerStage === Stage.PREPARE_NEXT_ROUND || winnerID}
           {#each getScoreMessages(G, playerID, opponentID, winnerID) as message}
             <p class="message-text">{message}</p>
@@ -131,29 +134,35 @@
           {/each}
         {/if}
       </div>
-      <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
-        {#if playerStage === Stage.DRAW || opponentStage === Stage.DRAW}
-          <Deck handleClick={() => drawCard()} isDisabled={playerStage !== Stage.DRAW} />
-        {:else if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
-          <SelectedCardAreaActivePlayer {currentAction} {selectedCards} />
-        {:else if playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
-          <PresentedCardAreaActivePlayer
-            presentedCards={getPresentedCards(G)}
-            {currentAction}
-            {selectedFromPresented}
-            {setSelectedFromPresented}
-          />
-        {:else if opponentStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
-          <SelectedCardAreaNonactivePlayer {currentAction} />
-        {:else if opponentStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
-          <PresentedCardAreaNonactivePlayer {G} {currentAction} {getPresentedCards} />
-        {:else if playerStage === Stage.CALCULATE && !winnerID}
-          <Button handleClick={calculateScore} extraClasses="self-center">calculate</Button>
-        {:else if playerStage === Stage.PREPARE_NEXT_ROUND}
-          <Button handleClick={readyUp} extraClasses="self-center">ready</Button>
-        {/if}
-      </div>
-      <div class="flex pt-10 justify-center gap-8">
+      {#if playerStage === Stage.SELECT_ACTION}
+        <div class="lg:hidden">
+          <Actions player={getPlayer(G, playerID)} {playerStage} {selectAction} {revealHiddenCard} />
+        </div>
+      {:else}
+        <div aria-label="selected-card-area" class="flex flex-row justify-center space-x-2">
+          {#if playerStage === Stage.DRAW || opponentStage === Stage.DRAW}
+            <Deck handleClick={() => drawCard()} isDisabled={playerStage !== Stage.DRAW} />
+          {:else if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
+            <SelectedCardAreaActivePlayer {currentAction} {selectedCards} />
+          {:else if playerStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
+            <PresentedCardAreaActivePlayer
+              presentedCards={getPresentedCards(G)}
+              {currentAction}
+              {selectedFromPresented}
+              {setSelectedFromPresented}
+            />
+          {:else if opponentStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
+            <SelectedCardAreaNonactivePlayer {currentAction} />
+          {:else if opponentStage === Stage.SELECT_CARDS_AS_NONACTIVE_PLAYER}
+            <PresentedCardAreaNonactivePlayer {G} {currentAction} {getPresentedCards} />
+          {:else if playerStage === Stage.CALCULATE && !winnerID}
+            <Button handleClick={calculateScore} extraClasses="self-center">calculate</Button>
+          {:else if playerStage === Stage.PREPARE_NEXT_ROUND}
+            <Button handleClick={readyUp} extraClasses="self-center">ready</Button>
+          {/if}
+        </div>
+      {/if}
+      <div class="flex justify-center gap-8 self-center lg:self-start lg:pt-10">
         {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER && getIsActionUndoable(G, playerID)}
           <Button handleClick={undoAction} isSecondary={true}>undo</Button>
         {/if}
@@ -170,7 +179,7 @@
     </section>
   {/if}
 {:else}
-  <section class="grid lg:grid-rows-[1fr_13.77vh_1fr] xl:grid-rows-[1fr_16.2vh_1fr]">
+  <section class="grid grid-rows-[1fr_7.03rem_6rem] lg:grid-rows-[1fr_13.77vh_1fr] xl:grid-rows-[1fr_16.2vh_1fr]">
     <ShareableLink {matchID} />
     <div class="flex flex-row justify-center space-x-2">
       <Deck handleClick={() => false} isDisabled={true} />
