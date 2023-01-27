@@ -46,20 +46,23 @@
 </script>
 
 {#if hasGameStarted}
-  <section aria-label="your-hand" class="flex flex-row justify-center space-x-2">
+  <section aria-label="your-hand" class="flex flex-row justify-center space-x-2 lg:self-end">
     {#each player.hand as card, index}
       {#if playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER}
         {#if getIsSelectedFromHand(selectedCards, index)}
-          <button on:click={() => deselectCardFromHand(selectedCards, index)} class="h-[16.2vh] w-[11.53vh]">
+          <button on:click={() => deselectCardFromHand(selectedCards, index)} class="h-item-card w-item-card">
             <Card type="item" color={card.color} isSelected={true} isHoverable={true} />
           </button>
         {:else}
-          <button on:click={() => selectCardFromHand({ ...card, index }, currentAction)} class="h-[16.2vh] w-[11.53vh]">
+          <button
+            on:click={() => selectCardFromHand({ ...card, index }, currentAction)}
+            class="h-item-card w-item-card"
+          >
             <Card type="item" color={card.color} isSelected={false} isHoverable={true} />
           </button>
         {/if}
       {:else}
-        <button disabled class="h-[16.2vh] w-[11.53vh]">
+        <button disabled class="h-item-card w-item-card">
           <Card type="item" color={card.color} isSelected={false} isHoverable={false} />
         </button>
       {/if}

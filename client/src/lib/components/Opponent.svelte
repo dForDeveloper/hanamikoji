@@ -7,32 +7,32 @@
   export let hasGameStarted: boolean;
 </script>
 
-<section aria-label="opponent-actions" class="flex flex-row justify-evenly space-x-2">
+<section aria-label="opponent-actions" class="lg:flex flex-row justify-evenly space-x-2">
   {#each Object.values(player.actions) as action, i}
-    <div class="relative h-[16.2vh] w-[11.53vh] grid items-start justify-center">
-      <div class="rounded-md h-[8vh] w-[8vh] z-10 shadow-sm shadow-black">
+    <div class="relative h-item-card w-item-card grid items-start justify-center">
+      <div class="hw-action z-10 shadow-sm shadow-black rounded xl:rounded-lg 2xl:rounded-md">
         <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
       </div>
       {#if action.savedCard}
-        <div class="h-[16.2vh] w-[11.53vh] absolute">
+        <div class="h-item-card w-item-card absolute">
           <Card type="back" />
         </div>
       {/if}
       {#if action.discardedCards && action.discardedCards.length === 2}
-        <div class="h-[16.2vh] w-[11.53vh] absolute -translate-x-5">
+        <div class="h-item-card w-item-card absolute lg:-translate-x-2 xl:-translate-x-5">
           <Card type="back" />
         </div>
-        <div class="h-[16.2vh] w-[11.53vh] absolute translate-x-5">
+        <div class="h-item-card w-item-card absolute lg:translate-x-2 xl:translate-x-5">
           <Card type="back" />
         </div>
       {/if}
     </div>
   {/each}
 </section>
-<section aria-label="opponent-hand" class="flex flex-row justify-center space-x-2">
+<section aria-label="opponent-hand" class="lg:flex flex-row justify-center space-x-2">
   {#if hasGameStarted}
     {#each player.hand as _}
-      <div class="h-[16.2vh] w-[11.53vh]">
+      <div class="h-item-card w-item-card">
         <Card type="back" />
       </div>
     {/each}

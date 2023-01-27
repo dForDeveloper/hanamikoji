@@ -9,3 +9,29 @@
     font-display: swap;
   }
 }
+
+@layer components {
+  .h-item-card {
+    @apply h-[7.03rem] lg:h-[13.77vh] xl:h-[16.2vh];
+  }
+
+  .w-item-card {
+    @apply w-20 lg:w-[9.8vh] xl:w-[11.53vh];
+  }
+
+  .h-geisha-card {
+    @apply lg:h-[17vh] xl:h-[20vh];
+  }
+
+  .w-geisha-card {
+    @apply w-[5.21rem] lg:w-[11.31vh] xl:w-[13.31vh];
+  }
+
+  .hw-action {
+    @apply lg:h-[6.8vh] lg:w-[6.8vh] xl:h-[8vh] xl:w-[8vh];
+  }
+
+  .message-text {
+    @apply text-base my-1 lg:my-3 xl:text-xl 2xl:text-2xl fhd:text-3xl fhd:my-6;
+  }
+}

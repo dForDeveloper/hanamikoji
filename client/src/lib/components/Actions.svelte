@@ -12,36 +12,36 @@
 
 <section aria-label="your-actions" class="flex flex-row justify-evenly space-x-2 items-end">
   {#each Object.values(player.actions) as action, i}
-    <div class="relative h-[16.2vh] w-[11.53vh] grid items-end justify-center">
+    <div class="relative h-item-card w-item-card grid items-end justify-center">
       {#if playerStage === Stage.SELECT_ACTION}
         <button
           on:click={() => selectAction(i.toString())}
-          class="rounded-md h-[8vh] w-[8vh] shadow-sm shadow-black z-10"
+          class="hw-action shadow-sm shadow-black z-10 rounded 2xl:rounded-md"
           disabled={!action.enabled}
         >
           <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={action.enabled} />
         </button>
       {:else}
-        <button class="rounded-md h-[8vh] w-[8vh] shadow-sm shadow-black z-10" disabled>
+        <button class="hw-action shadow-sm shadow-black z-10 rounded 2xl:rounded-md" disabled>
           <ActionMarker index={i + 1} isEnabled={action.enabled} isHoverable={false} />
         </button>
       {/if}
       {#if action.savedCard}
         {#if playerStage === 'reveal'}
-          <button on:click={() => revealHiddenCard()} class="h-[16.2vh] w-[11.53vh] absolute hover:cursor-pointer">
+          <button on:click={() => revealHiddenCard()} class="h-item-card w-item-card absolute hover:cursor-pointer">
             <Card type="item" color={action.savedCard.color} isHoverable={true} />
           </button>
         {:else}
-          <div class="h-[16.2vh] w-[11.53vh] absolute">
+          <div class="h-item-card w-item-card absolute">
             <Card type="item" color={action.savedCard.color} />
           </div>
         {/if}
       {/if}
       {#if action.discardedCards && action.discardedCards.length === 2}
-        <div class="h-[16.2vh] w-[11.53vh] absolute -translate-x-5">
+        <div class="h-item-card w-item-card absolute -translate-x-3 lg:-translate-x-2 xl:-translate-x-5">
           <Card type="item" color={action.discardedCards[0].color} />
         </div>
-        <div class="h-[16.2vh] w-[11.53vh] absolute translate-x-5">
+        <div class="h-item-card w-item-card absolute translate-x-3 lg:translate-x-2 xl:translate-x-5">
           <Card type="item" color={action.discardedCards[1].color} />
         </div>
       {/if}

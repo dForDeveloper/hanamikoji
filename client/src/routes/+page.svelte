@@ -1,5 +1,6 @@
 <script lang="ts">
   import { maybeGetPlayerData, setPlayerData } from '$lib/local-storage';
+  import Button from '$lib/components/Button.svelte';
   import Card from '$lib/components/Card.svelte';
   import { Color } from 'game-logic';
   import Loading from '$lib/components/Loading.svelte';
@@ -31,24 +32,22 @@
   }
 </script>
 
-<main class="bg-purple-100 font-nunito text-black/[.87] flex flex-col items-center gap-10 pt-10 pb-60">
-  <h1 class="text-4xl">Welcome to Hanamikoji</h1>
+<main
+  class="bg-purple-100 font-nunito text-black/[.87] flex flex-col items-center gap-10 pl-5 pr-5 pt-10 pb-10 lg:pb-60"
+>
+  <h1 class="text-4xl text-center">Welcome to Hanamikoji</h1>
   <p class="max-w-prose">
     In Hanamikoji, two players compete to earn the favor of seven Geisha by collecting the performance items the Geisha
     desire.
   </p>
-  <button
-    on:click={() => startMatch()}
-    disabled={isLoading}
-    class="bg-violet-300 text-xl h-12 w-40 rounded-full shadow-sm shadow-gray-600 hover:shadow hover:shadow-gray-600 disabled:cursor-wait"
-  >
+  <Button handleClick={startMatch} getIsDisabled={() => isLoading} isWide={true}>
     {#if isLoading}
       <Loading size="28px" color="rgba(0,0,0,0.5)" strokeWidth={9} />
     {:else}
       <span>create match</span>
     {/if}
-  </button>
-  <h2 class="text-3xl pt-12">How to Play</h2>
+  </Button>
+  <h2 class="text-3xl text-center pt-5 -mb-4">How to Play</h2>
   <section class="max-w-prose pb-2">
     <h3 class="text-2xl">Summary:</h3>
     <div class="flex flex-col gap-2 pt-1">
@@ -67,12 +66,12 @@
   <section class="max-w-prose pb-2">
     <h3 class="text-2xl">Card Details:</h3>
     <div class="flex flex-col gap-6 pt-1">
-      <div class="grid grid-cols-[13.31vh_1fr]">
-        <h4 class="justify-self-center">Geisha Card</h4>
+      <div class="grid grid-cols-[5.21rem_1fr] lg:grid-cols-[13.31vh_1fr]">
+        <h4 class="text-center">Geisha Card</h4>
         <div class="row-start-2">
           <Card type="geisha" color={Color.BLUE} />
         </div>
-        <div class="flex flex-col gap-2 pl-6 row-start-2">
+        <div class="flex flex-col gap-2 row-start-2 pl-5 lg:pl-6">
           <p>The number on the Geisha Card represents how many Charm Points it's worth.</p>
           <p>The circular token in the center of the Geisha Card is a Victory Marker.</p>
           <p>
@@ -84,14 +83,14 @@
           </p>
         </div>
       </div>
-      <div class="grid grid-cols-[13.31vh_1fr]">
-        <div class="grid w-[11.53vh]">
-          <h4 class="justify-self-center">Item Card</h4>
+      <div class="grid grid-cols-[5.21rem_1fr] lg:grid-cols-[13.31vh_1fr]">
+        <div class="grid w-item-card">
+          <h4 class="text-center">Item Card</h4>
         </div>
         <div class="row-start-2">
           <Card type="item" color={Color.BLUE} />
         </div>
-        <div class="flex flex-col gap-2 pl-6 row-start-2">
+        <div class="flex flex-col gap-2 row-start-2 pl-5 lg:pl-6">
           <p>The number on the Item Card represents how many of that card are in the game.</p>
           <p>
             Each Geisha's corresponding Item Cards share the Geisha's number and color. The item depicted in the card
@@ -127,45 +126,44 @@
   <secion class="max-w-prose pb-2">
     <h3 class="text-2xl">Actions:</h3>
     <div class="flex flex-col gap-6 pt-1">
-      <div class="grid grid-cols-[8vh_1fr]">
-        <h4 class="justify-self-center">Action 1</h4>
+      <div class="grid grid-cols-[5rem_1fr] lg:grid-cols-[8vh_1fr]">
+        <h4 class="text-center">Action 1</h4>
         <div class="row-start-2">
           <ActionMarker index={1} isEnabled={true} isHoverable={false} />
         </div>
-        <ul class="pl-6 row-start-2">
-          <li class="pb-2">Choose 1 card from your hand.</li>
-          <li class="pb-2">This card will be hidden from your opponent.</li>
+        <ul class="row-start-2 pl-5 lg:pl-6">
+          <li class="pb-2">Choose 1 card from your hand to hide.</li>
           <li>At the end of the round you will reveal and play this card.</li>
         </ul>
       </div>
-      <div class="grid grid-cols-[8vh_1fr]">
-        <h4 class="justify-self-center">Action 2</h4>
+      <div class="grid grid-cols-[5rem_1fr] lg:grid-cols-[8vh_1fr]">
+        <h4 class="text-center">Action 2</h4>
         <div class="row-start-2">
           <ActionMarker index={2} isEnabled={true} isHoverable={false} />
         </div>
-        <ul class="pl-6 row-start-2">
-          <li class="pb-2">Choose 2 cards from your hand.</li>
+        <ul class="row-start-2 pl-5 lg:pl-6">
+          <li class="pb-2">Choose 2 cards from your hand to discard.</li>
           <li>These cards will be hidden from your opponent and won't be played this round.</li>
         </ul>
       </div>
-      <div class="grid grid-cols-[8vh_1fr]">
-        <h4 class="justify-self-center">Action 3</h4>
+      <div class="grid grid-cols-[5rem_1fr] lg:grid-cols-[8vh_1fr]">
+        <h4 class="text-center">Action 3</h4>
         <div class="row-start-2">
           <ActionMarker index={3} isEnabled={true} isHoverable={false} />
         </div>
-        <ul class="pl-6 row-start-2">
+        <ul class="row-start-2 pl-5 lg:pl-6">
           <li class="pb-2">Choose 3 cards from your hand to reveal to your opponent.</li>
           <li class="pb-2">They will choose one of the cards to play.</li>
           <li>You will play the remaining two cards.</li>
         </ul>
       </div>
-      <div class="grid grid-cols-[8vh_1fr]">
-        <h4 class="justify-self-center">Action 4</h4>
+      <div class="grid grid-cols-[5rem_1fr] lg:grid-cols-[8vh_1fr]">
+        <h4 class="text-center">Action 4</h4>
         <div class="row-start-2">
           <ActionMarker index={4} isEnabled={true} isHoverable={false} />
         </div>
-        <ul class="pl-6 row-start-2">
-          <li class="pb-2">Choose 4 cards from your hand separated into two sets of two to reveal to your opponent.</li>
+        <ul class="row-start-2 pl-5 lg:pl-6">
+          <li class="pb-2">Choose 4 cards from your hand separated into two sets to reveal to your opponent.</li>
           <li class="pb-2">They will choose one set to play.</li>
           <li>You will play the remaining set.</li>
         </ul>

@@ -18,13 +18,16 @@
   }
 </script>
 
-<section aria-label="game-board" class="grid grid-rows-[1fr_20vh_1fr]">
-  <div class="flex flex-row justify-center space-x-4">
+<section
+  aria-label="game-board"
+  class="grid h-[calc(100vh-1rem)] lg:h-auto grid-rows-[1fr_1fr_1fr] lg:grid-rows-[1fr_17vh_1fr] xl:grid-rows-[1fr_20vh_1fr]"
+>
+  <div class="flex flex-row justify-center space-x-2 fhd:space-x-4">
     {#each geishaCards as geishaCard}
       <CardStack color={geishaCard.color} count={geishaCard.playerItemCards[opponentID].length} isUpsideDown={true} />
     {/each}
   </div>
-  <div class="flex flex-row justify-center space-x-4">
+  <div class="flex flex-row items-center justify-center space-x-2 fhd:space-x-4">
     {#each geishaCards as geishaCard}
       <div>
         <Card
@@ -35,7 +38,7 @@
       </div>
     {/each}
   </div>
-  <div class="flex flex-row justify-center space-x-4">
+  <div class="flex flex-row justify-center space-x-2 fhd:space-x-4">
     {#each geishaCards as geishaCard}
       <CardStack color={geishaCard.color} count={geishaCard.playerItemCards[playerID].length} />
     {/each}

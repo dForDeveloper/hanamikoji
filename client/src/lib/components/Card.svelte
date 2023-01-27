@@ -66,7 +66,8 @@
   };
 
   function composeVictoryMarkerClasses(victoryMarkerDirection: number | null): string {
-    let cssClasses = 'absolute z-10 h-[4vh] w-[4vh] shadow-sm shadow-black rounded-full';
+    let cssClasses =
+      'absolute z-10 shadow-sm shadow-black rounded-full min-h-[30px] min-w-[30px] h-[4.5vw] w-[4.5vw] lg:h-[3.4vh] lg:w-[3.4vh] xl:h-[4vh] xl:w-[4vh]';
     if (victoryMarkerDirection === -1) {
       return cssClasses + ' top-0';
     } else if (victoryMarkerDirection === 1) {
@@ -80,13 +81,13 @@
     return isSelected ? `selected ${colorToItemAlt[color]}` : colorToItemAlt[color];
   }
 
-  function composeCssClasses() {
-    let cssClasses = 'block h-[16.2vh] w-[11.53vh] object-center rounded-xl shadow-black';
+  function composeItemCardClasses() {
+    let cssClasses = 'block object-center shadow-black h-item-card w-item-card rounded xl:rounded-lg fhd:rounded-xl';
     if (isSelected) {
       if (isTranslatedDown) {
-        cssClasses = cssClasses + ' translate-y-6';
+        cssClasses = cssClasses + ' translate-y-4 lg:translate-y-6';
       } else {
-        cssClasses = cssClasses + ' -translate-y-6';
+        cssClasses = cssClasses + ' -translate-y-5 lg:-translate-y-6';
       }
     }
     if (isHoverable) {
@@ -102,12 +103,12 @@
 </script>
 
 {#if type === 'geisha'}
-  <div class="relative h-[20vh] w-[13.31vh] grid place-items-center">
+  <div class="relative h-geisha-card w-geisha-card grid place-items-center">
     <img
       srcset={colorToGeishaSource[color]}
       sizes="(max-width: 1920px) 144px, (max-width: 2560px) 192px, (max-width: 3840px) 298px"
       alt={colorToGeishaAlt[color]}
-      class="block h-[20vh] w-[13.31vh] object-fill object-center rounded-xl shadow-sm shadow-black"
+      class="block h-geisha-card w-geisha-card object-fill object-center shadow-sm shadow-black rounded-md xl:rounded-lg fhd:rounded-xl min-[3000px]:rounded-2xl"
     />
     <img
       srcset="/images/1080/victory-marker.webp 44w, /images/1440/victory-marker.webp 58w, /images/4k/victory-marker.webp 90w"
@@ -121,15 +122,15 @@
     srcset={colorToItemSource[color]}
     sizes="(max-width: 1920px) 125px, (max-width: 2560px) 167px, (max-width: 3840px) 258px"
     alt={getItemCardAlt(color)}
-    class={composeCssClasses()}
+    class={composeItemCardClasses()}
   />
 {:else if type === 'back'}
   <img
     srcset="/images/1080/item-back.webp 125w, /images/1440/item-back.webp 167w, /images/4k/item-back.webp 258w"
     sizes="(max-width: 1920px) 125px, (max-width: 2560px) 167px, (max-width: 3840px) 258px"
     alt={backAlt}
-    class={composeCssClasses()}
+    class={composeItemCardClasses()}
   />
 {:else if type === 'empty'}
-  <div class="h-[16.2vh] w-[11.53vh] border-2 border-gray-600 border-dashed rounded-xl" />
+  <div class="h-item-card w-item-card border-2 border-gray-600 border-dashed rounded xl:rounded-lg fhd:rounded-xl" />
 {/if}
