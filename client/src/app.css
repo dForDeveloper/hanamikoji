@@ -24,7 +24,7 @@
   }
 
   .w-geisha-card {
-    @apply w-[12.5vw] lg:w-[11.31vh] xl:w-[13.31vh];
+    @apply w-[5.21rem] lg:w-[11.31vh] xl:w-[13.31vh];
   }
 
   .hw-action {

@@ -20,7 +20,7 @@
 
 <section
   aria-label="game-board"
-  class="grid h-screen lg:h-auto grid-rows-[7.03rem_1fr_7.03rem] lg:grid-rows-[1fr_17vh_1fr] xl:grid-rows-[1fr_20vh_1fr]"
+  class="grid h-[calc(100vh-1rem)] lg:h-auto grid-rows-[1fr_1fr_1fr] lg:grid-rows-[1fr_17vh_1fr] xl:grid-rows-[1fr_20vh_1fr]"
 >
   <div class="flex flex-row justify-center space-x-2 fhd:space-x-4">
     {#each geishaCards as geishaCard}
