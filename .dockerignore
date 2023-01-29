@@ -1,5 +1,6 @@
 .git
 .idea
+.vscode
 .github
 
 **/node_modules
@@ -12,7 +13,8 @@
 
 .gitignore
 .gitattributes
-compose.dev.yaml
+compose.yaml
 readme.md
+contributing.md
 
 server/nodemon.json
