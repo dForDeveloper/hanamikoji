@@ -24,6 +24,7 @@ ARG API_URL
 
 # set environment variable
 ENV PUBLIC_BASE_API_URL=${API_URL}
+ENV PUBLIC_BASE_CLIENT_URL=${CLIENT_URL}
 
 # build
 RUN pnpm --filter game-logic run build:esm

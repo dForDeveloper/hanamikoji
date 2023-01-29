@@ -1,8 +1,9 @@
 <script lang="ts">
+  import { PUBLIC_BASE_CLIENT_URL } from '$env/static/public';
   export let matchID: string;
 
   // TODO: update with production URL
-  const baseURL = 'localhost:5173/match/';
+  const baseURL = PUBLIC_BASE_CLIENT_URL + '/match/';
   let isCopied = false;
 
   async function copyLink(url: string) {
