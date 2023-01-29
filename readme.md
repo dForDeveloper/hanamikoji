@@ -1,43 +1,15 @@
-## Development Set Up
+# Hanamikoji
 
-### Install pnpm
-https://pnpm.io/installation
+> Welcome to the most famed Geisha street in the old capital, Hanamikoji. Geishas are elegant and graceful women who are skilled in art, music, dance, and a variety of performances and ceremonies. Greatly respected and adored, Geishas are masters of entertainment.
+>
+> In Hanamikoji, two players compete to earn the favor of seven illustrious Geishas by collecting each Geisha’s preferred performance item. With careful speculation and a few bold moves, can you outsmart your opponent to win the favor of the most Geishas?
 
-### Use node 18
-`pnpm env use --global 18`
+This is an online version of the beautiful, strategic, two-player card game [Hanamijoki](https://boardgamegeek.com/boardgame/158600/hanamikoji).
 
-### Install dependencies
-`pnpm i`
+The app was built with SvelteKit, boardgame.io, and Tailwind CSS.
 
-If you get an error like "Expected Version" is 18 but "Got" some older version, run `pnpm add -g pnpm` and try `pnpm i` again.
+## [Play now!](https://hana.dfor.dev)
 
-### Create .env.local files
-`cat client/.env.example > client/.env.local`
+[Official Rules](https://drive.google.com/open?id=0B-UUhGhkNzLsdTBYX1U5a25xWjg)
 
-`cat server/.env.example > server/.env.local`
-
-Change the values in .env.local if you want
-
-### Run the Postgres database
-
-`docker compose -f compose.dev.yaml --env-file server/.env.local up -d`
-
-### Run the app
-
-Before running the app for the first time, you will need to run `pnpm run build` to build the shared package.
-
-`pnpm run dev`
-
-## Build Docker Images for Production
-
-[//]: # (TODO: API_URL will need to be the public url of the backend. It will need its own subdomain and nginx config.)
-
-`docker build -t hanamikoji-client --build-arg "API_URL=http://localhost:8000" -f client.Dockerfile .`
-
-`docker build -t hanamikoji-server -f server.Dockerfile .`
-
-### compose prod
-
-`docker compose -f compose.prod.yaml --env-file server/.env.prod up -d`
-
-`docker compose -f compose.prod.yaml down`
+[Contribute](https://github.com/dForDeveloper/hanamikoji/contributing.md)
