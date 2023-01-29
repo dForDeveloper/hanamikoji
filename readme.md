@@ -12,4 +12,4 @@ The app was built with SvelteKit, boardgame.io, and Tailwind CSS.
 
 [Official Rules](https://drive.google.com/open?id=0B-UUhGhkNzLsdTBYX1U5a25xWjg)
 
-[Contribute](https://github.com/dForDeveloper/hanamikoji/contributing.md)
+[Contribute](https://github.com/dForDeveloper/hanamikoji/blob/main/contributing.md)
