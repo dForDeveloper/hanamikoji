@@ -5,6 +5,7 @@
   import ErrorPage from '$lib/components/ErrorPage.svelte';
   import { Hanamikoji } from 'game-logic';
   import Loading from '$lib/components/Loading.svelte';
+  import { PUBLIC_BASE_API_URL } from '$env/static/public';
   import { SocketIO } from 'boardgame.io/multiplayer';
   import { invalidateAll } from '$app/navigation';
   import { lobby } from '$lib/stores';
@@ -44,7 +45,7 @@
 
     client = Client({
       game: Hanamikoji,
-      multiplayer: SocketIO({ server: 'localhost:8000' }),
+      multiplayer: SocketIO({ server: PUBLIC_BASE_API_URL }),
       matchID: data.match.matchID,
       credentials: player.credentials,
       playerID,
