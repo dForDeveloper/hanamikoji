@@ -6,7 +6,6 @@
     "rootDir": "./src",
     "moduleResolution": "node",
     "declaration": true,
-    "sourceMap": true,
     "outDir": "build/cjs",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
