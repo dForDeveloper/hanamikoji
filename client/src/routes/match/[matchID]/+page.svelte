@@ -81,7 +81,7 @@
 </script>
 
 {#await connectionAttempt}
-  <main class="grid place-items-center h-screen bg-purple-100">
+  <main class="grid place-items-center h-screen">
     <Loading size="150px" color="#c4b5fd" strokeWidth={5} />
   </main>
 {:then}

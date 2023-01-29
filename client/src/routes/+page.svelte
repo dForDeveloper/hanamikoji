@@ -33,7 +33,7 @@
 </script>
 
 <main
-  class="bg-purple-100 font-nunito text-black/[.87] flex flex-col items-center gap-10 pl-5 pr-5 pt-10 pb-10 lg:pb-60"
+  class="font-nunito text-black/[.87] flex flex-col items-center gap-10 pl-5 pr-5 pt-10 pb-10 lg:pb-60"
 >
   <h1 class="text-4xl text-center">Welcome to Hanamikoji</h1>
   <p class="max-w-prose">
