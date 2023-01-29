@@ -3,6 +3,7 @@
   export let matchID: string;
 
   const baseURL = PUBLIC_BASE_CLIENT_URL + '/match/';
+  const protocol = PUBLIC_BASE_CLIENT_URL === 'localhost:5173' ? 'http://' : 'https://';
   let isCopied = false;
 
   async function copyLink(url: string) {
@@ -25,7 +26,7 @@
   >
     {baseURL + matchID}
     <button
-      on:click={() => copyLink(baseURL + matchID)}
+      on:click={() => copyLink(protocol + baseURL + matchID)}
       disabled={isCopied}
       class="grid p-2 bg-gray-300 hover:bg-gray-400 rounded-md fhd:rounded-xl fhd:h-10"
     >
