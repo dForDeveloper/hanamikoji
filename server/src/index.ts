@@ -25,9 +25,12 @@ const db = new PostgresStore(psqlUri);
 
 const server = Server({
   games: [Hanamikoji],
-  // TODO: change origins to [Origins.LOCALHOST_IN_DEVELOPMENT, 'production front end url']
-  origins: [Origins.LOCALHOST_IN_DEVELOPMENT],
+  origins: [Origins.LOCALHOST_IN_DEVELOPMENT, 'https://hana.dfor.dev'],
   db,
+});
+
+server.router.get('/health', (ctx) => {
+  ctx.status = 200;
 });
 
 server.run(8000);
