@@ -9,6 +9,7 @@ https://pnpm.io/installation
 `pnpm env use --global 18`
 
 **Install dependencies**
+
 `pnpm i`
 
 If you get an error, first try `pnpm add -g pnpm` and then `pnpm i` again.
@@ -31,7 +32,6 @@ Run this before running the app for the first time and after making any changes 
 
 `pnpm run dev`
 
-<!-- TODO: Create a GitHub Action to automate this -->
 **Build Docker images**
 
 `docker build -t dfordeveloper/hanamikoji-client:latest --build-arg "API_URL=https://hana-api.dfor.dev" --build-arg "CLIENT_URL=hana.dfor.dev" -f client.Dockerfile .`
