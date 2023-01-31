@@ -26,9 +26,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           tags: dfordeveloper/hanamikoji-client:latest
-          build-args:
-            - CLIENT_URL=hana.dfor.dev
-            - API_URL=https://hana-api.dfor.dev
+          build-args: |
+            CLIENT_URL=hana.dfor.dev
+            API_URL=https://hana-api.dfor.dev
           file: client.Dockerfile
           push: true
       
