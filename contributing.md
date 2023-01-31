@@ -31,15 +31,3 @@ Run this before running the app for the first time and after making any changes 
 **Run the app**
 
 `pnpm run dev`
-
-**Build Docker images**
-
-`docker build -t dfordeveloper/hanamikoji-client:latest --build-arg "API_URL=https://hana-api.dfor.dev" --build-arg "CLIENT_URL=hana.dfor.dev" -f client.Dockerfile .`
-
-`docker build -t dfordeveloper/hanamikoji-server:latest -f server.Dockerfile .`
-
-**Push images to Docker Hub**
-
-`docker push dfordeveloper/hanamikoji-client:latest`
-
-`docker push dfordeveloper/hanamikoji-server:latest`
