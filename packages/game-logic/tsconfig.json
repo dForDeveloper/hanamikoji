@@ -3,7 +3,6 @@
     "target": "es2016",
     "lib": ["es2022"],
     "module": "commonjs",
-    "rootDir": "./src",
     "moduleResolution": "node",
     "declaration": true,
     "outDir": "build/cjs",
@@ -14,5 +13,5 @@
     "strictNullChecks": true,
     "skipLibCheck": true
   },
-  "include": ["src", "tests"]
+  "include": ["src"]
 }
