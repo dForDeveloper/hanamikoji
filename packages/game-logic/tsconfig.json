@@ -13,5 +13,6 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["src", "tests"]
 }
