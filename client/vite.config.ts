@@ -4,7 +4,7 @@ import type { UserConfig } from 'vite';
 const config: UserConfig = {
   plugins: [sveltekit()],
   test: {
-    include: ['src/**/*.test.ts'],
+    include: ['tests/*.test.ts'],
     environment: 'jsdom',
   },
 };
