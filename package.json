@@ -16,7 +16,8 @@
     "build:server": "pnpm --filter server run build",
     "build:game": "pnpm --filter game-logic run build",
     "lint": "pnpm --stream -r run lint",
-    "format": "pnpm --stream -r run format"
+    "format": "pnpm --stream -r run format",
+    "test:client": "pnpm --filter client run test"
   },
   "license": "ISC",
   "devDependencies": {
