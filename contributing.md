@@ -26,8 +26,12 @@ or if you are using `docker-compose`:
 
 Run this before running the app for the first time and after making any changes to the game-logic package.
 
-`pnpm run build:game` 
+`pnpm run build:shared` 
 
 **Run the app**
 
 `pnpm run dev`
+
+**Run tests**
+
+`pnpm run test`
