@@ -20,7 +20,7 @@ COPY packages/game-logic/ ./packages/game-logic/
 COPY server/ ./server/
 
 # build
-RUN pnpm --filter game-logic run build:cjs
+RUN pnpm run build:shared:cjs
 RUN pnpm run build:server
 
 # STAGE 2

@@ -14,9 +14,14 @@
     "build": "pnpm --stream -r run build",
     "build:client": "pnpm --filter client run build",
     "build:server": "pnpm --filter server run build",
-    "build:game": "pnpm --filter game-logic run build",
+    "build:shared": "pnpm --filter game-logic run build",
+    "build:shared:cjs": "pnpm --filter game-logic run build:cjs",
+    "build:shared:esm": "pnpm --filter game-logic run build:esm",
     "lint": "pnpm --stream -r run lint",
-    "format": "pnpm --stream -r run format"
+    "format": "pnpm --stream -r run format",
+    "test:client": "pnpm --filter client run test",
+    "test:shared": "pnpm --filter game-logic run test",
+    "test": "pnpm --filter client run test && pnpm --filter game-logic run test"
   },
   "license": "ISC",
   "devDependencies": {
