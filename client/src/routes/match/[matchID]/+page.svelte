@@ -15,9 +15,8 @@
   export let data: { matchID: string; match: LobbyAPI.Match };
   let player: Player = { name: '', credentials: '' };
   let client: ReturnType<typeof Client>;
-  let connectionAttempt: Promise<boolean> = startClient();
 
-  async function startClient(): Promise<boolean> {
+  async function startClient(data: { matchID: string; match: LobbyAPI.Match }): Promise<boolean> {
     player = maybeGetPlayerData();
 
     if (!player.name) {
@@ -80,7 +79,7 @@
   }
 </script>
 
-{#await connectionAttempt}
+{#await startClient(data)}
   <main class="grid place-items-center h-screen">
     <Loading size="150px" color="#c4b5fd" strokeWidth={5} />
   </main>

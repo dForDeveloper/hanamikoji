@@ -4,6 +4,7 @@
   import Actions from '$lib/components/Actions.svelte';
   import Button from '$lib/components/Button.svelte';
   import Deck from '$lib/components/Deck.svelte';
+  import Loading from '$lib/components/Loading.svelte';
   import PresentedCardAreaActivePlayer from '$lib/components/PresentedCardAreaActivePlayer.svelte';
   import PresentedCardAreaNonactivePlayer from '$lib/components/PresentedCardAreaNonactivePlayer.svelte';
   import SelectedCardAreaActivePlayer from '$lib/components/SelectedCardAreaActivePlayer.svelte';
@@ -11,6 +12,9 @@
   import ShareableLink from '$lib/components/ShareableLink.svelte';
   import { Stage } from 'game-logic';
   import { getInstructions } from '$lib/instruction-messages';
+  import { goto } from '$app/navigation';
+  import { lobby } from '$lib/stores';
+  import { maybeGetPlayerData } from '$lib/local-storage';
   import type { Action, GameState, ItemCard, Player } from 'game-logic';
   import type { SelectedCard } from '$lib/types';
 
@@ -37,6 +41,7 @@
   export let revealHiddenCard: () => void;
   export let readyUp: () => void;
   export let setSelectedFromPresented: (updatedPresentedSelection: string) => void;
+  let isLoading = false;
 
   function confirmSelection(selectedCards: SelectedCard[], selectedFromPresented: string, playerStage: Stage): void {
     if (playerStage === Stage.SELECT_CARDS_AS_ACTIVE_PLAYER) {
@@ -101,6 +106,18 @@
     }
     return messages;
   }
+
+  async function startRematch(): Promise<void> {
+    try {
+      isLoading = true;
+      const { credentials } = maybeGetPlayerData();
+      const { nextMatchID } = await $lobby.playAgain('hanamikoji', matchID, { playerID, credentials });
+      goto(`${nextMatchID}`, { invalidateAll: true });
+    } catch (error) {
+      isLoading = false;
+      throw new Error('Error creating match');
+    }
+  }
 </script>
 
 {#if hasGameStarted}
@@ -162,6 +179,14 @@
             <Button handleClick={calculateScore} extraClasses="self-center">calculate</Button>
           {:else if playerStage === Stage.PREPARE_NEXT_ROUND}
             <Button handleClick={readyUp} extraClasses="self-center">ready</Button>
+          {:else if winnerID}
+            <Button handleClick={startRematch} getIsDisabled={() => isLoading} extraClasses="self-center">
+              {#if isLoading}
+              <Loading size="28px" color="rgba(0,0,0,0.5)" strokeWidth={9} />
+            {:else}
+              <span>rematch</span>
+            {/if}
+            </Button>
           {/if}
         </div>
       {/if}
