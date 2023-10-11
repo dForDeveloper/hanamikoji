@@ -182,10 +182,10 @@
           {:else if winnerID}
             <Button handleClick={startRematch} getIsDisabled={() => isLoading} extraClasses="self-center">
               {#if isLoading}
-              <Loading size="28px" color="rgba(0,0,0,0.5)" strokeWidth={9} />
-            {:else}
-              <span>rematch</span>
-            {/if}
+                <Loading size="28px" color="rgba(0,0,0,0.5)" strokeWidth={9} />
+              {:else}
+                <span>rematch</span>
+              {/if}
             </Button>
           {/if}
         </div>
