@@ -32,6 +32,6 @@
   }
 
   .message-text {
-    @apply text-base my-1 lg:my-3 xl:text-xl 2xl:text-2xl fhd:text-3xl fhd:my-6;
+    @apply my-1 text-base lg:my-3 xl:text-xl 2xl:text-2xl fhd:my-6 fhd:text-3xl;
   }
 }
