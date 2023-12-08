@@ -4,9 +4,9 @@
 
 https://pnpm.io/installation
 
-**Use node 18**
+**Use node 20**
 
-`pnpm env use --global 18`
+`pnpm env use --global 20`
 
 **Install dependencies**
 
