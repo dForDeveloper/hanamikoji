@@ -1,8 +1,8 @@
 # STAGE 1
-FROM node:18.12.1-slim AS build
+FROM node:20.10.0-slim AS build
 
 # install pnpm
-RUN npm i -g pnpm@~7.18.2
+RUN npm i -g pnpm@~8.11.0
 
 # set working directory to /app
 WORKDIR /app
@@ -24,10 +24,10 @@ RUN pnpm run build:shared:cjs
 RUN pnpm run build:server
 
 # STAGE 2
-FROM node:18.12.1-slim
+FROM node:20.10.0-slim
 
 # same as stage 1 until switching user
-RUN npm i -g pnpm@~7.18.2
+RUN npm i -g pnpm@~8.11.0
 
 WORKDIR /app
 
